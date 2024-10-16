@@ -1,0 +1,38 @@
+{
+  "name": "thrillermania",
+  "version": "1.0.0",
+  "description": "## readme",
+  "homepage": "https://github.com/WildCodeSchool-CDA-FT-2024-09/JS-CDA-Projet-1-Team-B#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WildCodeSchool-CDA-FT-2024-09/JS-CDA-Projet-1-Team-B.git"
+  },
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": " concurrently \"npm run dev-front\" \"npm run dev-back\" ",
+    "dev-front": "cd ./client && npm run dev-front",
+    "dev-back": "cd ./server && npm run dev-back",
+    "lint": "eslint \"*/**/*.{js,jsx,ts,tsx}\"",
+    "format": "prettier --write '*/**/*.{js,jsx,ts,tsx}'",
+    "prepare": "husky",
+    "lint-staged": "lint-staged"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.0.1",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10"
+  },
+"lint-staged": {
+  "api/**/*.{js,ts}": [
+    "cd api && eslint --fix",
+    "cd api && prettier --write"
+  ],
+  "client/**/*.{js,ts,jsx,tsx}": [
+    "cd client && eslint --fix",
+    "cd client && prettier --write"
+  ]
+}
+}
