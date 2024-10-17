@@ -1,7 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { buildSchema } from "type-graphql";
-import { AppDataSource } from "./db/data-source";
+import { AppDataSource } from "./src/db/data-source";
 
 const { APP_PORT } = process.env;
 
