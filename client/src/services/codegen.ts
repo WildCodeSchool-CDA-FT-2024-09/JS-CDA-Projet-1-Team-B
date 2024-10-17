@@ -1,9 +1,9 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
 
-const { VITE_API_URL } = import.meta.env;
+const { VITE_GRAPHQL_API_URL } = import.meta.env;
 
 export const config: CodegenConfig = {
-  schema: VITE_API_URL,
+  schema: VITE_GRAPHQL_API_URL,
   documents: ["../schema/*.ts"],
   generates: {
     "../generated/graphql-types.ts": {
