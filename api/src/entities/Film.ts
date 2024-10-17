@@ -11,9 +11,6 @@ export class Film {
   @Column()
   title!: string;
 
-  @Column()
-  originalTitle!: string;
-
   @Column({ type: "text", nullable: true })
   overview!: string;
 
@@ -31,9 +28,6 @@ export class Film {
 
   @Column({ nullable: true })
   posterPath!: string;
-
-  @Column({ nullable: true })
-  backdropPath!: string;
 
   @Column()
   originalLanguage!: string;

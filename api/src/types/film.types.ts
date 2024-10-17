@@ -1,15 +1,15 @@
 export interface Film {
   id: number;
   title: string;
-  originalTitle: string;
+  original_title: string;
   overview: string;
-  releaseDate: string;
+  release_date: string;
   popularity: number;
-  voteAverage: number;
-  voteCount: number;
-  posterPath: string | null;
-  backdropPath: string | null;
-  originalLanguage: string;
+  vote_average: number;
+  vote_count: number;
+  poster_path: string | null;
+  backdrop_path: string | null;
+  original_language: string;
   adult: boolean;
 }
 

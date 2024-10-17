@@ -1,4 +1,4 @@
-import { CastMember, CrewMember, Film, FilmCredits } from "../types/film.types";
+import { CastMember, CrewMember, FilmCredits, Film } from "../types/film.types";
 import { AppDataSource } from "../db/data-source";
 import { Film as FilmEntity } from "../entities/Film";
 import * as fs from "fs/promises";
@@ -50,15 +50,13 @@ async function insertFilm(
     film = new FilmEntity();
     film.id = filmData.id;
     film.title = filmData.title;
-    film.originalTitle = filmData.originalTitle ?? "";
-    film.overview = filmData.overview ?? "";
-    film.releaseDate = filmData.releaseDate ?? "";
-    film.popularity = filmData.popularity ?? 0;
-    film.voteAverage = filmData.voteAverage ?? 0;
-    film.voteCount = filmData.voteCount ?? 0;
-    film.posterPath = filmData.posterPath ?? "";
-    film.backdropPath = filmData.backdropPath ?? "";
-    film.originalLanguage = filmData.originalLanguage ?? "";
+    film.overview = filmData.overview;
+    film.releaseDate = filmData.release_date;
+    film.popularity = filmData.popularity;
+    film.voteAverage = 0;
+    film.voteCount = 0;
+    film.posterPath = filmData.poster_path ?? "";
+    film.originalLanguage = filmData.original_language;
 
     // Ajouter les réalisateurs
     const directors = filmCredits.crew
