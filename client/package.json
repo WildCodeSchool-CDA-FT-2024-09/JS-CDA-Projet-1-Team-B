@@ -8,7 +8,8 @@
     "dev-front": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "eslint \"*/**/*.{js,jsx,ts,tsx}\""
+    "lint": "eslint \"*/**/*.{js,jsx,ts,tsx}\"",
+    "codegen": "graphql-codegen --config src/services/codegen.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.11.8",
@@ -20,6 +21,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
+    "@graphql-codegen/cli": "^5.0.3",
+    "@graphql-codegen/typescript-graphql-request": "^6.2.0",
+    "@graphql-codegen/typescript-operations": "^4.3.0",
+    "@graphql-codegen/typescript-react-apollo": "^4.3.2",
     "@types/react": "^18.3.10",
     "@types/react-dom": "^18.3.0",
     "@types/react-router-dom": "^5.3.3",
