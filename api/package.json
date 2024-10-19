@@ -7,10 +7,9 @@
     "dev": "cd ../ && npm run dev",
     "dev-back": "ts-node-dev ./index.ts",
     "lint": "eslint --fix",
-    "seed": "ts-node src/db/seed.ts",
     "fetch": "ts-node src/data/fetch.ts",
     "create": "ts-node src/data/create.ts",
-    "reset-db": "npm run seed && npm run fetch && npm run create"
+    "reset-db": "npm run fetch && npm run create"
   },
   "author": "",
   "license": "ISC",

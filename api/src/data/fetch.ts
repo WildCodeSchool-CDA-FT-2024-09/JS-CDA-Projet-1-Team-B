@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as fs from "fs/promises";
 import * as path from "path";
-import { Film } from "../types/film.types";
+import { Film, FilmCredits } from "../types/film.types";
 import "dotenv/config";
 
 // Le token pour l'API
@@ -19,8 +19,8 @@ const numberOfPages = 5;
 const rawPathFilms = path.join(__dirname, "raw.json");
 const rawPathCredits = path.join(__dirname, "credits.json");
 
-// Fonction pour récupérer les films et les sauvegarder
-async function fetchAndSaveFilms() {
+// Fonction pour récupérer les films
+async function fetchFilms(): Promise<Film[]> {
   try {
     const allFilms: Film[] = [];
 
@@ -33,48 +33,63 @@ async function fetchAndSaveFilms() {
 
       const films = response.data.results;
 
-      // Filtrer pour ne garder que les films avec isAdult = false
+      // Filtrer pour ne garder que les films avec une description
       const filteredFilms: Film[] = films.filter(
-        (film: Film) => film.adult === false
+        (film: Film) => film.overview && film.overview.trim().length > 0
       );
 
       allFilms.push(...filteredFilms);
     }
 
-    // Sauvegarder les films dans raw.json
-    await fs.writeFile(rawPathFilms, JSON.stringify(allFilms, null, 2));
+    return allFilms;
   } catch (err) {
     console.error("Erreur lors de la récupération des films :", err);
+    return [];
   }
 }
 
 // Fonction pour récupérer les crédits des films
-async function fetchAndSaveCredits() {
+async function fetchCredits(films: Film[]): Promise<FilmCredits[]> {
   try {
-    const rawData = await fs.readFile(rawPathFilms, "utf-8");
-    const films = JSON.parse(rawData);
-    const allCredits = [];
+    const allCredits = await Promise.all(
+      films.map(async (film) => {
+        const filmId = film.id;
+        const apiUrlCredits = `${baseApiUrlCredits}/${filmId}/credits?language=en-US`;
 
-    for (const film of films) {
-      const filmId = film.id;
-      const apiUrlCredits = `${baseApiUrlCredits}/${filmId}/credits?language=en-US`;
+        const response = await axios.get(apiUrlCredits, {
+          headers: { Authorization: `Bearer ${API_TOKEN}` },
+        });
 
-      const response = await axios.get(apiUrlCredits, {
-        headers: { Authorization: `Bearer ${API_TOKEN}` },
-      });
+        const { cast, crew } = response.data;
 
-      const { cast, crew } = response.data;
-      allCredits.push({ filmId, cast, crew });
-    }
+        // Filtrer pour ne garder que les films avec au moins un acteur
+        if (cast.length === 0) {
+          return null;
+        }
+        return { filmId, cast, crew };
+      })
+    );
 
-    await fs.writeFile(rawPathCredits, JSON.stringify(allCredits, null, 2));
+    return allCredits.filter((credits) => credits !== null);
   } catch (err) {
     console.error("Erreur lors de la récupération des crédits :", err);
+    return [];
   }
 }
 
 // Fonction principale
 (async () => {
-  await fetchAndSaveFilms();
-  await fetchAndSaveCredits();
+  try {
+    // Récupérer les films
+    const savedFilms = await fetchFilms();
+
+    // Récupérer les crédits des films récupérés
+    const savedCredits = await fetchCredits(savedFilms);
+
+    // Écrire les films et les crédits dans les fichiers JSON
+    await fs.writeFile(rawPathFilms, JSON.stringify(savedFilms, null, 2));
+    await fs.writeFile(rawPathCredits, JSON.stringify(savedCredits, null, 2));
+  } catch (err) {
+    console.error("Erreur lors du processus de récupération :", err);
+  }
 })();

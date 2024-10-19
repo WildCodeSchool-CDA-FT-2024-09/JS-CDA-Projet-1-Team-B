@@ -1,10 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { UserComments } from "./UserComments";
-import { UserFavorites } from "./UserFavorites";
-import { UserRating } from "./UserRating";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity()
-export class Film {
+export class Film extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -37,13 +34,4 @@ export class Film {
 
   @Column({ nullable: true })
   director!: string;
-
-  @OneToMany(() => UserComments, (userComment) => userComment.film)
-  comments!: UserComments[];
-
-  @OneToMany(() => UserFavorites, (userFavorite) => userFavorite.film)
-  favorites!: UserFavorites[];
-
-  @OneToMany(() => UserRating, (userRating) => userRating.film)
-  ratings!: UserRating[];
 }
