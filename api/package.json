@@ -6,13 +6,17 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cd ../ && npm run dev",
     "dev-back": "ts-node-dev ./index.ts",
-    "lint": "eslint --fix"
+    "lint": "eslint --fix",
+    "fetch": "ts-node src/data/fetch.ts",
+    "create": "ts-node src/data/create.ts",
+    "reset-db": "npm run fetch && npm run create"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "@apollo/server": "^4.11.0",
+    "axios": "^1.7.7",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
     "graphql": "^16.9.0",
