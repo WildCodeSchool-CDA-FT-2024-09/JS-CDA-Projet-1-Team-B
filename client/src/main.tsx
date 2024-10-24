@@ -3,14 +3,18 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./services/connection.ts";
-import App from "./App.tsx";
 import "./index.css";
+import App from "./App.tsx";
+import SignUp from "./components/SignUp.tsx";
+import SignIn from "./components/SignIn.tsx";
 
 const router = createBrowserRouter([
   {
+    path: "",
     element: <App />,
     children: [
-      // Ajouter ici les objets pour le routing via l'outlet du App. {path:... , element:...}
+      { path: "inscription", element: <SignUp /> },
+      { path: "connexion", element: <SignIn /> },
     ],
   },
 ]);
