@@ -2,7 +2,7 @@ import { Film } from "../entities/Film";
 import { Arg, Query, Resolver } from "type-graphql";
 
 @Resolver(Film)
-export class FilmResolver {
+export default class FilmResolver {
   @Query(() => [Film])
   async films(): Promise<Film[]> {
     return Film.find();
