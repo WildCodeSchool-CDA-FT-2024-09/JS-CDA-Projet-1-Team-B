@@ -1,12 +1,12 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
 
-const { VITE_GRAPHQL_API_URL } = import.meta.env;
+// const { VITE_GRAPHQL_API_URL } = import.meta.env;
 
 export const config: CodegenConfig = {
-  schema: VITE_GRAPHQL_API_URL,
-  documents: ["../schema/*.ts"],
+  schema: "http://localhost:4000",
+  documents: ["src/**/*.ts", "src/**/*.tsx"],
   generates: {
-    "../generated/graphql-types.ts": {
+    "src/generated/graphql-types.ts": {
       plugins: [
         "typescript",
         "typescript-operations",
@@ -19,3 +19,5 @@ export const config: CodegenConfig = {
   },
   overwrite: true,
 };
+
+export default config;

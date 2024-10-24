@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  @apply bg-gradient-to-b from-greyBlack to-greyDark min-h-screen;
+}
+
+@layer components {
+  .btn-red {
+    @apply bg-bloodRed bg-opacity-70 hover:bg-opacity-100 text-white rounded-lg px-6 py-2 font-bold transition-all hover:scale-105;
+  }
+}
+@layer components {
+  .btn-clear {
+    @apply bg-transparent text-white border border-bloodRed rounded-lg px-6 py-2 font-bold transition-all hover:bg-bloodRed hover:bg-opacity-100 hover:scale-105;
+  }
+}

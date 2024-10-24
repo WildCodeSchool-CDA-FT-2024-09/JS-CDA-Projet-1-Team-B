@@ -11,6 +11,8 @@ async function resetDatabase() {
     // Supprimer les anciennes données de la table film
     await queryRunner.query("DELETE FROM film");
 
+    await queryRunner.query('DELETE FROM sqlite_sequence WHERE name = "genre"');
+
     // Réinitialiser les identifiants auto-incrémentés
     await queryRunner.query('DELETE FROM sqlite_sequence WHERE name = "film"');
 
@@ -28,16 +30,16 @@ async function resetDatabase() {
 
 // Fonction pour insérer un film
 async function insertFilm(filmData: Film, filmCredits: FilmCredits) {
-  let film = await FilmEntity.findOneBy({ id: filmData.id });
+  let film = await FilmEntity.findOneBy({ tmdbId: filmData.id });
   if (!film) {
     film = new FilmEntity();
-    // film.tmdbId = filmData.id; Si besoin conserver l'id TMDb dans une colonne séparée
+    film.tmdbId = filmData.id;
     film.title = filmData.title;
     film.overview = filmData.overview;
     film.releaseDate = filmData.release_date;
     film.popularity = filmData.popularity;
-    film.voteAverage = 0;
-    film.voteCount = 0;
+    film.voteAverage = filmData.vote_average;
+    film.voteCount = filmData.vote_count;
     film.posterPath = filmData.poster_path ?? "";
     film.originalLanguage = filmData.original_language;
 
@@ -53,6 +55,7 @@ async function insertFilm(filmData: Film, filmCredits: FilmCredits) {
     );
     film.actors = actorNames.join(", ");
 
+    // Sauvegarder le film avec les genres associés
     await film.save();
   }
 }
@@ -77,7 +80,6 @@ async function seedDatabase() {
     const films: Film[] = JSON.parse(rawData);
     const credits: FilmCredits[] = JSON.parse(creditsData);
 
-    // Utiliser Promise.all
     await Promise.all(
       films.map(async (filmData: Film) => {
         const filmCredits = credits.find(
