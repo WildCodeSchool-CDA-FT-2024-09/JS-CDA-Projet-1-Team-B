@@ -1,20 +1,46 @@
 import { useEffect, useState } from "react";
 import { useSearchFilmsQuery } from "../generated/graphql-types";
 
+enum SearchBy {
+  Title = "title",
+  Actor = "actor",
+  Director = "director",
+}
+
 export default function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [submittedTerm, setSubmittedTerm] = useState("");
 
+  const [searchBy] = useState<SearchBy>(SearchBy.Title); // Modifie par SearchBy.Actor ou SearchBy.Director ou SearchBy.Title
+
+  // Placeholder dynamique basé sur l'option sélectionnée
+  const getPlaceholder = () => {
+    switch (searchBy) {
+      case SearchBy.Title:
+        return "Recherchez un film par titre...";
+      case SearchBy.Actor:
+        return "Recherchez un film par acteur...";
+      case SearchBy.Director:
+        return "Recherchez un film par réalisateur...";
+      default:
+        return "Recherchez...";
+    }
+  };
+
+  // Utilisation de la requête GraphQL en fonction de l'option sélectionnée
   const { data, loading, error } = useSearchFilmsQuery({
-    variables: { title: submittedTerm },
+    variables: {
+      title: searchBy === SearchBy.Title ? submittedTerm : "",
+      actorName: searchBy === SearchBy.Actor ? submittedTerm : "",
+      director: searchBy === SearchBy.Director ? submittedTerm : "",
+    },
     skip: !submittedTerm, // La requête est ignorée tant qu'il n'y a pas de terme soumis
   });
 
-  // Fonction partagée pour déclencher la recherche
+  // Fonction pour déclencher la recherche
   const triggerSearch = () => {
     if (searchTerm) {
-      setSubmittedTerm(searchTerm); // Déclenche la requête avec le terme soumis
-      // console.log("Recherche du film :", searchTerm);
+      setSubmittedTerm(searchTerm);
     }
   };
 
@@ -35,18 +61,19 @@ export default function SearchBar() {
   if (error) {
     console.error("Erreur lors de la recherche des films :", error);
   }
+
   return (
     <div className="relative flex justify-center p-4">
       <input
         type="text"
-        placeholder="Recherchez un film..."
+        placeholder={getPlaceholder()} // Placeholder dynamique
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         onKeyDown={handleKeyDown}
         className="w-full bg-transparent text-white border border-bloodRed rounded-lg px-6 py-2 pl-10 font-bold transition-all focus:outline-none"
       />
       <button
-        onClick={triggerSearch} // Ajoute ta fonction de recherche ici
+        onClick={triggerSearch} // Déclenche la recherche sur clic du bouton
         className="absolute right-8 top-1/2 transform -translate-y-1/2"
       >
         <svg

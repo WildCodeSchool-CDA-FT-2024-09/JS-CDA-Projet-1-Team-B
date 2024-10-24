@@ -8,7 +8,7 @@ export class Film extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Field()
+  @Field({ nullable: true }) // A voir si on garde
   @Column({ nullable: true }) // A voir si on garde
   tmdbId!: number;
 
@@ -36,7 +36,7 @@ export class Film extends BaseEntity {
   @Column()
   voteCount!: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   posterPath!: string;
 

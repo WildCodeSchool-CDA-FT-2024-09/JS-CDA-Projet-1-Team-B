@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const SEARCH_FILMS = gql`
-  query SearchFilms($title: String!) {
-    searchFilms(title: $title) {
+  query searchFilms($title: String, $actorName: String, $director: String) {
+    searchFilms(title: $title, actorName: $actorName, director: $director) {
       id
       title
       releaseDate
