@@ -7,7 +7,7 @@ import "dotenv/config";
 // Le token pour l'API
 const API_TOKEN = process.env.API_TOKEN;
 
-// L'URL de l'API pour les films, les crédits et les genres
+// L'URL de l'API pour les films, les crédits
 const baseApiUrlFilms =
   "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=fr-FR&sort_by=popularity.desc&with_genres=53";
 const baseApiUrlCredits = "https://api.themoviedb.org/3/movie";
