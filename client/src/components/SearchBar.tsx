@@ -1,57 +1,55 @@
 import { useEffect, useState } from "react";
 import { useSearchFilmsQuery } from "../generated/graphql-types";
 
-enum SearchBy {
-  Title = "title",
-  Actor = "actor",
-  Director = "director",
+// Enumération pour les critères de recherche
+enum Criteria {
+  Title = "Title",
+  Actor = "Actor",
+  Director = "Director",
 }
 
 export default function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [submittedTerm, setSubmittedTerm] = useState("");
+  const [criteria] = useState<Criteria>(Criteria.Title); // Modifie le critère de recherche avec Title Actor ou Director
 
-  const [searchBy] = useState<SearchBy>(SearchBy.Title); // Modifie par SearchBy.Actor ou SearchBy.Director ou SearchBy.Title
-
-  // Placeholder dynamique basé sur l'option sélectionnée
+  // Placeholder dynamique basé sur le critère sélectionné
   const getPlaceholder = () => {
-    switch (searchBy) {
-      case SearchBy.Title:
+    switch (criteria) {
+      case Criteria.Title:
         return "Recherchez un film par titre...";
-      case SearchBy.Actor:
+      case Criteria.Actor:
         return "Recherchez un film par acteur...";
-      case SearchBy.Director:
+      case Criteria.Director:
         return "Recherchez un film par réalisateur...";
       default:
         return "Recherchez...";
     }
   };
 
-  // Utilisation de la requête GraphQL en fonction de l'option sélectionnée
   const { data, loading, error } = useSearchFilmsQuery({
     variables: {
-      title: searchBy === SearchBy.Title ? submittedTerm : "",
-      actorName: searchBy === SearchBy.Actor ? submittedTerm : "",
-      director: searchBy === SearchBy.Director ? submittedTerm : "",
+      searchTerm: submittedTerm, // Terme soumis pour la requête
+      searchBy: criteria, // Critère de recherche sélectionné
     },
-    skip: !submittedTerm, // La requête est ignorée tant qu'il n'y a pas de terme soumis
+    skip: !submittedTerm, // Ignorer la requête tant qu'il n'y a pas de terme
   });
 
   // Fonction pour déclencher la recherche
   const triggerSearch = () => {
-    if (searchTerm) {
-      setSubmittedTerm(searchTerm);
+    if (searchTerm.trim()) {
+      setSubmittedTerm(searchTerm.trim()); // Nettoie et soumet le terme de recherche
     }
   };
 
-  // Déclenche la recherche lorsque l'utilisateur appuie sur "Enter"
+  // Déclencher la recherche lorsque l'utilisateur appuie sur "Enter"
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       triggerSearch();
     }
   };
 
-  // Log des résultats lorsque la recherche est terminée
+  // Affiche les résultats dans la console
   useEffect(() => {
     if (data && !loading) {
       // console.log("Films trouvés :", data.searchFilms);
@@ -68,8 +66,8 @@ export default function SearchBar() {
         type="text"
         placeholder={getPlaceholder()} // Placeholder dynamique
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        onKeyDown={handleKeyDown}
+        onChange={(e) => setSearchTerm(e.target.value)} // Met à jour le terme de recherche
+        onKeyDown={handleKeyDown} // Déclenche la recherche à l'appui de "Enter"
         className="w-full bg-transparent text-white border border-bloodRed rounded-lg px-6 py-2 pl-10 font-bold transition-all focus:outline-none"
       />
       <button

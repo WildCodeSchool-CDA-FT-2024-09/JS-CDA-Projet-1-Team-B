@@ -1,59 +1,31 @@
 import { Resolver, Query, Arg } from "type-graphql";
 import { Film } from "../entities/Film";
+import { Criteria } from "../enums/Criteria";
 
 @Resolver(Film)
 export class FilmResolver {
   @Query(() => [Film])
   async searchFilms(
-    @Arg("title", () => String, { nullable: true }) title: string | null,
-    @Arg("actorName", () => String, { nullable: true })
-    actorName: string | null,
-    @Arg("director", () => String, { nullable: true }) director: string | null
+    @Arg("searchTerm", () => String) searchTerm: string,
+    @Arg("searchBy", () => Criteria) searchBy: Criteria
   ): Promise<Film[]> {
     const filmsQuery = Film.createQueryBuilder("film");
 
-    // Recherche par titre
-    if (title && title.trim()) {
-      const trimmedTitle = title.trim(); // Supprime les espaces avant et après
-      const keywords = trimmedTitle.split(" "); // Sépare les mots
+    // Nettoyage des espaces en début et fin de chaîne
+    const cleanedSearchTerm = searchTerm.trim();
 
-      // Recherche chaque mot dans le titre
-      keywords.forEach((keyword, index) => {
-        filmsQuery.orWhere(`LOWER(film.title) LIKE LOWER(:keyword${index})`, {
-          [`keyword${index}`]: `%${keyword}%`,
-        });
+    // Appliquer la recherche en fonction du critère
+    if (searchBy === Criteria.Title) {
+      filmsQuery.where(`LOWER(film.title) LIKE LOWER(:searchTerm)`, {
+        searchTerm: `%${cleanedSearchTerm}%`,
       });
-    }
-
-    // Recherche par acteur
-    if (actorName && actorName.trim()) {
-      const trimmedActorName = actorName.trim();
-      const actorKeywords = trimmedActorName.split(" ");
-
-      // Recherche chaque mot dans la chaîne d'acteurs
-      actorKeywords.forEach((keyword, index) => {
-        filmsQuery.orWhere(
-          `LOWER(film.actors) LIKE LOWER(:actorKeyword${index})`,
-          {
-            [`actorKeyword${index}`]: `%${keyword}%`,
-          }
-        );
+    } else if (searchBy === Criteria.Actor) {
+      filmsQuery.where(`LOWER(film.actors) LIKE LOWER(:searchTerm)`, {
+        searchTerm: `%${cleanedSearchTerm}%`,
       });
-    }
-
-    // Recherche par réalisateur
-    if (director && director.trim()) {
-      const trimmedDirector = director.trim();
-      const directorKeywords = trimmedDirector.split(" ");
-
-      // Recherche chaque mot dans le champ réalisateur
-      directorKeywords.forEach((keyword, index) => {
-        filmsQuery.orWhere(
-          `LOWER(film.director) LIKE LOWER(:directorKeyword${index})`,
-          {
-            [`directorKeyword${index}`]: `%${keyword}%`,
-          }
-        );
+    } else if (searchBy === Criteria.Director) {
+      filmsQuery.where(`LOWER(film.director) LIKE LOWER(:searchTerm)`, {
+        searchTerm: `%${cleanedSearchTerm}%`,
       });
     }
 
