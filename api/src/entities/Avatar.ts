@@ -20,6 +20,6 @@ export class Avatar extends BaseEntity {
   @Column({ type: "varchar", length: 255 })
   image!: string;
 
-  @OneToMany(() => User, (user) => user.avatar_id)
-  users: User[];
+  @OneToMany(() => User, (user) => user.avatar)
+  users?: User[];
 }

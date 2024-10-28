@@ -18,6 +18,12 @@
 
   p {
     @apply font-montserrat;
+    @apply text-white;
+  }
+  form {
+    label {
+      @apply text-white font-bold;
+    }
   }
 }
 
@@ -28,5 +34,8 @@
 
   .btn-clear {
     @apply bg-transparent text-white border border-bloodRed rounded-lg px-6 py-2 font-bold transition-all hover:bg-bloodRed hover:bg-opacity-100 hover:scale-105;
+  }
+  .input-red {
+    @apply bg-transparent w-full text-white border border-bloodRed rounded-lg p-1 placeholder-white md:placeholder-opacity-0;
   }
 }
