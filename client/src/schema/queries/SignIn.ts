@@ -5,9 +5,6 @@ export const signIn = gql`
     getOneUser(body: $body) {
       username
       email
-      avatar {
-        id
-      }
     }
   }
 `;

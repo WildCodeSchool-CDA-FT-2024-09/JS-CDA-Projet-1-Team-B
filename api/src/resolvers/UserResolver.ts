@@ -42,7 +42,7 @@ export default class UserResolver {
       const user = await User.findOne({
         select: { username: true, email: true, password: true },
         where: { email: body.email },
-        relations: { avatar: true },
+        // relations: { avatar: true },
       });
 
       if (user === null) {

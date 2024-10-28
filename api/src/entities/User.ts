@@ -28,7 +28,7 @@ export class User extends BaseEntity {
   @Column({ type: "varchar" })
   password!: string;
 
-  @Field()
+  @Field(() => Avatar)
   @ManyToOne(() => Avatar, (avatar) => avatar.id)
   avatar!: Avatar;
 }
