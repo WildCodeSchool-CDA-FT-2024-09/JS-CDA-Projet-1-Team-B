@@ -1,10 +1,15 @@
 import { Outlet } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import { UserProvider } from "./contexts/UserContext";
 
 function App() {
   return (
-    <>
-      <Outlet />
-    </>
+    <UserProvider>
+      <>
+        <Navbar />
+        <Outlet />
+      </>
+    </UserProvider>
   );
 }
 
