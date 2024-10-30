@@ -7,7 +7,7 @@ import App from "./App.tsx";
 import "./index.css";
 
 const router = createBrowserRouter([
-  {
+  { path: "",
     element: <App />,
     children: [
       // Ajouter ici les objets pour le routing via l'outlet du App. {path:... , element:...}
