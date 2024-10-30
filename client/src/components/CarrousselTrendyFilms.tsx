@@ -10,8 +10,8 @@ export default function CarousselTrendyFilms() {
   return (
     <section className="carousel carousel-center p-10 bg-373D41 overflow-x-auto flex-wrap md:flex-nowrap">
       {data?.trendyFilms?.map((film, index) => (
-        <section className="-mr-6">
-          <section
+        <div className="-mr-6">
+          <div
             key={index}
             className="carousel-item relative hover:z-10 transition-transform duration-300"
             style={{
@@ -19,10 +19,10 @@ export default function CarousselTrendyFilms() {
               transition: "transform 0.3s ease-in-out",
             }}
           >
-            <section
+            <div
               className="absolute w-full h-full bg-bloodRed rounded-2xl"
               style={{ bottom: "-1.7rem", left: "-10px" }}
-            ></section>
+            ></div>
 
             <img
               src={
@@ -43,7 +43,7 @@ export default function CarousselTrendyFilms() {
               className="w-[26rem] h-[26rem] mt-5 object-cover rounded-2xl shadow-lg border-2 border-white relative transition-transform duration-300 hover:scale-110"
               alt="Visuel montrant l'affiche du film {film.title}"
             />
-          </section>
+          </div>
           <h2
             className="mt-4 w-full text-white text-center p-2 text-2xl
             font-semibold"
@@ -51,7 +51,7 @@ export default function CarousselTrendyFilms() {
           >
             {film.title || "Titre"}
           </h2>
-        </section>
+        </div>
       ))}
     </section>
   );
