@@ -2,13 +2,14 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { buildSchema } from "type-graphql";
 import { AppDataSource } from "./src/db/data-source";
+import { UserResolver } from "./src/resolvers/User";
 
 const { APP_PORT } = process.env;
 
 (async () => {
   await AppDataSource.initialize();
   const schema = await buildSchema({
-    resolvers: [xxxxx],
+    resolvers: [UserResolver],
   });
 
   const server = new ApolloServer({
