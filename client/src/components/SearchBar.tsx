@@ -1,17 +1,11 @@
-import { useEffect, useState } from "react";
-import { useSearchFilmsQuery } from "../generated/graphql-types";
-
-// Enumération pour les critères de recherche
-enum Criteria {
-  Title = "title",
-  Actor = "actor",
-  Director = "director",
-}
+import { useState } from "react";
+import { Criteria } from "../generated/graphql-types";
+import { useNavigate } from "react-router-dom";
 
 export default function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [submittedTerm, setSubmittedTerm] = useState("");
   const [criteria] = useState<Criteria>(Criteria.Title); // Modifie le critère de recherche avec Title Actor ou Director
+  const navigate = useNavigate();
 
   // Placeholder dynamique basé sur le critère sélectionné
   const getPlaceholder = () => {
@@ -27,18 +21,15 @@ export default function SearchBar() {
     }
   };
 
-  const { data, loading, error } = useSearchFilmsQuery({
-    variables: {
-      searchTerm: submittedTerm, // Terme soumis pour la requête
-      searchBy: criteria, // Critère de recherche sélectionné
-    },
-    skip: !submittedTerm, // Ignorer la requête tant qu'il n'y a pas de terme
-  });
-
   // Fonction pour déclencher la recherche
   const triggerSearch = () => {
     if (searchTerm.trim()) {
-      setSubmittedTerm(searchTerm.trim()); // Nettoie et soumet le terme de recherche
+      navigate({
+        pathname: "",
+        search: `?search=${encodeURIComponent(
+          searchTerm.trim()
+        )}&type=${criteria}`,
+      });
     }
   };
 
@@ -48,17 +39,6 @@ export default function SearchBar() {
       triggerSearch();
     }
   };
-
-  // Affiche les résultats dans la console
-  useEffect(() => {
-    if (data && !loading) {
-      // console.log("Films trouvés :", data.searchFilms);
-    }
-  }, [data, loading]);
-
-  if (error) {
-    console.error("Erreur lors de la recherche des films :", error);
-  }
 
   return (
     <div className="relative flex justify-center p-4">

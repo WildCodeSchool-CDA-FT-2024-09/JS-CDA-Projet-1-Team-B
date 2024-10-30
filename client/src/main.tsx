@@ -5,13 +5,17 @@ import { ApolloProvider } from "@apollo/client";
 import { client } from "./services/connection.ts";
 import App from "./App.tsx";
 import "./index.css";
+import HomePage from "./pages/HomePage.tsx";
 
 const router = createBrowserRouter([
   {
     path: "",
     element: <App />,
     children: [
-      // Ajouter ici les objets pour le routing via l'outlet du App. {path:... , element:...}
+      {
+        path: "/",
+        element: <HomePage />,
+      },
     ],
   },
 ]);
