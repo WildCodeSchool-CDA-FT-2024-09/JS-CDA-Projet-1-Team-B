@@ -3,7 +3,7 @@ import { Criteria } from "../generated/graphql-types";
 import { useNavigate } from "react-router-dom";
 
 export default function SearchBar() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [criteria] = useState<Criteria>(Criteria.Title); // Modifie le critère de recherche avec Title Actor ou Director
   const navigate = useNavigate();
 
@@ -23,7 +23,7 @@ export default function SearchBar() {
 
   // Fonction pour déclencher la recherche
   const triggerSearch = () => {
-    if (searchTerm.trim()) {
+    if (searchTerm.length > 0) {
       navigate({
         pathname: "",
         search: `?search=${encodeURIComponent(
