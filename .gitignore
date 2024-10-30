@@ -25,3 +25,6 @@ dist-ssr
 .env
 
 generated/
+
+src/db/db.sqlite
+src/data/*.json
