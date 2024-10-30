@@ -1,10 +1,11 @@
+import "reflect-metadata";
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { ObjectType, Field } from "type-graphql";
+import { ObjectType, Field, Int } from "type-graphql";
 
 @ObjectType()
 @Entity()
 export class Film extends BaseEntity {
-  @Field()
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -36,7 +37,7 @@ export class Film extends BaseEntity {
   @Column({ nullable: true })
   posterPath!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   originalLanguage!: string;
 
