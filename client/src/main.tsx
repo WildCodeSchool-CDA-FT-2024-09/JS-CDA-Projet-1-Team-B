@@ -4,12 +4,17 @@ import { createRoot } from "react-dom/client";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./services/connection.ts";
 import App from "./App.tsx";
+import PageFilmDetail from "./pages/PageFilmDetail.tsx";
 import "./index.css";
 
 const router = createBrowserRouter([
   {
     element: <App />,
     children: [
+      {
+        path: "film/:filmId",
+        element: <PageFilmDetail />,
+      },
       // Ajouter ici les objets pour le routing via l'outlet du App. {path:... , element:...}
     ],
   },
