@@ -1,19 +1,17 @@
 import { gql } from "@apollo/client";
 
 export const GET_FILM_BY_ID = gql`
-  query GetFilmById($id: Int!) {
-    getFilmById(id: $id) {
-      id
-      title
-      overview
-      releaseDate
-      popularity
-      voteAverage
-      voteCount
-      posterPath
-      originalLanguage
+  query GetFilmById($getFilmByIdId: Int!) {
+    getFilmById(id: $getFilmByIdId) {
       actors
       director
+      id
+      originalLanguage
+      overview
+      popularity
+      posterPath
+      releaseDate
+      title
     }
   }
 `;

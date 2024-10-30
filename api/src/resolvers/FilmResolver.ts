@@ -1,6 +1,6 @@
 import { Between } from "typeorm";
 import { Film } from "../entities/Film";
-import { Arg, Query, Resolver } from "type-graphql";
+import { Arg, Int, Query, Resolver } from "type-graphql";
 
 @Resolver(Film)
 export default class FilmResolver {
@@ -23,5 +23,11 @@ export default class FilmResolver {
       },
       take: limit,
     });
+  }
+
+  @Query(() => Film, { nullable: true })
+  async getFilmById(@Arg("id", () => Int) id: number): Promise<Film | null> {
+    const film = await Film.findOne({ where: { id } });
+    return film || null;
   }
 }
