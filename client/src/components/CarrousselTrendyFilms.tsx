@@ -44,13 +44,13 @@ export default function CarousselTrendyFilms() {
               alt="Visuel montrant l'affiche du film {film.title}"
             />
           </section>
-          <h1
+          <h2
             className="mt-4 w-full text-white text-center p-2 text-2xl
             font-semibold"
             style={{ textShadow: "1px 1px 2px #000" }}
           >
             {film.title || "Titre"}
-          </h1>
+          </h2>
         </section>
       ))}
     </section>
