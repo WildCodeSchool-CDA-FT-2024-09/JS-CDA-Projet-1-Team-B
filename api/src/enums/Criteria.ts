@@ -2,9 +2,9 @@ import { registerEnumType } from "type-graphql";
 
 // Enumération des critères de recherche
 export enum Criteria {
-  Title = "title",
-  Actor = "actor",
-  Director = "director",
+  title = "title",
+  actor = "actors",
+  director = "director",
 }
 
 // Enregistrement de l'énumération dans GraphQL

@@ -3,9 +3,9 @@ import { useSearchFilmsQuery } from "../generated/graphql-types";
 
 // Enumération pour les critères de recherche
 enum Criteria {
-  Title = "Title",
-  Actor = "Actor",
-  Director = "Director",
+  Title = "title",
+  Actor = "actor",
+  Director = "director",
 }
 
 export default function SearchBar() {

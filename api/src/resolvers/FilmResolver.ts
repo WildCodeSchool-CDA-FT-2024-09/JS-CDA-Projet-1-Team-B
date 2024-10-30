@@ -13,15 +13,6 @@ export class FilmResolver {
     // Nettoyage des espaces en début et fin de chaîne
     const cleanedSearchTerm = `%${searchTerm.trim()}%`;
 
-    // Appliquer la recherche en fonction du critère
-    if (searchBy === Criteria.Title) {
-      return await Film.find({ where: { title: Like(cleanedSearchTerm) } });
-    } else if (searchBy === Criteria.Actor) {
-      return await Film.find({ where: { actors: Like(cleanedSearchTerm) } });
-    } else if (searchBy === Criteria.Director) {
-      return await Film.find({ where: { director: Like(cleanedSearchTerm) } });
-    }
-
-    return [];
+    return await Film.find({ where: { [searchBy]: Like(cleanedSearchTerm) } });
   }
 }
