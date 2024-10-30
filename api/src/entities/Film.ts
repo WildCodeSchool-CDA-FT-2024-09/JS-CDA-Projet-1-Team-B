@@ -1,22 +1,19 @@
-import { Field, ObjectType } from "type-graphql";
+import "reflect-metadata";
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { ObjectType, Field, Int } from "type-graphql";
 
 @ObjectType()
 @Entity()
 export class Film extends BaseEntity {
-  @Field()
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id!: number;
-
-  @Field({ nullable: true }) // A voir si on garde
-  @Column({ nullable: true }) // A voir si on garde
-  tmdbId!: number;
 
   @Field()
   @Column()
   title!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ type: "text", nullable: true })
   overview!: string;
 
@@ -40,15 +37,15 @@ export class Film extends BaseEntity {
   @Column({ nullable: true })
   posterPath!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   originalLanguage!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   actors!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   director!: string;
 }

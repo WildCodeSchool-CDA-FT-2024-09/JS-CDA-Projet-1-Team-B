@@ -26,16 +26,15 @@ export enum Criteria {
 
 export type Film = {
   __typename?: 'Film';
-  actors: Scalars['String']['output'];
-  director: Scalars['String']['output'];
-  id: Scalars['Float']['output'];
-  originalLanguage: Scalars['String']['output'];
-  overview: Scalars['String']['output'];
+  actors?: Maybe<Scalars['String']['output']>;
+  director?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  originalLanguage?: Maybe<Scalars['String']['output']>;
+  overview?: Maybe<Scalars['String']['output']>;
   popularity: Scalars['Float']['output'];
   posterPath?: Maybe<Scalars['String']['output']>;
   releaseDate: Scalars['String']['output'];
   title: Scalars['String']['output'];
-  tmdbId?: Maybe<Scalars['Float']['output']>;
   voteAverage: Scalars['Float']['output'];
   voteCount: Scalars['Float']['output'];
 };
@@ -43,6 +42,7 @@ export type Film = {
 export type Query = {
   __typename?: 'Query';
   searchFilms: Array<Film>;
+  trendyFilms?: Maybe<Array<Film>>;
 };
 
 
@@ -51,15 +51,68 @@ export type QuerySearchFilmsArgs = {
   searchTerm: Scalars['String']['input'];
 };
 
+
+export type QueryTrendyFilmsArgs = {
+  limit?: InputMaybe<Scalars['Float']['input']>;
+};
+
+export type TrendyFilmsQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Float']['input']>;
+}>;
+
+
+export type TrendyFilmsQuery = { __typename?: 'Query', trendyFilms?: Array<{ __typename?: 'Film', posterPath?: string | null, title: string }> | null };
+
 export type SearchFilmsQueryVariables = Exact<{
   searchTerm: Scalars['String']['input'];
   searchBy: Criteria;
 }>;
 
 
-export type SearchFilmsQuery = { __typename?: 'Query', searchFilms: Array<{ __typename?: 'Film', id: number, title: string, releaseDate: string, popularity: number, posterPath?: string | null, voteAverage: number, voteCount: number, overview: string, originalLanguage: string, director: string, actors: string }> };
+export type SearchFilmsQuery = { __typename?: 'Query', searchFilms: Array<{ __typename?: 'Film', id: number, title: string, releaseDate: string, popularity: number, posterPath?: string | null, voteAverage: number, voteCount: number, overview?: string | null, originalLanguage?: string | null, director?: string | null, actors?: string | null }> };
 
 
+export const TrendyFilmsDocument = gql`
+    query TrendyFilms($limit: Float) {
+  trendyFilms(limit: $limit) {
+    posterPath
+    title
+  }
+}
+    `;
+
+/**
+ * __useTrendyFilmsQuery__
+ *
+ * To run a query within a React component, call `useTrendyFilmsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTrendyFilmsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTrendyFilmsQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useTrendyFilmsQuery(baseOptions?: Apollo.QueryHookOptions<TrendyFilmsQuery, TrendyFilmsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TrendyFilmsQuery, TrendyFilmsQueryVariables>(TrendyFilmsDocument, options);
+      }
+export function useTrendyFilmsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TrendyFilmsQuery, TrendyFilmsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TrendyFilmsQuery, TrendyFilmsQueryVariables>(TrendyFilmsDocument, options);
+        }
+export function useTrendyFilmsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<TrendyFilmsQuery, TrendyFilmsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<TrendyFilmsQuery, TrendyFilmsQueryVariables>(TrendyFilmsDocument, options);
+        }
+export type TrendyFilmsQueryHookResult = ReturnType<typeof useTrendyFilmsQuery>;
+export type TrendyFilmsLazyQueryHookResult = ReturnType<typeof useTrendyFilmsLazyQuery>;
+export type TrendyFilmsSuspenseQueryHookResult = ReturnType<typeof useTrendyFilmsSuspenseQuery>;
+export type TrendyFilmsQueryResult = Apollo.QueryResult<TrendyFilmsQuery, TrendyFilmsQueryVariables>;
 export const SearchFilmsDocument = gql`
     query SearchFilms($searchTerm: String!, $searchBy: Criteria!) {
   searchFilms(searchTerm: $searchTerm, searchBy: $searchBy) {

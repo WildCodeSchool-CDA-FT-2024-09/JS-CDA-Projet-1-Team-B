@@ -1,7 +1,8 @@
-// import CarousselTrendyFilms from "../components/CarrousselTrendyFilms";
+import CarousselTrendyFilms from "../components/CarrousselTrendyFilms";
 import { useLocation } from "react-router-dom";
 import { useSearchFilmsQuery } from "../generated/graphql-types";
 import { Criteria } from "../generated/graphql-types";
+import { Film } from "../generated/graphql-types";
 
 export default function HomePage() {
   const location = useLocation(); // Hook pour récupérer l'objet location
@@ -23,22 +24,21 @@ export default function HomePage() {
     },
     skip: !searchTerm,
   });
-
   return (
     <main>
       <h1 className="mt-6 ml-8 text-2xl text-bloodRed font-bold md:text-3xl">
         TENDANCES
       </h1>
-      {/* <section className="flex justify-center">
+      <section className="flex justify-center">
         <CarousselTrendyFilms />
-      </section> */}
+      </section>
       {loading ? (
         <p>Chargement...</p>
       ) : error ? (
         <p>Erreur : {error.message}</p>
       ) : data && data.searchFilms.length > 0 ? (
         <ul>
-          {data.searchFilms.map((film) => (
+          {data.searchFilms.map((film: Film) => (
             <li key={film.id}>{film.title}</li>
           ))}
         </ul>

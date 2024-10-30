@@ -4,6 +4,8 @@ import SearchBar from "./components/SearchBar";
 function App() {
   return (
     <>
+      <h1>Hello</h1>
+      <button className="btn-red">Click Me</button>
       <SearchBar />
       <Outlet />
     </>
