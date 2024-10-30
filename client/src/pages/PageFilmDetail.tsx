@@ -1,19 +1,21 @@
-import { useQuery } from "@apollo/client";
-import { GET_FILM_BY_ID } from "../schema/searchFilmById";
+import { useGetFilmByIdQuery } from "../generated/graphql-types";
 
 const FilmDetail = () => {
   // Hardcode the film ID
   const hardcodedFilmId = 1; // Replace this with the desired film ID
   const basePosterUrl = "https://image.tmdb.org/t/p/original/"; // Base URL for TMDB posters
 
-  const { loading, error, data } = useQuery(GET_FILM_BY_ID, {
+  const { loading, error, data } = useGetFilmByIdQuery({
     variables: { getFilmByIdId: hardcodedFilmId },
   });
 
+  // Handling loading and error states
   if (loading) return <p className="text-center text-lg">Loading...</p>;
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
 
-  const film = data.getFilmById;
+  const film = data?.getFilmById;
+
+  if (!film) return <p>Film not found</p>;
 
   return (
     <main className="flex flex-col items-center p-4 relative">
@@ -36,7 +38,6 @@ const FilmDetail = () => {
         </div>
       )}
       <div className="w-[70%] space-y-4 border border-bloodRed rounded p-6 mt-6 text-white text-left">
-        {" "}
         <h1 className="text-2xl font-bold mb-4">{film.title}</h1>
         <p>
           <strong className="font-semibold">Overview:</strong> {film.overview}
