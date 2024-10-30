@@ -1,5 +1,4 @@
 import { useTrendyFilmsQuery } from "../generated/graphql-types";
-// import "./CarrousselTrendyFilms.css";
 
 export default function CarousselTrendyFilms() {
   const { data, loading, error } = useTrendyFilmsQuery();
@@ -9,9 +8,9 @@ export default function CarousselTrendyFilms() {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div className="carousel carousel-center p-10 bg-373D41 overflow-x-auto">
+    <div className="carousel carousel-center p-10 bg-373D41 overflow-x-auto flex-wrap md:flex-nowrap">
       {data?.trendyFilms?.map((film, index) => (
-        <div>
+        <div className="-mr-6">
           <div
             key={index}
             className="carousel-item relative hover:z-10 transition-transform duration-300"
@@ -21,8 +20,8 @@ export default function CarousselTrendyFilms() {
             }}
           >
             <div
-              className="absolute w-full h-full bg-red-500 rounded-lg"
-              style={{ bottom: "-10px", left: "-10px" }}
+              className="absolute w-full h-full bg-bloodRed rounded-2xl"
+              style={{ bottom: "-1.7rem", left: "-10px" }}
             ></div>
 
             <img
@@ -41,12 +40,12 @@ export default function CarousselTrendyFilms() {
               onMouseLeave={(e) =>
                 (e.currentTarget.style.transform = "scale(1)")
               }
-              className="w-[26rem] h-[26rem] object-cover rounded-lg shadow-lg border-2 border-white relative transition-transform duration-300 hover:scale-110"
+              className="w-[26rem] h-[26rem] mt-5 object-cover rounded-2xl shadow-lg border-2 border-white relative transition-transform duration-300 hover:scale-110"
               alt="Film Poster"
             />
           </div>
           <div
-            className="mt-4 w-full text-white text-center p-2 text-2l font-semibold"
+            className="mt-4 w-full text-white text-center p-2 text-2xl font-semibold"
             style={{ textShadow: "1px 1px 2px #000" }}
           >
             {film.title || "Titre"}
