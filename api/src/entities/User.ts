@@ -1,3 +1,5 @@
+import "reflect-metadata";
+import { Field, ID, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Entity,
@@ -5,7 +7,6 @@ import {
   Column,
   ManyToOne,
 } from "typeorm";
-import { ObjectType, Field, ID } from "type-graphql";
 import { Avatar } from "./Avatar";
 
 @ObjectType()
@@ -16,7 +17,7 @@ export class User extends BaseEntity {
   id!: number;
 
   @Field({ nullable: false })
-  @Column({ type: "varchar", length: 10 })
+  @Column({ type: "varchar", length: 10, unique: true })
   username!: string;
 
   @Field({ nullable: false })
@@ -28,6 +29,6 @@ export class User extends BaseEntity {
   password!: string;
 
   @Field(() => Avatar)
-  @ManyToOne(() => Avatar, { nullable: false })
+  @ManyToOne(() => Avatar, (avatar) => avatar.id)
   avatar!: Avatar;
 }

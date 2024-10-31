@@ -54,6 +54,7 @@ async function resetDatabase() {
   try {
     // Supprimer les anciennes données de la table film
     await queryRunner.query("DELETE FROM film");
+    await queryRunner.query("DELETE FROM User");
 
     // Réinitialiser les identifiants auto-incrémentés
     await queryRunner.query('DELETE FROM sqlite_sequence WHERE name = "film"');

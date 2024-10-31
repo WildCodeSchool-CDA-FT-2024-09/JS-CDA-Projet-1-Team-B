@@ -1,6 +1,13 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { ObjectType, Field, ID } from "type-graphql";
-
+import "reflect-metadata";
+import { Field, ID, ObjectType } from "type-graphql";
+import {
+  BaseEntity,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+} from "typeorm";
+import { User } from "./User";
 @ObjectType()
 @Entity()
 export class Avatar extends BaseEntity {
@@ -8,7 +15,10 @@ export class Avatar extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Field()
+  @Field({ nullable: false })
   @Column({ type: "varchar", length: 255 })
   image!: string;
+
+  @OneToMany(() => User, (user) => user.avatar)
+  users?: User[];
 }
