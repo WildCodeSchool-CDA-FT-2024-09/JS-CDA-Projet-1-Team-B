@@ -11,7 +11,6 @@ const dataSourceOptions: DataSourceOptions = {
   database: `${BACKEND_FILE}`,
   entities: [User, Avatar, Film],
   synchronize: true,
-  // logging: true,
 };
 
 export const AppDataSource = new DataSource(dataSourceOptions);
