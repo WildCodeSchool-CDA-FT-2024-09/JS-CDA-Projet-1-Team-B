@@ -1,5 +1,6 @@
 export interface Film {
   id: number;
+  tmdb_id: number;
   title: string;
   original_title: string;
   overview: string;
@@ -11,6 +12,7 @@ export interface Film {
   backdrop_path: string | null;
   original_language: string;
   adult: boolean;
+  genre_ids: number[];
 }
 
 export interface CastMember {
@@ -34,4 +36,9 @@ export interface FilmCredits {
   filmId: number;
   cast: CastMember[];
   crew: CrewMember[];
+}
+
+export interface Genre {
+  id: number;
+  name: string;
 }
