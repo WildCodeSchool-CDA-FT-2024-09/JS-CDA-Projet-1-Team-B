@@ -11,6 +11,10 @@ node_modules
 dist
 dist-ssr
 *.local
+./src/db/*.sqlite
+./src/data/*.json
+src/db/db.sqlite
+src/data/*.json
 
 # Editor directories and files
 .vscode/*
@@ -23,6 +27,3 @@ dist-ssr
 *.sln
 *.sw?
 .env
-
-src/db/db.sqlite
-src/data/*.json
