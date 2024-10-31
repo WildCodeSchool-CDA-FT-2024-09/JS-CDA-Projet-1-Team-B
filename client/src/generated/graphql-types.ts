@@ -35,6 +35,7 @@ export type Film = {
   posterPath?: Maybe<Scalars['String']['output']>;
   releaseDate: Scalars['String']['output'];
   title: Scalars['String']['output'];
+  tmdbId?: Maybe<Scalars['Float']['output']>;
   voteAverage: Scalars['Float']['output'];
   voteCount: Scalars['Float']['output'];
 };
