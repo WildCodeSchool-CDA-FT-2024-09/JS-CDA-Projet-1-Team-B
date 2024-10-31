@@ -3,7 +3,7 @@ import { useGetFilmByIdQuery } from "../generated/graphql-types";
 
 const FilmDetail = () => {
   // Hardcode the film ID
-  const hardcodedFilmId = 14; // Replace this with the desired film ID
+  const hardcodedFilmId = 45; // Replace this with the desired film ID
   const basePosterUrl = "https://image.tmdb.org/t/p/original/"; // Base URL for TMDB posters
   const { loading, error, data } = useGetFilmByIdQuery({
     variables: { getFilmByIdId: hardcodedFilmId },
@@ -57,10 +57,6 @@ const FilmDetail = () => {
           <p className="mb-4">
             <strong className="font-semibold mr-2">Réalisateur:</strong>{" "}
             {film.director}
-          </p>
-          <p className="mb-4">
-            <strong className="font-semibold mr-2">Popularité:</strong>
-            {film.popularity}
           </p>
           <p className="mb-4">
             <strong className="font-semibold mr-2">Langue originale:</strong>
