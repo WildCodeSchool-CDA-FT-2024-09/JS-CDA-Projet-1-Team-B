@@ -5,6 +5,7 @@ import { ApolloProvider } from "@apollo/client";
 import { client } from "./services/connection.ts";
 import "./index.css";
 import App from "./App.tsx";
+import HomePage from "./pages/HomePage.tsx";
 import SignUp from "./components/SignUp.tsx";
 import SignIn from "./components/SignIn.tsx";
 
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
     path: "",
     element: <App />,
     children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
       { path: "inscription", element: <SignUp /> },
       { path: "connexion", element: <SignIn /> },
     ],

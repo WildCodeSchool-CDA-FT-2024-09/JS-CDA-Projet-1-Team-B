@@ -1,7 +1,8 @@
 import "reflect-metadata";
-import { Field, ID, ObjectType } from "type-graphql";
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { ObjectType, Field, ID } from "type-graphql";
 
+@ObjectType()
 @ObjectType()
 @Entity()
 export class Film extends BaseEntity {
@@ -13,7 +14,7 @@ export class Film extends BaseEntity {
   @Column()
   title!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ type: "text", nullable: true })
   overview!: string;
 
@@ -33,19 +34,19 @@ export class Film extends BaseEntity {
   @Column()
   voteCount!: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   posterPath!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   originalLanguage!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   actors!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   director!: string;
 }
