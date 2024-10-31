@@ -8,7 +8,7 @@ export default function LastFilms() {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <section className="flex mt-10 justify-center md:ml-20  w-full flex-wrap md:flex-nowrap md:ml-20 md:justify-between">
+    <section className="flex mt-10 justify-center w-full flex-wrap md:flex-nowrap md:ml-20 md:justify-between">
       {data?.lastFilms?.map((film) => (
         <div key={film.id} className="flex-col ">
           <img
@@ -18,7 +18,7 @@ export default function LastFilms() {
                 : "https://www.pexels.com/fr-fr/photo/bande-de-film-en-spirale-65128/"
             }
             className="w-64 h-64 object-cover rounded-2xl border-white border"
-            alt="Visuel montrant l'affiche du film {film.title}"
+            alt={`Visuel montrant l'affiche du film ${film.title}`}
           />
           <h2
             className="text-white text-center p-2 text-2xl font-semibold"

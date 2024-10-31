@@ -12,7 +12,6 @@ export default function CarousselTrendyFilms() {
       {data?.trendyFilms?.map((film) => (
         <div key={film.id} className="-mr-6">
           <div
-            
             className="carousel-item relative hover:z-10 transition-transform duration-300"
             style={{
               transform: "scale(0.9)",
@@ -41,7 +40,7 @@ export default function CarousselTrendyFilms() {
                 (e.currentTarget.style.transform = "scale(1)")
               }
               className="w-[26rem] h-[26rem] mt-5 object-cover rounded-2xl shadow-lg border-2 border-white relative transition-transform duration-300 hover:scale-110"
-              alt="Visuel montrant l'affiche du film {film.title}"
+              alt={`Visuel montrant l'affiche du film ${film.title}`}
             />
           </div>
           <h2
