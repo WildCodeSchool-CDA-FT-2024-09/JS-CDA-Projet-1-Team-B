@@ -9,6 +9,10 @@ export class Film extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  tmdbId!: number;
+
   @Field()
   @Column()
   title!: string;
