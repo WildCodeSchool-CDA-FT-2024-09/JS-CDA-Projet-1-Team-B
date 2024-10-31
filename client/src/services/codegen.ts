@@ -1,6 +1,6 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
 
-// const { VITE_GRAPHQL_API_URL } = import.meta.env;
+//const { VITE_GRAPHQL_API_URL } = import.meta.env;
 
 export const config: CodegenConfig = {
   schema: "http://localhost:4000/",
