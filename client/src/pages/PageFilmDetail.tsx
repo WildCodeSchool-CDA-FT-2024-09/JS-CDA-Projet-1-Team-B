@@ -43,7 +43,7 @@ const FilmDetail = () => {
         </header>
         <section>
           <p className="mb-4">
-            <strong className="font-semibold mr-2">Synopsis:</strong>{" "}
+            <strong className="font-semibold mr-2">Synopsis:</strong>
             {film.overview}
           </p>
           <p className="mb-4">
@@ -51,11 +51,11 @@ const FilmDetail = () => {
             {film.releaseDate}
           </p>
           <p className="mb-4">
-            <strong className="font-semibold mr-2">Casting:</strong>{" "}
+            <strong className="font-semibold mr-2">Casting:</strong>
             {film.actors}
           </p>
           <p className="mb-4">
-            <strong className="font-semibold mr-2">Réalisateur:</strong>{" "}
+            <strong className="font-semibold mr-2">Réalisateur:</strong>
             {film.director}
           </p>
           <p className="mb-4">

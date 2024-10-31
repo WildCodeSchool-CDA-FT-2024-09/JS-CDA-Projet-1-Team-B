@@ -19,7 +19,7 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/film/:id",
+        path: "/films/:id",
         element: <FilmDetail />,
       },
       // Ajouter ici les objets pour le routing via l'outlet du App. {path:... , element:...}
