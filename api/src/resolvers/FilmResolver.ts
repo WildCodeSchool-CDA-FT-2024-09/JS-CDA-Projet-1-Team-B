@@ -1,6 +1,7 @@
-import { Between } from "typeorm";
+import { Between, Like } from "typeorm";
 import { Film } from "../entities/Film";
 import { Arg, Query, Resolver } from "type-graphql";
+import { Criteria } from "../enums/Criteria";
 
 @Resolver(Film)
 export default class FilmResolver {
@@ -23,5 +24,16 @@ export default class FilmResolver {
       },
       take: limit,
     });
+  }
+
+  @Query(() => [Film])
+  async searchFilms(
+    @Arg("searchTerm", () => String) searchTerm: string,
+    @Arg("searchBy", () => Criteria) searchBy: Criteria
+  ): Promise<Film[]> {
+    // Nettoyage des espaces en début et fin de chaîne
+    const cleanedSearchTerm = `%${searchTerm.trim()}%`;
+
+    return await Film.find({ where: { [searchBy]: Like(cleanedSearchTerm) } });
   }
 }

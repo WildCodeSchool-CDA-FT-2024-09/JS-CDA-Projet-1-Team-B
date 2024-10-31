@@ -17,6 +17,13 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+/** Les critères de recherche... */
+export enum Criteria {
+  Actor = 'actor',
+  Director = 'director',
+  Title = 'title'
+}
+
 export type Film = {
   __typename?: 'Film';
   actors?: Maybe<Scalars['String']['output']>;
@@ -34,14 +41,14 @@ export type Film = {
 
 export type Query = {
   __typename?: 'Query';
-  film?: Maybe<Film>;
-  films: Array<Film>;
+  searchFilms: Array<Film>;
   trendyFilms?: Maybe<Array<Film>>;
 };
 
 
-export type QueryFilmArgs = {
-  id: Scalars['Float']['input'];
+export type QuerySearchFilmsArgs = {
+  searchBy: Criteria;
+  searchTerm: Scalars['String']['input'];
 };
 
 
@@ -55,6 +62,14 @@ export type TrendyFilmsQueryVariables = Exact<{
 
 
 export type TrendyFilmsQuery = { __typename?: 'Query', trendyFilms?: Array<{ __typename?: 'Film', posterPath?: string | null, title: string }> | null };
+
+export type SearchFilmsQueryVariables = Exact<{
+  searchTerm: Scalars['String']['input'];
+  searchBy: Criteria;
+}>;
+
+
+export type SearchFilmsQuery = { __typename?: 'Query', searchFilms: Array<{ __typename?: 'Film', id: number, title: string, releaseDate: string, popularity: number, posterPath?: string | null, voteAverage: number, voteCount: number, overview?: string | null, originalLanguage?: string | null, director?: string | null, actors?: string | null }> };
 
 
 export const TrendyFilmsDocument = gql`
@@ -98,3 +113,54 @@ export type TrendyFilmsQueryHookResult = ReturnType<typeof useTrendyFilmsQuery>;
 export type TrendyFilmsLazyQueryHookResult = ReturnType<typeof useTrendyFilmsLazyQuery>;
 export type TrendyFilmsSuspenseQueryHookResult = ReturnType<typeof useTrendyFilmsSuspenseQuery>;
 export type TrendyFilmsQueryResult = Apollo.QueryResult<TrendyFilmsQuery, TrendyFilmsQueryVariables>;
+export const SearchFilmsDocument = gql`
+    query SearchFilms($searchTerm: String!, $searchBy: Criteria!) {
+  searchFilms(searchTerm: $searchTerm, searchBy: $searchBy) {
+    id
+    title
+    releaseDate
+    popularity
+    posterPath
+    voteAverage
+    voteCount
+    overview
+    originalLanguage
+    director
+    actors
+  }
+}
+    `;
+
+/**
+ * __useSearchFilmsQuery__
+ *
+ * To run a query within a React component, call `useSearchFilmsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchFilmsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchFilmsQuery({
+ *   variables: {
+ *      searchTerm: // value for 'searchTerm'
+ *      searchBy: // value for 'searchBy'
+ *   },
+ * });
+ */
+export function useSearchFilmsQuery(baseOptions: Apollo.QueryHookOptions<SearchFilmsQuery, SearchFilmsQueryVariables> & ({ variables: SearchFilmsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchFilmsQuery, SearchFilmsQueryVariables>(SearchFilmsDocument, options);
+      }
+export function useSearchFilmsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchFilmsQuery, SearchFilmsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchFilmsQuery, SearchFilmsQueryVariables>(SearchFilmsDocument, options);
+        }
+export function useSearchFilmsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<SearchFilmsQuery, SearchFilmsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<SearchFilmsQuery, SearchFilmsQueryVariables>(SearchFilmsDocument, options);
+        }
+export type SearchFilmsQueryHookResult = ReturnType<typeof useSearchFilmsQuery>;
+export type SearchFilmsLazyQueryHookResult = ReturnType<typeof useSearchFilmsLazyQuery>;
+export type SearchFilmsSuspenseQueryHookResult = ReturnType<typeof useSearchFilmsSuspenseQuery>;
+export type SearchFilmsQueryResult = Apollo.QueryResult<SearchFilmsQuery, SearchFilmsQueryVariables>;
