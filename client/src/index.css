@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  body {
+    @apply bg-gradient-to-b from-greyBlack to-greyDark min-h-screen;
+  }
+
   h1,
   h2,
   h3,
@@ -14,20 +18,24 @@
 
   p {
     @apply font-montserrat;
+    @apply text-white;
   }
-}
-
-body {
-  @apply bg-gradient-to-b from-greyBlack to-greyDark min-h-screen;
+  form {
+    label {
+      @apply text-white font-bold;
+    }
+  }
 }
 
 @layer components {
   .btn-red {
     @apply bg-bloodRed bg-opacity-70 hover:bg-opacity-100 text-white rounded-lg px-6 py-2 font-bold transition-all hover:scale-105;
   }
-}
-@layer components {
+
   .btn-clear {
     @apply bg-transparent text-white border border-bloodRed rounded-lg px-6 py-2 font-bold transition-all hover:bg-bloodRed hover:bg-opacity-100 hover:scale-105;
+  }
+  .input-red {
+    @apply bg-transparent w-full text-white border border-bloodRed rounded-lg p-1 placeholder-white md:placeholder-opacity-0;
   }
 }

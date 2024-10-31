@@ -17,6 +17,10 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type AvatarInput = {
+  image: Scalars['String']['input'];
+};
+
 /** Les critères de recherche... */
 export enum Criteria {
   Actor = 'actor',
@@ -28,7 +32,7 @@ export type Film = {
   __typename?: 'Film';
   actors?: Maybe<Scalars['String']['output']>;
   director?: Maybe<Scalars['String']['output']>;
-  id: Scalars['Int']['output'];
+  id: Scalars['ID']['output'];
   originalLanguage?: Maybe<Scalars['String']['output']>;
   overview?: Maybe<Scalars['String']['output']>;
   popularity: Scalars['Float']['output'];
@@ -40,10 +44,44 @@ export type Film = {
   voteCount: Scalars['Float']['output'];
 };
 
+export type GetUserInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+export type GetUserOutput = {
+  __typename?: 'GetUserOutput';
+  email: Scalars['String']['output'];
+  username: Scalars['String']['output'];
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  createAvatar: Scalars['Float']['output'];
+  signUp: Scalars['String']['output'];
+};
+
+
+export type MutationCreateAvatarArgs = {
+  body: AvatarInput;
+};
+
+
+export type MutationSignUpArgs = {
+  body: NewUserInput;
+};
+
+export type NewUserInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  username: Scalars['String']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
   getFilmById?: Maybe<Film>;
   searchFilms: Array<Film>;
+  signIn: GetUserOutput;
   trendyFilms?: Maybe<Array<Film>>;
 };
 
@@ -59,9 +97,28 @@ export type QuerySearchFilmsArgs = {
 };
 
 
+export type QuerySignInArgs = {
+  body: GetUserInput;
+};
+
+
 export type QueryTrendyFilmsArgs = {
   limit?: InputMaybe<Scalars['Float']['input']>;
 };
+
+export type SignUpMutationVariables = Exact<{
+  body: NewUserInput;
+}>;
+
+
+export type SignUpMutation = { __typename?: 'Mutation', signUp: string };
+
+export type SignInQueryVariables = Exact<{
+  body: GetUserInput;
+}>;
+
+
+export type SignInQuery = { __typename?: 'Query', signIn: { __typename?: 'GetUserOutput', email: string, username: string } };
 
 export type TrendyFilmsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Float']['input']>;
@@ -76,7 +133,7 @@ export type SearchFilmsQueryVariables = Exact<{
 }>;
 
 
-export type SearchFilmsQuery = { __typename?: 'Query', searchFilms: Array<{ __typename?: 'Film', id: number, title: string, releaseDate: string, popularity: number, posterPath?: string | null, voteAverage: number, voteCount: number, overview?: string | null, originalLanguage?: string | null, director?: string | null, actors?: string | null }> };
+export type SearchFilmsQuery = { __typename?: 'Query', searchFilms: Array<{ __typename?: 'Film', id: string, title: string, releaseDate: string, popularity: number, posterPath?: string | null, voteAverage: number, voteCount: number, overview?: string | null, originalLanguage?: string | null, director?: string | null, actors?: string | null }> };
 
 export type GetFilmByIdQueryVariables = Exact<{
   getFilmByIdId: Scalars['Int']['input'];
@@ -86,6 +143,78 @@ export type GetFilmByIdQueryVariables = Exact<{
 export type GetFilmByIdQuery = { __typename?: 'Query', getFilmById?: { __typename?: 'Film', actors?: string | null, director?: string | null, id: number, originalLanguage?: string | null, overview?: string | null, popularity: number, posterPath?: string | null, releaseDate: string, title: string } | null };
 
 
+export const SignUpDocument = gql`
+    mutation SignUp($body: NewUserInput!) {
+  signUp(body: $body)
+}
+    `;
+export type SignUpMutationFn = Apollo.MutationFunction<SignUpMutation, SignUpMutationVariables>;
+
+/**
+ * __useSignUpMutation__
+ *
+ * To run a mutation, you first call `useSignUpMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignUpMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signUpMutation, { data, loading, error }] = useSignUpMutation({
+ *   variables: {
+ *      body: // value for 'body'
+ *   },
+ * });
+ */
+export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignUpMutation, SignUpMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument, options);
+      }
+export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
+export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
+export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const SignInDocument = gql`
+    query SignIn($body: GetUserInput!) {
+  signIn(body: $body) {
+    email
+    username
+  }
+}
+    `;
+
+/**
+ * __useSignInQuery__
+ *
+ * To run a query within a React component, call `useSignInQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSignInQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSignInQuery({
+ *   variables: {
+ *      body: // value for 'body'
+ *   },
+ * });
+ */
+export function useSignInQuery(baseOptions: Apollo.QueryHookOptions<SignInQuery, SignInQueryVariables> & ({ variables: SignInQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SignInQuery, SignInQueryVariables>(SignInDocument, options);
+      }
+export function useSignInLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SignInQuery, SignInQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SignInQuery, SignInQueryVariables>(SignInDocument, options);
+        }
+export function useSignInSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<SignInQuery, SignInQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<SignInQuery, SignInQueryVariables>(SignInDocument, options);
+        }
+export type SignInQueryHookResult = ReturnType<typeof useSignInQuery>;
+export type SignInLazyQueryHookResult = ReturnType<typeof useSignInLazyQuery>;
+export type SignInSuspenseQueryHookResult = ReturnType<typeof useSignInSuspenseQuery>;
+export type SignInQueryResult = Apollo.QueryResult<SignInQuery, SignInQueryVariables>;
 export const TrendyFilmsDocument = gql`
     query TrendyFilms($limit: Float) {
   trendyFilms(limit: $limit) {
