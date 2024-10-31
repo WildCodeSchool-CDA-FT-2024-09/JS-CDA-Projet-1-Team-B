@@ -9,10 +9,10 @@ export default function CarousselTrendyFilms() {
 
   return (
     <section className="carousel carousel-center p-10 bg-373D41 overflow-x-auto flex-wrap md:flex-nowrap">
-      {data?.trendyFilms?.map((film, index) => (
-        <div className="-mr-6">
+      {data?.trendyFilms?.map((film) => (
+        <div key={film.id} className="-mr-6">
           <div
-            key={index}
+            
             className="carousel-item relative hover:z-10 transition-transform duration-300"
             style={{
               transform: "scale(0.9)",

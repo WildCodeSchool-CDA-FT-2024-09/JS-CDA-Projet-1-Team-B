@@ -24,4 +24,16 @@ export default class FilmResolver {
       take: limit,
     });
   }
+
+  @Query(() => [Film], { nullable: true })
+  async lastFilms(
+    @Arg("limit", { nullable: true, defaultValue: 4 }) limit: number
+  ): Promise<Film[]> {
+    return Film.find({
+      order: {
+        releaseDate: "DESC",
+      },
+      take: limit,
+    });
+  }
 }
