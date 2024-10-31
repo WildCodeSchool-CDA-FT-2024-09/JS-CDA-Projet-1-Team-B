@@ -3,12 +3,15 @@ import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 
 @ObjectType()
-@ObjectType()
 @Entity()
 export class Film extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   id!: number;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  tmdbId!: number;
 
   @Field()
   @Column()

@@ -1,10 +1,10 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
 import "dotenv/config";
 
-// const { VITE_GRAPHQL_API_URL } = process.env;
+const { VITE_GRAPHQL_API_URL } = process.env;
 
 const config: CodegenConfig = {
-  schema: "http://localhost:8000",
+  schema: VITE_GRAPHQL_API_URL,
   documents: ["src/schema/**/*.ts"],
   generates: {
     "src/generated/graphql-types.ts": {
