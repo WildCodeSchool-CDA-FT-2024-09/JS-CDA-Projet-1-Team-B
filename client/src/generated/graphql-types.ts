@@ -42,7 +42,13 @@ export type Film = {
 export type Query = {
   __typename?: 'Query';
   lastFilms?: Maybe<Array<Film>>;
+  searchFilms: Array<Film>;
   trendyFilms?: Maybe<Array<Film>>;
+};
+
+
+export type QueryLastFilmsArgs = {
+  limit?: InputMaybe<Scalars['Float']['input']>;
 };
 
 

@@ -8,16 +8,16 @@ export default function LastFilms() {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <section className="flex mt-10 ml-10 justify-around w-full ">
+    <section className="flex mt-10 justify-center md:ml-20  w-full flex-wrap md:flex-nowrap md:ml-20 md:justify-between">
       {data?.lastFilms?.map((film) => (
-        <div key={film.id} className="flex-col  ">
+        <div key={film.id} className="flex-col ">
           <img
             src={
               film.posterPath
                 ? `${basePosterUrl}${film.posterPath}`
                 : "https://www.pexels.com/fr-fr/photo/bande-de-film-en-spirale-65128/"
             }
-            className="w-64 h-64 object-cover"
+            className="w-64 h-64 object-cover rounded-2xl border-white border"
             alt="Visuel montrant l'affiche du film {film.title}"
           />
           <h2

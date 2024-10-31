@@ -28,14 +28,14 @@ export default function HomePage() {
 
   return (
     <main className="block">
-      <h1 className="mt-6 ml-8 text-2xl text-bloodRed font-bold md:text-3xl">
+      <h1 className="mt-10 flex justify-center text-3xl text-bloodRed font-bold md:text-3xl md:ml-10 md:mt-6">
         TENDANCES
       </h1>
       <section className="flex justify-center">
         <CarousselTrendyFilms />
       </section>
       <h2
-        className="text-white mt-6 ml-10  p-2 text-2xl font-semibold">
+        className="text-white mt-6 flex justify-center md:ml-20  p-2 text-2xl font-semibold">
         Les derniers arrivés
       </h2>
       <section className="flex justify-center">
