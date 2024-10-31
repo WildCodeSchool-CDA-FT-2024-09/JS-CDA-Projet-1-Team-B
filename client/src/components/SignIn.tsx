@@ -1,25 +1,33 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema, Schema } from "../types/SignIn.types";
+import { useGetOneUserLazyQuery } from "../generated/graphql-types";
 
 export default function SignIn() {
+  const navigate = useNavigate();
+  const [signIn, { loading, data, error }] = useGetOneUserLazyQuery();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Schema>({
     resolver: zodResolver(schema),
-    defaultValues: { email: "", password: "" },
   });
 
-  const onSubmit = async (data: Schema) => {
-    console.info("data:", data);
-    console.info("erreurs:", errors); // TODO
+  const onSubmit = async (formData: Schema) => {
+    signIn({
+      variables: { body: formData },
+    });
   };
+
+  if (data) {
+    setTimeout(() => navigate("/"), 3000); // TODO Passez la réponse via le context(Steph) et rediriger vers accueil
+  }
+
   return (
     <>
-      <h2 className="text-bloodRed uppercase text-center text-xl font-semibold pt-2">
+      <h2 className="text-bloodRed uppercase text-center text-xl font-semibold tracking-wide pt-2">
         Se connecter
       </h2>
       <form
@@ -54,11 +62,7 @@ export default function SignIn() {
             placeholder="Mot de passe"
             autoComplete="true"
             required
-            {...register("password", {
-              required: "Mot de passe obligatoire.",
-              minLength: { value: 12, message: "Minimum 12 caractères" },
-              maxLength: { value: 50, message: "Maximum 50 caractères" },
-            })}
+            {...register("password")}
           />
         </section>
         {errors.password?.message && (
@@ -76,9 +80,21 @@ export default function SignIn() {
               S'inscrire
             </Link>
           </span>
-          <button type="submit" className="btn-red">
+          <button
+            type="submit"
+            className={loading ? `btn-red bg-gray-500` : `btn-red`}
+            disabled={loading ? true : false}
+          >
             Connexion
           </button>
+          {error && (
+            <span className="text-bloodRed pt-2 font-bold">
+              {error.message}
+            </span>
+          )}
+          {data && (
+            <span className="text-green-500 pt-2 font-bold">{`Bienvenue ${data?.getOneUser?.username} ! Redirection en cours...`}</span>
+          )}
         </div>
       </form>
     </>

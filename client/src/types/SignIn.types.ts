@@ -3,6 +3,7 @@ import * as z from "zod";
 export const schema = z.object({
   email: z
     .string()
+    .trim()
     .email({ message: "E-mail non conforme" })
     .regex(
       /^([\w-]+(?:\.[\w-]+)*[^.])@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
@@ -11,6 +12,7 @@ export const schema = z.object({
     .max(255, { message: "Maximum 255 caractères." }),
   password: z
     .string()
+    .trim()
     .regex(/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])([^\s]){1,}$/, {
       message:
         "Doit comporter une majuscule, une minuscle, un chiffre et aucun espace.",

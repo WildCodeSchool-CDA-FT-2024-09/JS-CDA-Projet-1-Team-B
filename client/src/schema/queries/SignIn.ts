@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
-export const signIn = gql`
-  query GetOneUser($body: GetUserInput!) {
+export const SIGN_IN = gql`
+  query getOneUser($body: GetUserInput!) {
     getOneUser(body: $body) {
       username
       email
