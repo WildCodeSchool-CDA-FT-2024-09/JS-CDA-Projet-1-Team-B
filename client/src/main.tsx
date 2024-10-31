@@ -5,6 +5,8 @@ import { ApolloProvider } from "@apollo/client";
 import { client } from "./services/connection.ts";
 import App from "./App.tsx";
 import HomePage from "./pages/HomePage.tsx";
+import FilmDetail from "./pages/PageFilmDetail.tsx";
+
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -15,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+      },
+      {
+        path: "/films/:id",
+        element: <FilmDetail />,
       },
       // Ajouter ici les objets pour le routing via l'outlet du App. {path:... , element:...}
     ],
