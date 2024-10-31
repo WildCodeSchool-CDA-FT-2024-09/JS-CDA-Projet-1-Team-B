@@ -1,8 +1,9 @@
+import StarRating from "../components/NoteGlobale";
 import { useGetFilmByIdQuery } from "../generated/graphql-types";
 
 const FilmDetail = () => {
   // Hardcode the film ID
-  const hardcodedFilmId = 1; // Replace this with the desired film ID
+  const hardcodedFilmId = 14; // Replace this with the desired film ID
   const basePosterUrl = "https://image.tmdb.org/t/p/original/"; // Base URL for TMDB posters
   const { loading, error, data } = useGetFilmByIdQuery({
     variables: { getFilmByIdId: hardcodedFilmId },
@@ -42,29 +43,35 @@ const FilmDetail = () => {
         </header>
         <section>
           <p className="mb-4">
-            <strong className="font-semibold mr-2">Overview:</strong>{" "}
+            <strong className="font-semibold mr-2">Synopsis:</strong>{" "}
             {film.overview}
           </p>
           <p className="mb-4">
-            <strong className="font-semibold mr-2">Release Date:</strong>
+            <strong className="font-semibold mr-2">Date de sortie:</strong>
             {film.releaseDate}
           </p>
           <p className="mb-4">
-            <strong className="font-semibold mr-2">Actors:</strong>{" "}
+            <strong className="font-semibold mr-2">Casting:</strong>{" "}
             {film.actors}
           </p>
           <p className="mb-4">
-            <strong className="font-semibold mr-2">Director:</strong>{" "}
+            <strong className="font-semibold mr-2">Réalisateur:</strong>{" "}
             {film.director}
           </p>
           <p className="mb-4">
-            <strong className="font-semibold mr-2">Popularity:</strong>
+            <strong className="font-semibold mr-2">Popularité:</strong>
             {film.popularity}
           </p>
           <p className="mb-4">
-            <strong className="font-semibold mr-2">Original Language:</strong>
+            <strong className="font-semibold mr-2">Langue originale:</strong>
             {film.originalLanguage}
           </p>
+        </section>
+        <section className="w-[70%] mt-6">
+          <p className="text-lg font-semibold text-white mb-2">
+            Note Globale :
+          </p>
+          <StarRating popularity={film.popularity} />
         </section>
       </article>
     </main>
