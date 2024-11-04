@@ -40,12 +40,14 @@ export default function HomePage() {
       ) : data && data.searchFilms.length > 0 ? (
         <ul>
           {data.searchFilms.map((film: Film) => (
-            <li key={film.id}>{film.title}</li>
+            <li className="text-white" key={film.id}>
+              {film.title}
+            </li>
           ))}
         </ul>
-      ) : (
+      ) : searchTerm ? (
         <p>Aucun film trouvé</p>
-      )}
+      ) : null}
     </main>
   );
 }

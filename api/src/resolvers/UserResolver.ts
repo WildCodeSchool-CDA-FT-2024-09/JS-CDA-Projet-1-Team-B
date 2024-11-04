@@ -1,47 +1,84 @@
 import { GraphQLError } from "graphql";
 import * as bcrypt from "bcrypt";
-import { IsEmail, IsString, MaxLength } from "class-validator";
-import { Arg, Field, InputType, Mutation, Query, Resolver } from "type-graphql";
+import {
+  IsEmail,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+  NotContains,
+} from "class-validator";
+import {
+  Arg,
+  Field,
+  InputType,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
+} from "type-graphql";
 import { User } from "../entities/User";
 import { Avatar } from "../entities/Avatar";
-import { schema } from "../types/User.types";
 
 @InputType()
 class NewUserInput implements Partial<User> {
   @Field({ nullable: false })
   @IsString()
-  @MaxLength(10)
+  @MinLength(3, { message: "Minimum 3 caractères" })
+  @MaxLength(10, { message: "Maximum 10 caractères" })
+  @Matches(/^[a-zA-Z0-9]*$/)
+  @NotContains(" ", { message: "Merci de ne pas inclure d'espace." })
   username!: string;
 
   @Field({ nullable: false })
   @IsString()
   @IsEmail()
+  @NotContains(" ", { message: "Merci de ne pas inclure d'espace." })
   email!: string;
 
   @Field({ nullable: false })
   @IsString()
+  @MinLength(12, { message: "Minimum 12 caractères" })
+  @MaxLength(50, { message: "Maximum 50 caractères" })
+  @Matches(/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])([^\s]){1,}$/, {
+    message:
+      "Doit comporter une majuscule, une minuscule, un chiffre et aucun espace.",
+  })
   password!: string;
-
-  @Field({ nullable: false })
-  @IsString()
-  confirmPassword!: string;
 }
 
 @InputType()
 class GetUserInput {
-  @Field()
+  @Field({ nullable: false })
   @IsString()
+  @IsEmail()
+  @NotContains(" ", { message: "Merci de ne pas inclure d'espace." })
   email!: string;
 
   @Field({ nullable: false })
   @IsString()
+  @NotContains(" ", { message: "Merci de ne pas inclure d'espace." })
   password!: string;
+}
+
+@ObjectType()
+class GetUserOutput {
+  @Field({ nullable: false })
+  @IsString()
+  @IsEmail()
+  @NotContains(" ", { message: "Merci de ne pas inclure d'espace." })
+  email!: string;
+
+  @Field({ nullable: false })
+  @IsString()
+  @NotContains(" ", { message: "Merci de ne pas inclure d'espace." })
+  username!: string;
 }
 
 @Resolver(User)
 export default class UserResolver {
-  @Query(() => User)
-  async getOneUser(@Arg("body") body: GetUserInput) {
+  @Query(() => GetUserOutput)
+  async signIn(@Arg("body") body: GetUserInput) {
     try {
       const user = await User.findOne({
         where: { email: body.email },
@@ -49,15 +86,13 @@ export default class UserResolver {
       });
 
       if (user === null) {
-        throw new GraphQLError("E-mail incorrect, veuillez réessayer.");
+        throw new GraphQLError("Identifiants incorrects, veuillez réessayer.");
       }
-
       const match = await bcrypt.compare(body.password, user.password);
-      if (!match) {
-        throw new GraphQLError("Mot de passe erroné, veuillez réessayer.");
-      }
 
-      user.password = "deleted";
+      if (!match) {
+        throw new GraphQLError("Identifiants incorrects, veuillez réessayer.");
+      }
 
       return user;
     } catch (error) {
@@ -70,28 +105,12 @@ export default class UserResolver {
   }
 
   @Mutation(() => String)
-  async createUser(@Arg("body") newUser: NewUserInput) {
+  async signUp(@Arg("body") newUser: NewUserInput) {
     try {
-      const result = schema.safeParse(newUser);
-      if (!result.success) {
-        throw new GraphQLError("Les données reçues sont erronées.");
-      }
-
-      newUser = { ...newUser, password: "deleted", confirmPassword: "deleted" };
-      result.data = {
-        ...result.data,
-        confirmPassword: "deleted",
-      };
-
-      const { username, email, password } = result.data;
+      const { username, email, password } = newUser;
 
       const salt = await bcrypt.genSalt(15);
       const hash = await bcrypt.hash(password, salt);
-
-      result.data = {
-        ...result.data,
-        password: "deleted",
-      };
 
       const user = new User();
       user.username = username;
