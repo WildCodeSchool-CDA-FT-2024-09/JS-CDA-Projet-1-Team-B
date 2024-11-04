@@ -2,11 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema, Schema } from "../types/SignUp.types";
-import { useCreateUserMutation } from "../generated/graphql-types";
+import { useSignUpMutation } from "../generated/graphql-types";
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const [signUp, { data, loading, error }] = useCreateUserMutation();
+  const [signUp, { data, loading, error }] = useSignUpMutation();
   const {
     register,
     handleSubmit,
@@ -15,8 +15,9 @@ export default function SignUp() {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = async (formData: Schema) => {
-    signUp({
+  const onSubmit = async ({ confirmPassword, ...formData }: Schema) => {
+    void confirmPassword;
+    await signUp({
       variables: { body: formData },
     });
   };
@@ -108,10 +109,10 @@ export default function SignUp() {
         )}
         <div className="flex flex-col items-center w-full mx-auto mt-10">
           <span className="text-white font-semibold pb-[1dvh]">
-            Déjà un compte ?{" "}
+            Déjà un compte ?
             <Link
-              to={"/connexion"}
-              className="text-bloodRed underline hover:opacity-80"
+              to="/connexion"
+              className="text-bloodRed underline hover:opacity-80 pl-2"
             >
               Se connecter
             </Link>
@@ -119,7 +120,7 @@ export default function SignUp() {
           <button
             type="submit"
             className={loading ? `btn-red bg-gray-500` : `btn-red`}
-            disabled={loading ? true : false}
+            disabled={loading}
           >
             S'inscrire
           </button>
@@ -129,7 +130,7 @@ export default function SignUp() {
             </span>
           )}
           {data && (
-            <span className="text-green-500 pt-2 font-bold">{`Inscription réussie ${data.createUser} ! Redirection en cours...`}</span>
+            <span className="text-green-500 pt-2 font-bold">{`Inscription réussie ${data.signUp} ! Redirection en cours...`}</span>
           )}
         </div>
       </form>

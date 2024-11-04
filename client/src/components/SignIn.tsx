@@ -2,11 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema, Schema } from "../types/SignIn.types";
-import { useGetOneUserLazyQuery } from "../generated/graphql-types";
+import { useSignInLazyQuery } from "../generated/graphql-types";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const [signIn, { loading, data, error }] = useGetOneUserLazyQuery();
+  const [signIn, { loading, data, error }] = useSignInLazyQuery();
   const {
     register,
     handleSubmit,
@@ -16,7 +16,7 @@ export default function SignIn() {
   });
 
   const onSubmit = async (formData: Schema) => {
-    signIn({
+    await signIn({
       variables: { body: formData },
     });
   };
@@ -72,10 +72,10 @@ export default function SignIn() {
         )}
         <div className="flex flex-col items-center w-full mx-auto mt-10">
           <span className="text-white font-semibold pb-[1dvh]">
-            Pas encore inscrit ?{" "}
+            Pas encore inscrit ?
             <Link
-              to={"/inscription"}
-              className="text-bloodRed underline hover:opacity-80"
+              to="/inscription"
+              className="text-bloodRed underline hover:opacity-80 pl-2"
             >
               S'inscrire
             </Link>
@@ -83,7 +83,7 @@ export default function SignIn() {
           <button
             type="submit"
             className={loading ? `btn-red bg-gray-500` : `btn-red`}
-            disabled={loading ? true : false}
+            disabled={loading}
           >
             Connexion
           </button>
@@ -93,7 +93,7 @@ export default function SignIn() {
             </span>
           )}
           {data && (
-            <span className="text-green-500 pt-2 font-bold">{`Bienvenue ${data?.getOneUser?.username} ! Redirection en cours...`}</span>
+            <span className="text-green-500 pt-2 font-bold">{`Bienvenue ${data?.signIn.username} ! Redirection en cours...`}</span>
           )}
         </div>
       </form>
