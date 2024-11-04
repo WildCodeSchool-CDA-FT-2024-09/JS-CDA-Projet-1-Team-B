@@ -1,4 +1,4 @@
-import { CastMember, CrewMember, FilmCredits, Film } from "../types/film.types";
+import { CastMember, CrewMember, Film, FilmCredits } from "../types/film.types";
 import { AppDataSource } from "../db/data-source";
 import { Film as FilmEntity } from "../entities/Film";
 import * as fs from "fs/promises";
@@ -40,9 +40,15 @@ async function resetDatabase() {
     await queryRunner.release();
   }
 }
+// Tableau permettant de savoir combien de films sont insérés en BDD.
+const filmsTotal: number[] = [];
 
 // Fonction pour insérer un film
-async function insertFilm(filmData: Film, filmCredits: FilmCredits) {
+async function insertFilm(
+  filmData: Film,
+  filmCredits: FilmCredits,
+  countFilms: number[]
+) {
   let film = await FilmEntity.findOneBy({ tmdbId: filmData.id });
   if (!film) {
     film = new FilmEntity();
@@ -68,6 +74,7 @@ async function insertFilm(filmData: Film, filmCredits: FilmCredits) {
     );
     film.actors = actorNames.join(", ");
 
+    countFilms.push(film.tmdbId);
     // Sauvegarder le film avec les genres associés
     await film.save();
   }
@@ -90,28 +97,28 @@ async function insertUsers(usersArray: { username: string; email: string }[]) {
       usersToSave.push(user);
     }
     await User.save(usersToSave);
+    return usersToSave.length;
   } catch (e) {
-    console.error("Erreur lors du processus de seed :", e);
+    console.error("Erreur lors du processus de seed des utilisateurs :", e);
+    return e;
   }
 }
 
-async function insertComments(commentsArray: string[]) {
+async function insertComments(
+  commentsArray: string[],
+  countFilms: number,
+  countUsers: number
+) {
   try {
     if (!AppDataSource.isInitialized) {
       await AppDataSource.initialize();
     }
-    const [{ seq: users }] = await User.query(
-      `SELECT seq FROM sqlite_sequence WHERE name = "user"`
-    );
-    const [{ seq: films }] = await User.query(
-      `SELECT seq FROM sqlite_sequence WHERE name = "film"`
-    );
     const commentsToSave: UserComment[] = [];
 
-    for (let i = 0; i <= films.seq; i++) {
+    for (let i = 1; i <= countFilms; i++) {
       const randomComment: string =
         commentsArray[Math.floor(Math.random() * commentsArray.length)];
-      const randomUserId: number = Math.floor(Math.random() * users.seq) + 1;
+      const randomUserId: number = Math.floor(Math.random() * countUsers) + 1;
 
       const comment = new UserComment();
       comment.content = randomComment;
@@ -121,27 +128,25 @@ async function insertComments(commentsArray: string[]) {
     }
     await UserComment.save(commentsToSave);
   } catch (e) {
-    console.error("Erreur lors du processus de seed :", e);
+    console.error("Erreur lors du processus de seed des commentaires :", e);
   }
 }
 
-async function insertRatings(ratingsArray: number[]) {
+async function insertRatings(
+  ratingsArray: number[],
+  countFilms: number,
+  countUsers: number
+) {
   try {
     if (!AppDataSource.isInitialized) {
       await AppDataSource.initialize();
     }
-    const users = await User.query(
-      `SELECT seq FROM sqlite_sequence WHERE name = "user"`
-    );
-    const films: number = await User.query(
-      `SELECT seq FROM sqlite_sequence WHERE name = "film"`
-    );
     const ratingsToSave: UserRating[] = [];
 
-    for (let i = 0; i <= films; i++) {
+    for (let i = 1; i <= countFilms; i++) {
       const randomRating: number =
         ratingsArray[Math.floor(Math.random() * ratingsArray.length)];
-      const randomUserId: number = Math.floor(Math.random() * users) + 1;
+      const randomUserId: number = Math.floor(Math.random() * countUsers) + 1;
 
       const rating: UserRating = new UserRating();
       rating.film = (await FilmEntity.findOneBy({ id: i })) as FilmEntity;
@@ -149,9 +154,9 @@ async function insertRatings(ratingsArray: number[]) {
       rating.rating = randomRating;
       ratingsToSave.push(rating);
     }
-    await UserComment.save(ratingsToSave);
+    await UserRating.save(ratingsToSave);
   } catch (e) {
-    console.error("Erreur lors du processus de seed :", e);
+    console.error("Erreur lors du processus de seed des notes de films :", e);
   }
 }
 
@@ -181,21 +186,25 @@ async function seedDatabase() {
           (credit: FilmCredits) => credit.filmId === filmData.id
         );
         if (filmCredits) {
-          await insertFilm(filmData, filmCredits);
+          await insertFilm(filmData, filmCredits, filmsTotal);
         }
       })
     );
-    await insertUsers(users);
   } catch (err) {
-    console.error("Erreur lors du processus de seed :", err);
+    console.error("Erreur lors du processus de seed de la DB :", err);
+    return err;
   }
 }
 
 (async function totalSeeding() {
   try {
     await seedDatabase();
-    await insertComments(comments);
-    await insertRatings(ratings);
+    const countUsers: number = await insertUsers(users);
+
+    if (filmsTotal.length > 0 && countUsers > 0) {
+      await insertComments(comments, filmsTotal.length, countUsers);
+      await insertRatings(ratings, filmsTotal.length, countUsers);
+    }
   } catch (e) {
     console.error(e);
   } finally {
