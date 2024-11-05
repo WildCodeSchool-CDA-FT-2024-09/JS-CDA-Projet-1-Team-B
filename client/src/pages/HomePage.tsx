@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useSearchFilmsQuery } from "../generated/graphql-types";
 import { Criteria } from "../generated/graphql-types";
 import { Film } from "../generated/graphql-types";
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
   const location = useLocation(); // Hook pour récupérer l'objet location
@@ -17,13 +18,22 @@ export default function HomePage() {
     ? (searchType as Criteria)
     : Criteria.Title;
 
+  // Utiliser un état pour déclencher la recherche
+  const [triggerSearch, setTriggerSearch] = useState(false);
+
   const { data, loading, error } = useSearchFilmsQuery({
     variables: {
       searchTerm: searchTerm,
       searchBy: searchBy,
     },
-    skip: !searchTerm,
+    skip: !triggerSearch, // La requête est lancée uniquement si triggerSearch est true
   });
+
+  useEffect(() => {
+    if (searchTerm.length > 0) {
+      setTriggerSearch(true);
+    }
+  }, [searchTerm, searchBy]);
 
   return (
     <main>
@@ -33,19 +43,20 @@ export default function HomePage() {
       <section className="flex justify-center">
         <CarousselTrendyFilms />
       </section>
-      {loading ? (
-        <p>Chargement...</p>
-      ) : error ? (
-        <p>Erreur : {error.message}</p>
-      ) : data && data.searchFilms.length > 0 ? (
+
+      {loading && <p>Chargement...</p>}
+
+      {error && <p>Erreur : {error.message}</p>}
+
+      {data && data.searchFilms.length > 0 && (
         <ul>
           {data.searchFilms.map((film: Film) => (
             <li key={film.id}>{film.title}</li>
           ))}
         </ul>
-      ) : (
-        <p>Aucun film trouvé</p>
       )}
+
+      {data?.searchFilms.length === 0 && searchTerm && <p>Aucun film trouvé</p>}
     </main>
   );
 }
