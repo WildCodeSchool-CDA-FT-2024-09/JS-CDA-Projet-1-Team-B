@@ -42,7 +42,7 @@ class NewUserInput implements Partial<User> {
   @MaxLength(50, { message: "Maximum 50 caractères" })
   @Matches(/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])([^\s]){1,}$/, {
     message:
-      "Doit comporter une majuscule, une minuscle, un chiffre et aucun espace.",
+      "Doit comporter une majuscule, une minuscule, un chiffre et aucun espace.",
   })
   password!: string;
 }
