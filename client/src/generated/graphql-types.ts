@@ -80,6 +80,7 @@ export type NewUserInput = {
 export type Query = {
   __typename?: 'Query';
   getFilmById?: Maybe<Film>;
+  lastFilms?: Maybe<Array<Film>>;
   searchFilms: Array<Film>;
   signIn: GetUserOutput;
   trendyFilms?: Maybe<Array<Film>>;
@@ -88,6 +89,11 @@ export type Query = {
 
 export type QueryGetFilmByIdArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type QueryLastFilmsArgs = {
+  limit?: InputMaybe<Scalars['Float']['input']>;
 };
 
 
@@ -120,12 +126,17 @@ export type SignInQueryVariables = Exact<{
 
 export type SignInQuery = { __typename?: 'Query', signIn: { __typename?: 'GetUserOutput', email: string, username: string } };
 
+export type LastFilmsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LastFilmsQuery = { __typename?: 'Query', lastFilms?: Array<{ __typename?: 'Film', id: string, posterPath?: string | null, title: string }> | null };
+
 export type TrendyFilmsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Float']['input']>;
 }>;
 
 
-export type TrendyFilmsQuery = { __typename?: 'Query', trendyFilms?: Array<{ __typename?: 'Film', posterPath?: string | null, title: string }> | null };
+export type TrendyFilmsQuery = { __typename?: 'Query', trendyFilms?: Array<{ __typename?: 'Film', id: string, posterPath?: string | null, title: string }> | null };
 
 export type SearchFilmsQueryVariables = Exact<{
   searchTerm: Scalars['String']['input'];
@@ -215,9 +226,51 @@ export type SignInQueryHookResult = ReturnType<typeof useSignInQuery>;
 export type SignInLazyQueryHookResult = ReturnType<typeof useSignInLazyQuery>;
 export type SignInSuspenseQueryHookResult = ReturnType<typeof useSignInSuspenseQuery>;
 export type SignInQueryResult = Apollo.QueryResult<SignInQuery, SignInQueryVariables>;
+export const LastFilmsDocument = gql`
+    query LastFilms {
+  lastFilms {
+    id
+    posterPath
+    title
+  }
+}
+    `;
+
+/**
+ * __useLastFilmsQuery__
+ *
+ * To run a query within a React component, call `useLastFilmsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLastFilmsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLastFilmsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLastFilmsQuery(baseOptions?: Apollo.QueryHookOptions<LastFilmsQuery, LastFilmsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<LastFilmsQuery, LastFilmsQueryVariables>(LastFilmsDocument, options);
+      }
+export function useLastFilmsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LastFilmsQuery, LastFilmsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LastFilmsQuery, LastFilmsQueryVariables>(LastFilmsDocument, options);
+        }
+export function useLastFilmsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<LastFilmsQuery, LastFilmsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<LastFilmsQuery, LastFilmsQueryVariables>(LastFilmsDocument, options);
+        }
+export type LastFilmsQueryHookResult = ReturnType<typeof useLastFilmsQuery>;
+export type LastFilmsLazyQueryHookResult = ReturnType<typeof useLastFilmsLazyQuery>;
+export type LastFilmsSuspenseQueryHookResult = ReturnType<typeof useLastFilmsSuspenseQuery>;
+export type LastFilmsQueryResult = Apollo.QueryResult<LastFilmsQuery, LastFilmsQueryVariables>;
 export const TrendyFilmsDocument = gql`
     query TrendyFilms($limit: Float) {
   trendyFilms(limit: $limit) {
+    id
     posterPath
     title
   }

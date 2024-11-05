@@ -14,21 +14,16 @@ async function resetDatabase() {
   const queryRunner = AppDataSource.createQueryRunner();
   await queryRunner.startTransaction();
   try {
-    // Supprimer les anciennes données de la table film
-    await queryRunner.query("DELETE FROM film");
+    // Supprimer les anciennes données des différentes tables
     await queryRunner.query("DELETE FROM user");
+    await queryRunner.query("DELETE FROM avatar");
+    await queryRunner.query("DELETE FROM film");
     await queryRunner.query("DELETE FROM user_comment");
     await queryRunner.query("DELETE FROM user_rating");
 
     // Réinitialiser les identifiants auto-incrémentés
-    await queryRunner.query('DELETE FROM sqlite_sequence WHERE name = "film"');
-    await queryRunner.query('DELETE FROM sqlite_sequence WHERE name = "user"');
-    await queryRunner.query(
-      'DELETE FROM sqlite_sequence WHERE name = "user_comment"'
-    );
-    await queryRunner.query(
-      'DELETE FROM sqlite_sequence WHERE name = "user_rating"'
-    );
+    await queryRunner.query("DELETE FROM sqlite_sequence");
+
     await queryRunner.commitTransaction();
   } catch (error) {
     await queryRunner.rollbackTransaction();
@@ -80,7 +75,33 @@ async function insertFilm(
   }
 }
 
-async function insertUsers(usersArray: { username: string; email: string }[]) {
+async function insertAvatars(avatarPathFolder: string): Promise<void> {
+  try {
+    const avatarToSave: Avatar[] = [];
+
+    const files = await fs.readdir(avatarPathFolder, {
+      withFileTypes: true,
+    });
+
+    const avatarPaths: string[] = files
+      .filter((e) => e.isFile())
+      .map((e) => path.posix.join(avatarPathFolder, e.name));
+
+    for (const path of avatarPaths) {
+      const avatar = new Avatar();
+      avatar.image = path;
+      avatarToSave.push(avatar);
+    }
+
+    await Avatar.save(avatarToSave);
+  } catch (e) {
+    console.error("Erreur lors du processus de seed des avatars :", e);
+  }
+}
+
+async function insertUsers(
+  usersArray: { username: string; email: string }[]
+): Promise<number> {
   try {
     const passwordExample = "Azertyuiop123";
 
@@ -108,7 +129,7 @@ async function insertComments(
   commentsArray: string[],
   countFilms: number,
   countUsers: number
-) {
+): Promise<void> {
   try {
     if (!AppDataSource.isInitialized) {
       await AppDataSource.initialize();
@@ -136,7 +157,7 @@ async function insertRatings(
   ratingsArray: number[],
   countFilms: number,
   countUsers: number
-) {
+): Promise<void> {
   try {
     if (!AppDataSource.isInitialized) {
       await AppDataSource.initialize();
@@ -199,6 +220,7 @@ async function seedDatabase() {
 (async function totalSeeding() {
   try {
     await seedDatabase();
+    await insertAvatars("../client/public/avatar");
     const countUsers: number = await insertUsers(users);
 
     if (filmsTotal.length > 0 && countUsers > 0) {
