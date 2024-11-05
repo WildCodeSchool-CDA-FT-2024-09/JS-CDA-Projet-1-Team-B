@@ -10,6 +10,7 @@ async function resetDatabase() {
   try {
     // Supprimer les anciennes données de la table film
     await queryRunner.query("DELETE FROM film");
+    await queryRunner.query("DELETE FROM User");
 
     // Réinitialiser les identifiants auto-incrémentés
     await queryRunner.query('DELETE FROM sqlite_sequence WHERE name = "film"');
@@ -31,7 +32,7 @@ async function insertFilm(filmData: Film, filmCredits: FilmCredits) {
   let film = await FilmEntity.findOneBy({ tmdbId: filmData.id });
   if (!film) {
     film = new FilmEntity();
-    film.tmdbId = filmData.id;
+    film.tmdbId! = filmData.id;
     film.title = filmData.title;
     film.overview = filmData.overview;
     film.releaseDate = filmData.release_date;

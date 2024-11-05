@@ -3,7 +3,7 @@ import "dotenv/config";
 
 const { VITE_GRAPHQL_API_URL } = process.env;
 
-export const config: CodegenConfig = {
+const config: CodegenConfig = {
   schema: VITE_GRAPHQL_API_URL,
   documents: ["src/schema/**/*.ts"],
   generates: {

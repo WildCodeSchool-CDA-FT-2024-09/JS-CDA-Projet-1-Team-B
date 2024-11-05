@@ -1,13 +1,17 @@
 import "reflect-metadata";
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { ObjectType, Field, Int } from "type-graphql";
+import { ObjectType, Field, ID } from "type-graphql";
 
 @ObjectType()
 @Entity()
 export class Film extends BaseEntity {
-  @Field(() => Int)
+  @Field(() => ID)
   @PrimaryGeneratedColumn()
   id!: number;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  tmdbId!: number;
 
   @Field()
   @Column()
