@@ -43,19 +43,20 @@ export default function HomePage() {
       <section className="flex justify-center">
         <CarousselTrendyFilms />
       </section>
-      {loading ? (
-        <p>Chargement...</p>
-      ) : error ? (
-        <p>Erreur : {error.message}</p>
-      ) : data && data.searchFilms.length > 0 ? (
+
+      {loading && <p>Chargement...</p>}
+
+      {error && <p>Erreur : {error.message}</p>}
+
+      {data && data.searchFilms.length > 0 && (
         <ul>
           {data.searchFilms.map((film: Film) => (
             <li key={film.id}>{film.title}</li>
           ))}
         </ul>
-      ) : searchTerm ? (
-        <p>Aucun film trouvé</p>
-      ) : null}
+      )}
+
+      {data?.searchFilms.length === 0 && searchTerm && <p>Aucun film trouvé</p>}
     </main>
   );
 }
