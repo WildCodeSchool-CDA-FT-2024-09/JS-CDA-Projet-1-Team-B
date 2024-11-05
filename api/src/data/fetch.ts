@@ -18,6 +18,7 @@ const numberOfPages = 5;
 // Chemins vers les fichiers de sortie
 const rawPathFilms = path.join(__dirname, "raw.json");
 const rawPathCredits = path.join(__dirname, "credits.json");
+const rawPathCategories = path.join(__dirname, "categories.json");
 
 // Fonction pour récupérer les films
 async function fetchFilms(): Promise<Film[]> {
@@ -77,6 +78,23 @@ async function fetchCredits(films: Film[]): Promise<FilmCredits[]> {
   }
 }
 
+async function fetchCategories() {
+  try {
+    const response = await axios.get(
+      "https://api.themoviedb.org/3/genre/movie/list?language=fr-FR",
+      {
+        headers: { Authorization: `Bearer ${API_TOKEN}` },
+      }
+    );
+
+    const categories = response.data.genres;
+    return categories;
+  } catch (err) {
+    console.error("Erreur lors de la récupération des catégories :", err);
+    return [];
+  }
+}
+
 // Fonction principale
 (async () => {
   try {
@@ -86,9 +104,15 @@ async function fetchCredits(films: Film[]): Promise<FilmCredits[]> {
     // Récupérer les crédits des films récupérés
     const savedCredits = await fetchCredits(savedFilms);
 
+    const savedCategories = await fetchCategories();
+
     // Écrire les films et les crédits dans les fichiers JSON
     await fs.writeFile(rawPathFilms, JSON.stringify(savedFilms, null, 2));
     await fs.writeFile(rawPathCredits, JSON.stringify(savedCredits, null, 2));
+    await fs.writeFile(
+      rawPathCategories,
+      JSON.stringify(savedCategories, null, 2)
+    );
   } catch (err) {
     console.error("Erreur lors du processus de récupération :", err);
   }
