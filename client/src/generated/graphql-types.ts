@@ -140,7 +140,7 @@ export type GetFilmByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetFilmByIdQuery = { __typename?: 'Query', getFilmById?: { __typename?: 'Film', actors?: string | null, director?: string | null, id: number, originalLanguage?: string | null, overview?: string | null, popularity: number, posterPath?: string | null, releaseDate: string, title: string } | null };
+export type GetFilmByIdQuery = { __typename?: 'Query', getFilmById?: { __typename?: 'Film', actors?: string | null, director?: string | null, id: string, originalLanguage?: string | null, overview?: string | null, popularity: number, posterPath?: string | null, releaseDate: string, title: string } | null };
 
 
 export const SignUpDocument = gql`
