@@ -35,7 +35,7 @@ export default function HomePage() {
         <CarousselTrendyFilms />
       </section>
       <h2
-        className="text-white mt-6 flex justify-center md:ml-20  p-2 text-2xl font-semibold">
+        className="text-white mt-6 flex justify-center md:ml-20 p-2 text-2xl font-semibold">
         Les derniers arrivés
       </h2>
       <section className="flex justify-center">
@@ -54,6 +54,8 @@ export default function HomePage() {
       ) : (
         <p>Aucun film trouvé</p>
       )}
+
+      
     </main>
   );
 }
