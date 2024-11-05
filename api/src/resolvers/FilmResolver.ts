@@ -26,6 +26,17 @@ export default class FilmResolver {
     });
   }
 
+  @Query(() => [Film], { nullable: true })
+  async lastFilms(
+    @Arg("limit", { nullable: true, defaultValue: 4 }) limit: number
+  ): Promise<Film[]> {
+    return Film.find({
+      order: {
+        releaseDate: "DESC",
+      },
+      take: limit,
+    });
+  }
   @Query(() => Film, { nullable: true })
   async getFilmById(@Arg("id", () => Int) id: number): Promise<Film | null> {
     const film = await Film.findOne({ where: { id } });
