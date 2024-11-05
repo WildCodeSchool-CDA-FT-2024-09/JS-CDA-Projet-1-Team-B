@@ -3,11 +3,13 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./services/connection.ts";
+import "./index.css";
 import App from "./App.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import FilmDetail from "./pages/PageFilmDetail.tsx";
 
-import "./index.css";
+import SignUp from "./components/SignUp.tsx";
+import SignIn from "./components/SignIn.tsx";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +24,8 @@ const router = createBrowserRouter([
         path: "/films/:id",
         element: <FilmDetail />,
       },
-      // Ajouter ici les objets pour le routing via l'outlet du App. {path:... , element:...}
+      { path: "inscription", element: <SignUp /> },
+      { path: "connexion", element: <SignIn /> },
     ],
   },
 ]);
