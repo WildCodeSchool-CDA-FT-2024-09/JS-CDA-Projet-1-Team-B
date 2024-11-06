@@ -22,10 +22,7 @@ export default function LastFilms() {
               className="w-64 h-64 object-cover rounded-2xl border-white border"
               alt={`Visuel montrant l'affiche du film ${film.title}`}
             />
-            <h2
-              className="text-white text-center p-2 text-xl mb-5 font-semibold md:text-2xl md:mb-0"
-              style={{ textShadow: "1px 1px 2px #000" }}
-            >
+            <h2 className="text-white text-center p-2 text-xl mb-5 font-semibold shadow-lg md:text-2xl md:mb-0 ">
               {film.title || "Titre"}
             </h2>
           </div>
