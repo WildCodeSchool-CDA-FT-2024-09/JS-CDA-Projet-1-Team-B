@@ -61,8 +61,8 @@ export class Film extends BaseEntity {
   @Column({ nullable: true })
   director!: string;
 
-  @Field(() => [Category])
+  @Field(() => [Category], { nullable: true })
   @ManyToMany(() => Category, (category) => category.films, { cascade: true })
   @JoinTable()
-  categories: Category[];
+  categories?: Category[];
 }

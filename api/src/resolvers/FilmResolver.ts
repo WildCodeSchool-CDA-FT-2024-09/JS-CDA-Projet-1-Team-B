@@ -51,6 +51,9 @@ export default class FilmResolver {
     // Trim spaces at the start and end of the string
     const cleanedSearchTerm = `%${searchTerm.trim()}%`;
 
-    return await Film.find({ where: { [searchBy]: Like(cleanedSearchTerm) } });
+    return await Film.find({
+      where: { [searchBy]: Like(cleanedSearchTerm) },
+      relations: ["categories"],
+    });
   }
 }
