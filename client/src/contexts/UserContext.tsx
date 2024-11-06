@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import {
   createContext,
   useContext,
@@ -16,8 +17,6 @@ import {
 interface UserContextType {
   user: User | null;
   email: string | null;
-  loading: boolean;
-  error: unknown;
   fetchUserByEmail: (email: string) => void;
   setEmail: (email: string) => void;
   setUser: (user: User | null) => void;
@@ -38,8 +37,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [email, setEmail] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<unknown>(null);
 
   useEffect(() => {
     if (email) {
@@ -48,9 +45,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   }, [email]);
 
   const fetchUserByEmail = async (email: string) => {
-    setLoading(true);
-    setError(null);
-
     try {
       const { data } = await client.query<
         GetUserByEmailQuery,
@@ -64,12 +58,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         setUser(data.getUserByEmail);
       } else {
         setUser(null);
-        setError("User not found");
+        throw new Error("No user match this email");
       }
     } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
+      console.error(err);
     }
   };
 
@@ -78,8 +70,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       value={{
         user,
         email,
-        loading,
-        error,
         fetchUserByEmail,
         setEmail,
         setUser,

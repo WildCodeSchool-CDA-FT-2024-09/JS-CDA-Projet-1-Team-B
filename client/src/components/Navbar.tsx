@@ -2,10 +2,8 @@ import { Link } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
 
 const Navbar = () => {
-  const { user, loading } = useUser();
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  const { user } = useUser();
+
   const avatarImagePath = user?.avatar?.image
     ? `/avatar/${user.avatar.image}`
     : "/default-user.png";

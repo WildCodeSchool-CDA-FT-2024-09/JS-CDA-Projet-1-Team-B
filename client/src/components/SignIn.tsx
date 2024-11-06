@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { schema, Schema } from "../types/SignIn.types";
 import { useSignInLazyQuery } from "../generated/graphql-types";
 import { useUser } from "../contexts/UserContext";
-import { useEffect } from "react";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -24,15 +23,10 @@ export default function SignIn() {
     });
 
     if (response.data?.signIn?.email) {
+      setTimeout(() => navigate("/"), 3000);
       setEmail(response.data.signIn.email);
     }
   };
-
-  useEffect(() => {
-    if (data?.signIn) {
-      setTimeout(() => navigate("/"), 3000);
-    }
-  }, [data, navigate]);
 
   return (
     <>
