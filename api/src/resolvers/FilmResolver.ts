@@ -2,6 +2,7 @@ import { Between, Like } from "typeorm";
 import { Film } from "../entities/Film";
 import { Arg, Int, Query, Resolver } from "type-graphql";
 import { Criteria } from "../enums/Criteria";
+import { UserComment } from "../entities/UserComment";
 
 @Resolver(Film)
 export default class FilmResolver {
@@ -39,7 +40,11 @@ export default class FilmResolver {
   }
   @Query(() => Film, { nullable: true })
   async getFilmById(@Arg("id", () => Int) id: number): Promise<Film | null> {
-    const film = await Film.findOne({ where: { id } });
+    const film = await Film.findOne({
+      where: { id },
+      relations: ["comments"],
+    });
+
     return film || null;
   }
 
@@ -52,5 +57,21 @@ export default class FilmResolver {
     const cleanedSearchTerm = `%${searchTerm.trim()}%`;
 
     return await Film.find({ where: { [searchBy]: Like(cleanedSearchTerm) } });
+  }
+  @Query(() => [UserComment], { nullable: true })
+  async filmComments(
+    @Arg("filmId", () => Int) filmId: number
+  ): Promise<UserComment[]> {
+    const film = await Film.findOne({ where: { id: filmId } });
+
+    if (!film) {
+      throw new Error("Film not found");
+    }
+    return UserComment.find({
+      where: {
+        film: { id: filmId },
+      },
+      relations: ["user"],
+    });
   }
 }

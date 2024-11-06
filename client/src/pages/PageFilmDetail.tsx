@@ -1,12 +1,16 @@
+// FilmDetail.tsx
+import { useParams } from "react-router-dom"; // Import useParams to get route params
 import StarRating from "../components/NoteGlobale";
 import { useGetFilmByIdQuery } from "../generated/graphql-types";
 
 const FilmDetail = () => {
-  // Hardcode the film ID
-  const hardcodedFilmId = 45; // Replace this with the desired film ID
+  // Get the film ID from the URL
+  const { id } = useParams<{ id: string }>(); // The film ID is now dynamic from the URL
   const basePosterUrl = "https://image.tmdb.org/t/p/original/"; // Base URL for TMDB posters
+
+  // Fetch film data using the dynamic ID from the URL
   const { loading, error, data } = useGetFilmByIdQuery({
-    variables: { getFilmByIdId: hardcodedFilmId },
+    variables: { getFilmByIdId: parseInt(id!) }, // Convert string to number if necessary
   });
 
   // Handling loading and error states
