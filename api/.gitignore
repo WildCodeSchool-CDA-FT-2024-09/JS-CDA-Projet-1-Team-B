@@ -27,6 +27,5 @@ src/data/*.json
 *.sln
 *.sw?
 .env
-
 src/db/db.sqlite
 src/data/*.json
