@@ -15,11 +15,11 @@ import {
 
 interface UserContextType {
   user: User | null;
-  email: string | null; // Track email separately
+  email: string | null;
   loading: boolean;
   error: unknown;
   fetchUserByEmail: (email: string) => void;
-  setEmail: (email: string) => void; // Set the email
+  setEmail: (email: string) => void;
   setUser: (user: User | null) => void;
 }
 
@@ -37,14 +37,13 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [email, setEmail] = useState<string | null>(null); // Store the email
+  const [email, setEmail] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<unknown>(null);
 
-  // Fetch user data based on the email whenever it changes
   useEffect(() => {
     if (email) {
-      fetchUserByEmail(email); // Automatically fetch user data if email is set
+      fetchUserByEmail(email);
     }
   }, [email]);
 
@@ -62,7 +61,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       });
 
       if (data.getUserByEmail) {
-        setUser(data.getUserByEmail); // Set the user data when found
+        setUser(data.getUserByEmail);
       } else {
         setUser(null);
         setError("User not found");

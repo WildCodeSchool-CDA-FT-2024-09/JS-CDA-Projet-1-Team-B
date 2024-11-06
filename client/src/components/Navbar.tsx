@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
 
 const Navbar = () => {
@@ -5,32 +6,34 @@ const Navbar = () => {
   if (loading) {
     return <p>Loading...</p>;
   }
-
-  const avatarImagePath = user?.avatar?.image || "/default-user.png";
+  const avatarImagePath = user?.avatar?.image
+    ? `/avatar/${user.avatar.image}`
+    : "/default-user.png";
 
   return (
     <nav className="flex items-center p-4">
-      {/* Logo Section */}
       <div className="flex items-center">
-        <img
-          src="/thrillermania.png"
-          alt="Thriller Mania logo"
-          className="h-16 w-16 md:h-20 md:w-20 mr-3"
-        />
+        <Link to="/">
+          <img
+            src="/thrillermania.png"
+            alt="Thriller Mania logo"
+            className="h-16 w-16 md:h-20 md:w-20 mr-3 cursor-pointer"
+          />
+        </Link>
       </div>
 
-      {/* Title */}
       <h1 className="text-white text-2xl md:text-6xl ml-2 md:ml-20 font-bold">
         THRILLER MANIA
       </h1>
 
-      {/* Avatar Section */}
       <div className="flex items-center ml-auto">
-        <img
-          src={avatarImagePath}
-          alt="Avatar"
-          className="h-10 w-10 md:h-14 md:w-14 rounded-full"
-        />
+        <Link to={user ? "/profil" : "/connexion"}>
+          <img
+            src={avatarImagePath}
+            alt="Avatar"
+            className="h-10 w-10 md:h-14 md:w-14 rounded-full cursor-pointer"
+          />
+        </Link>
       </div>
     </nav>
   );
