@@ -92,7 +92,7 @@ export default function SignIn() {
           <button
             type="submit"
             className={loading ? `btn-red bg-gray-500` : `btn-red`}
-            disabled={loading ? true : false}
+            disabled={loading}
           >
             Connexion
           </button>
