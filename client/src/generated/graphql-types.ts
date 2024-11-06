@@ -107,6 +107,7 @@ export type QueryLastFilmsArgs = {
 
 
 export type QuerySearchFilmsArgs = {
+  category?: InputMaybe<Scalars['Int']['input']>;
   searchBy: Criteria;
   searchTerm: Scalars['String']['input'];
 };
@@ -155,10 +156,11 @@ export type TrendyFilmsQuery = { __typename?: 'Query', trendyFilms?: Array<{ __t
 export type SearchFilmsQueryVariables = Exact<{
   searchTerm: Scalars['String']['input'];
   searchBy: Criteria;
+  category?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type SearchFilmsQuery = { __typename?: 'Query', searchFilms: Array<{ __typename?: 'Film', id: string, title: string, releaseDate: string, popularity: number, posterPath?: string | null, voteAverage: number, voteCount: number, overview?: string | null, originalLanguage?: string | null, director?: string | null, actors?: string | null }> };
+export type SearchFilmsQuery = { __typename?: 'Query', searchFilms: Array<{ __typename?: 'Film', id: string, title: string, releaseDate: string, popularity: number, posterPath?: string | null, voteAverage: number, voteCount: number, overview?: string | null, originalLanguage?: string | null, director?: string | null, actors?: string | null, categories?: Array<{ __typename?: 'Category', id: number, name: string }> | null }> };
 
 export type GetFilmByIdQueryVariables = Exact<{
   getFilmByIdId: Scalars['Int']['input'];
@@ -364,8 +366,8 @@ export type TrendyFilmsLazyQueryHookResult = ReturnType<typeof useTrendyFilmsLaz
 export type TrendyFilmsSuspenseQueryHookResult = ReturnType<typeof useTrendyFilmsSuspenseQuery>;
 export type TrendyFilmsQueryResult = Apollo.QueryResult<TrendyFilmsQuery, TrendyFilmsQueryVariables>;
 export const SearchFilmsDocument = gql`
-    query SearchFilms($searchTerm: String!, $searchBy: Criteria!) {
-  searchFilms(searchTerm: $searchTerm, searchBy: $searchBy) {
+    query SearchFilms($searchTerm: String!, $searchBy: Criteria!, $category: Int) {
+  searchFilms(searchTerm: $searchTerm, searchBy: $searchBy, category: $category) {
     id
     title
     releaseDate
@@ -377,6 +379,10 @@ export const SearchFilmsDocument = gql`
     originalLanguage
     director
     actors
+    categories {
+      id
+      name
+    }
   }
 }
     `;
@@ -395,6 +401,7 @@ export const SearchFilmsDocument = gql`
  *   variables: {
  *      searchTerm: // value for 'searchTerm'
  *      searchBy: // value for 'searchBy'
+ *      category: // value for 'category'
  *   },
  * });
  */

@@ -3,7 +3,6 @@ import LastFilms from "../components/LastFilms";
 import { useLocation } from "react-router-dom";
 import { useSearchFilmsQuery } from "../generated/graphql-types";
 import { Criteria } from "../generated/graphql-types";
-import { Film } from "../generated/graphql-types";
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
@@ -11,6 +10,7 @@ export default function HomePage() {
   const queryParams = new URLSearchParams(location.search); // Récupérer les query params
   const searchTerm = queryParams.get("search") || "";
   const searchType = queryParams.get("type") || "title";
+  const category = queryParams.get("category") || "";
 
   // Convertir le string en type Criteria, avec "title" comme valeur par défaut
   const searchBy: Criteria = (Object.values(Criteria) as string[]).includes(
@@ -26,8 +26,9 @@ export default function HomePage() {
     variables: {
       searchTerm: searchTerm,
       searchBy: searchBy,
+      category: category ? parseInt(category) : undefined,
     },
-    skip: !triggerSearch, // La requête est lancée uniquement si triggerSearch est true
+    skip: !triggerSearch,
   });
 
   useEffect(() => {
@@ -56,7 +57,7 @@ export default function HomePage() {
 
       {data && data.searchFilms.length > 0 && (
         <ul>
-          {data.searchFilms.map((film: Film) => (
+          {data?.searchFilms.map((film) => (
             <li key={film.id}>{film.title}</li>
           ))}
         </ul>

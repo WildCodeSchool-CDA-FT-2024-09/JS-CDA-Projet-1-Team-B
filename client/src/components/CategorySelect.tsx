@@ -1,14 +1,24 @@
 // CategorySelect.tsx
+import { useNavigate } from "react-router-dom";
 import { useGetCategoriesQuery } from "../generated/graphql-types";
 import { useState } from "react";
 
 export default function CategorySelect() {
   const { data, loading, error } = useGetCategoriesQuery();
-
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCategory(e.target.value || null);
+    const category = e.target.value || null;
+    setSelectedCategory(category);
+
+    const searchParams = new URLSearchParams(window.location.search);
+    if (category) {
+      searchParams.set("category", category);
+    } else {
+      searchParams.delete("category");
+    }
+    navigate(`?${searchParams.toString()}`);
   };
 
   return (

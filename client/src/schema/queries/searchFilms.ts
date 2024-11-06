@@ -1,8 +1,16 @@
 import { gql } from "@apollo/client";
 
 export const SEARCH_FILMS = gql`
-  query SearchFilms($searchTerm: String!, $searchBy: Criteria!) {
-    searchFilms(searchTerm: $searchTerm, searchBy: $searchBy) {
+  query SearchFilms(
+    $searchTerm: String!
+    $searchBy: Criteria!
+    $category: Int!
+  ) {
+    searchFilms(
+      searchTerm: $searchTerm
+      searchBy: $searchBy
+      category: $category
+    ) {
       id
       title
       releaseDate
@@ -14,6 +22,10 @@ export const SEARCH_FILMS = gql`
       originalLanguage
       director
       actors
+      categories {
+        id
+        name
+      }
     }
   }
 `;
