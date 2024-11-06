@@ -104,6 +104,21 @@ export default class UserResolver {
     }
   }
 
+  @Query(() => User, { nullable: true })
+  async getUserByEmail(@Arg("email") email: string): Promise<User | null> {
+    try {
+      const user = await User.findOne({
+        where: { email },
+        relations: ["avatar"],
+      });
+
+      return user || null;
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      throw new Error("Error retrieving user information.");
+    }
+  }
+
   @Mutation(() => String)
   async signUp(@Arg("body") newUser: NewUserInput) {
     try {

@@ -1,14 +1,17 @@
 import { Outlet } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import { UserProvider } from "./contexts/UserContext";
 import SearchBar from "./components/SearchBar";
 
 function App() {
   return (
-    <>
-      <h1>Hello</h1>
-      <button className="btn-red">Click Me</button>
-      <SearchBar />
-      <Outlet />
-    </>
+    <UserProvider>
+      <>
+        <Navbar />
+        <SearchBar />
+        <Outlet />
+      </>
+    </UserProvider>
   );
 }
 

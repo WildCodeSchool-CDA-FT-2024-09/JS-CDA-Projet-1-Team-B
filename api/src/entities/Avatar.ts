@@ -8,7 +8,6 @@ import {
   OneToMany,
 } from "typeorm";
 import { User } from "./User";
-
 @ObjectType()
 @Entity()
 export class Avatar extends BaseEntity {
