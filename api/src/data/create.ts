@@ -83,9 +83,7 @@ async function insertAvatars(avatarPathFolder: string): Promise<void> {
       withFileTypes: true,
     });
 
-    const avatarPaths: string[] = files
-      .filter((e) => e.isFile())
-      .map((e) => path.posix.join(avatarPathFolder, e.name));
+    const avatarPaths = files.filter((e) => e.isFile()).map((e) => e.name);
 
     for (const path of avatarPaths) {
       const avatar = new Avatar();
