@@ -17,7 +17,7 @@ export default function SignUp() {
 
   const onSubmit = async ({ confirmPassword, ...formData }: Schema) => {
     void confirmPassword;
-    signUp({
+    await signUp({
       variables: { body: formData },
     });
   };
@@ -120,7 +120,7 @@ export default function SignUp() {
           <button
             type="submit"
             className={loading ? `btn-red bg-gray-500` : `btn-red`}
-            disabled={loading ? true : false}
+            disabled={loading}
           >
             S'inscrire
           </button>
