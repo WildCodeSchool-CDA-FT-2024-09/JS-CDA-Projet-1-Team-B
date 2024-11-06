@@ -26,16 +26,18 @@ export default function HomePage() {
     variables: {
       searchTerm: searchTerm,
       searchBy: searchBy,
-      category: category ? parseInt(category) : undefined,
+      category: category ? parseInt(category) : null,
     },
     skip: !triggerSearch,
   });
 
   useEffect(() => {
-    if (searchTerm.length > 0) {
+    if (searchTerm.length > 0 || category) {
       setTriggerSearch(true);
+    } else {
+      setTriggerSearch(false);
     }
-  }, [searchTerm, searchBy]);
+  }, [searchTerm, searchBy, category]);
 
   return (
     <main className="block">

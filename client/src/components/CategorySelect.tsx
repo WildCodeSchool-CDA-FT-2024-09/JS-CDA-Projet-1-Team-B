@@ -9,16 +9,14 @@ export default function CategorySelect() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const category = e.target.value || null;
-    setSelectedCategory(category);
+    const categoryId = e.target.value;
+    setSelectedCategory(categoryId);
 
-    const searchParams = new URLSearchParams(window.location.search);
-    if (category) {
-      searchParams.set("category", category);
-    } else {
-      searchParams.delete("category");
-    }
-    navigate(`?${searchParams.toString()}`);
+    // Naviguer vers la page avec la catégorie sélectionnée sans le terme de recherche
+    navigate({
+      pathname: "/",
+      search: categoryId ? `?category=${categoryId}` : "",
+    });
   };
 
   return (
