@@ -17,6 +17,12 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type Avatar = {
+  __typename?: 'Avatar';
+  id: Scalars['ID']['output'];
+  image: Scalars['String']['output'];
+};
+
 export type AvatarInput = {
   image: Scalars['String']['input'];
 };
@@ -81,6 +87,7 @@ export type Query = {
   __typename?: 'Query';
   FrenchFilms?: Maybe<Array<Film>>;
   getFilmById?: Maybe<Film>;
+  getUserByEmail?: Maybe<User>;
   lastFilms?: Maybe<Array<Film>>;
   searchFilms: Array<Film>;
   signIn: GetUserOutput;
@@ -95,6 +102,11 @@ export type QueryFrenchFilmsArgs = {
 
 export type QueryGetFilmByIdArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type QueryGetUserByEmailArgs = {
+  email: Scalars['String']['input'];
 };
 
 
@@ -118,12 +130,28 @@ export type QueryTrendyFilmsArgs = {
   limit?: InputMaybe<Scalars['Float']['input']>;
 };
 
+export type User = {
+  __typename?: 'User';
+  avatar: Avatar;
+  email: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  password: Scalars['String']['output'];
+  username: Scalars['String']['output'];
+};
+
 export type SignUpMutationVariables = Exact<{
   body: NewUserInput;
 }>;
 
 
 export type SignUpMutation = { __typename?: 'Mutation', signUp: string };
+
+export type GetUserByEmailQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type GetUserByEmailQuery = { __typename?: 'Query', getUserByEmail?: { __typename?: 'User', id: string, username: string, email: string, password: string, avatar: { __typename?: 'Avatar', id: string, image: string } } | null };
 
 export type SignInQueryVariables = Exact<{
   body: GetUserInput;
@@ -196,6 +224,53 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignU
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const GetUserByEmailDocument = gql`
+    query getUserByEmail($email: String!) {
+  getUserByEmail(email: $email) {
+    id
+    username
+    email
+    password
+    avatar {
+      id
+      image
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserByEmailQuery__
+ *
+ * To run a query within a React component, call `useGetUserByEmailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByEmailQuery({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useGetUserByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables> & ({ variables: GetUserByEmailQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+      }
+export function useGetUserByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+        }
+export function useGetUserByEmailSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+        }
+export type GetUserByEmailQueryHookResult = ReturnType<typeof useGetUserByEmailQuery>;
+export type GetUserByEmailLazyQueryHookResult = ReturnType<typeof useGetUserByEmailLazyQuery>;
+export type GetUserByEmailSuspenseQueryHookResult = ReturnType<typeof useGetUserByEmailSuspenseQuery>;
+export type GetUserByEmailQueryResult = Apollo.QueryResult<GetUserByEmailQuery, GetUserByEmailQueryVariables>;
 export const SignInDocument = gql`
     query SignIn($body: GetUserInput!) {
   signIn(body: $body) {
