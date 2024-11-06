@@ -21,6 +21,13 @@ export type AvatarInput = {
   image: Scalars['String']['input'];
 };
 
+export type Category = {
+  __typename?: 'Category';
+  films: Array<Film>;
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+};
+
 /** Les critères de recherche... */
 export enum Criteria {
   Actor = 'actor',
@@ -31,6 +38,7 @@ export enum Criteria {
 export type Film = {
   __typename?: 'Film';
   actors?: Maybe<Scalars['String']['output']>;
+  categories?: Maybe<Array<Category>>;
   director?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   originalLanguage?: Maybe<Scalars['String']['output']>;
@@ -79,6 +87,7 @@ export type NewUserInput = {
 
 export type Query = {
   __typename?: 'Query';
+  categories: Array<Category>;
   getFilmById?: Maybe<Film>;
   lastFilms?: Maybe<Array<Film>>;
   searchFilms: Array<Film>;
@@ -125,6 +134,11 @@ export type SignInQueryVariables = Exact<{
 
 
 export type SignInQuery = { __typename?: 'Query', signIn: { __typename?: 'GetUserOutput', email: string, username: string } };
+
+export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: number, name: string }> };
 
 export type LastFilmsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -226,6 +240,46 @@ export type SignInQueryHookResult = ReturnType<typeof useSignInQuery>;
 export type SignInLazyQueryHookResult = ReturnType<typeof useSignInLazyQuery>;
 export type SignInSuspenseQueryHookResult = ReturnType<typeof useSignInSuspenseQuery>;
 export type SignInQueryResult = Apollo.QueryResult<SignInQuery, SignInQueryVariables>;
+export const GetCategoriesDocument = gql`
+    query GetCategories {
+  categories {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetCategoriesQuery__
+ *
+ * To run a query within a React component, call `useGetCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+      }
+export function useGetCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+        }
+export function useGetCategoriesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+        }
+export type GetCategoriesQueryHookResult = ReturnType<typeof useGetCategoriesQuery>;
+export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategoriesLazyQuery>;
+export type GetCategoriesSuspenseQueryHookResult = ReturnType<typeof useGetCategoriesSuspenseQuery>;
+export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
 export const LastFilmsDocument = gql`
     query LastFilms {
   lastFilms {

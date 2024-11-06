@@ -5,13 +5,14 @@ import { AppDataSource } from "./src/db/data-source";
 import UserResolver from "./src/resolvers/UserResolver";
 import AvatarResolver from "./src/resolvers/AvatarResolver";
 import FilmResolver from "./src/resolvers/FilmResolver";
+import CategoryResolver from "./src/resolvers/CategoryResolver";
 
 const { APP_PORT } = process.env;
 
 (async () => {
   await AppDataSource.initialize();
   const schema = await buildSchema({
-    resolvers: [UserResolver, AvatarResolver, FilmResolver],
+    resolvers: [UserResolver, AvatarResolver, FilmResolver, CategoryResolver],
   });
 
   const server = new ApolloServer({
