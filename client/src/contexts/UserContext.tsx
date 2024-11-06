@@ -5,7 +5,6 @@ import {
   ReactNode,
   useEffect,
 } from "react";
-
 import { client } from "../services/connection";
 import {
   GetUserByEmailDocument,
@@ -16,9 +15,12 @@ import {
 
 interface UserContextType {
   user: User | null;
+  email: string | null; // Track email separately
   loading: boolean;
   error: unknown;
-  fetchUserByEmail: () => void;
+  fetchUserByEmail: (email: string) => void;
+  setEmail: (email: string) => void; // Set the email
+  setUser: (user: User | null) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -35,17 +37,18 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [email, setEmail] = useState<string | null>(null); // Store the email
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<unknown>(null);
 
-  //const hardcodedEmail = "dark.suspense@example.com";
-  //const hardcodedEmail = "mystery.hunter@example.com";
-  //const hardcodedEmail = "noir.master@example.com";
-  const hardcodedEmail = "chilling.thrill@example.com";
-  //const hardcodedEmail = "shadow.watcher@example.com";
-  //const hardcodedEmail = "user@user.com";
+  // Fetch user data based on the email whenever it changes
+  useEffect(() => {
+    if (email) {
+      fetchUserByEmail(email); // Automatically fetch user data if email is set
+    }
+  }, [email]);
 
-  const fetchUserByEmail = async () => {
+  const fetchUserByEmail = async (email: string) => {
     setLoading(true);
     setError(null);
 
@@ -55,11 +58,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         GetUserByEmailQueryVariables
       >({
         query: GetUserByEmailDocument,
-        variables: { email: hardcodedEmail },
+        variables: { email },
       });
 
       if (data.getUserByEmail) {
-        setUser(data.getUserByEmail);
+        setUser(data.getUserByEmail); // Set the user data when found
       } else {
         setUser(null);
         setError("User not found");
@@ -71,12 +74,18 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  useEffect(() => {
-    fetchUserByEmail();
-  }, []);
-
   return (
-    <UserContext.Provider value={{ user, loading, error, fetchUserByEmail }}>
+    <UserContext.Provider
+      value={{
+        user,
+        email,
+        loading,
+        error,
+        fetchUserByEmail,
+        setEmail,
+        setUser,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

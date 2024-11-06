@@ -1,17 +1,11 @@
 import { useUser } from "../contexts/UserContext";
 
 const Navbar = () => {
-  const { user, loading, error } = useUser();
-
+  const { user, loading } = useUser();
   if (loading) {
     return <p>Loading...</p>;
   }
 
-  if (error) {
-    console.error("Error loading user data:", error);
-  }
-
-  // Determine the avatar image path
   const avatarImagePath = user?.avatar?.image || "/default-user.png";
 
   return (
