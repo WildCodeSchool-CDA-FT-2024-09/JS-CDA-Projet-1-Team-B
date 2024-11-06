@@ -1,6 +1,7 @@
 import { CastMember, CrewMember, FilmCredits, Film } from "../types/film.types";
 import { AppDataSource } from "../db/data-source";
 import { Film as FilmEntity } from "../entities/Film";
+import { Category as CategoryEntity } from "../entities/Category";
 import * as fs from "fs/promises";
 import * as path from "path";
 
@@ -11,6 +12,7 @@ async function resetDatabase() {
     // Supprimer les anciennes données de la table film
     await queryRunner.query("DELETE FROM film");
     await queryRunner.query("DELETE FROM User");
+    await queryRunner.query("DELETE FROM Category");
 
     // Réinitialiser les identifiants auto-incrémentés
     await queryRunner.query('DELETE FROM sqlite_sequence WHERE name = "film"');
@@ -28,7 +30,11 @@ async function resetDatabase() {
 }
 
 // Fonction pour insérer un film
-async function insertFilm(filmData: Film, filmCredits: FilmCredits) {
+async function insertFilm(
+  filmData: Film,
+  filmCredits: FilmCredits,
+  allCategories: CategoryEntity[]
+) {
   let film = await FilmEntity.findOneBy({ tmdbId: filmData.id });
   if (!film) {
     film = new FilmEntity();
@@ -54,7 +60,15 @@ async function insertFilm(filmData: Film, filmCredits: FilmCredits) {
     );
     film.actors = actorNames.join(", ");
 
-    // Sauvegarder le film avec les genres associés
+    // Associer les catégories correspondantes
+    const matchingCategories = allCategories.filter((category) =>
+      filmData.genre_ids.includes(category.id)
+    );
+
+    // Assigner les catégories trouvées au film
+    film.categories = matchingCategories;
+
+    // Sauvegarder le film
     await film.save();
   }
 }
@@ -76,8 +90,30 @@ async function seedDatabase() {
       { encoding: "utf-8" }
     );
 
+    const categoriesData = await fs.readFile(
+      path.join(__dirname, "categories.json"),
+      { encoding: "utf-8" }
+    );
+
     const films: Film[] = JSON.parse(rawData);
     const credits: FilmCredits[] = JSON.parse(creditsData);
+    const categories = JSON.parse(categoriesData);
+
+    await Promise.all(
+      categories.map(async (category: { id: number; name: string }) => {
+        let categoryEntity = await CategoryEntity.findOneBy({
+          id: category.id,
+        });
+        if (!categoryEntity) {
+          categoryEntity = new CategoryEntity();
+          categoryEntity.id = category.id;
+          categoryEntity.name = category.name;
+          await categoryEntity.save();
+        }
+      })
+    );
+
+    const allCategories = await CategoryEntity.find();
 
     await Promise.all(
       films.map(async (filmData: Film) => {
@@ -85,7 +121,7 @@ async function seedDatabase() {
           (credit: FilmCredits) => credit.filmId === filmData.id
         );
         if (filmCredits) {
-          await insertFilm(filmData, filmCredits);
+          await insertFilm(filmData, filmCredits, allCategories);
         }
       })
     );
