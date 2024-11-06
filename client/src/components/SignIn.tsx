@@ -16,7 +16,7 @@ export default function SignIn() {
   });
 
   const onSubmit = async (formData: Schema) => {
-    signIn({
+    await signIn({
       variables: { body: formData },
     });
   };
@@ -83,7 +83,7 @@ export default function SignIn() {
           <button
             type="submit"
             className={loading ? `btn-red bg-gray-500` : `btn-red`}
-            disabled={loading ? true : false}
+            disabled={loading}
           >
             Connexion
           </button>

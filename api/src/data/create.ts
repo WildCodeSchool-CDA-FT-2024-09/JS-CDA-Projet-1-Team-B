@@ -1,19 +1,28 @@
-import { CastMember, CrewMember, FilmCredits, Film } from "../types/film.types";
+import { CastMember, CrewMember, Film, FilmCredits } from "../types/film.types";
 import { AppDataSource } from "../db/data-source";
 import { Film as FilmEntity } from "../entities/Film";
 import * as fs from "fs/promises";
 import * as path from "path";
+import { UserComment } from "../entities/UserComment";
+import { User } from "../entities/User";
+import { UserRating } from "../entities/UserRating";
+import { comments, ratings, users } from "../data/seedData";
+import * as bcrypt from "bcrypt";
+import { Avatar } from "../entities/Avatar";
 
 async function resetDatabase() {
   const queryRunner = AppDataSource.createQueryRunner();
   await queryRunner.startTransaction();
   try {
-    // Supprimer les anciennes données de la table film
+    // Supprimer les anciennes données des différentes tables
+    await queryRunner.query("DELETE FROM user");
+    await queryRunner.query("DELETE FROM avatar");
     await queryRunner.query("DELETE FROM film");
-    await queryRunner.query("DELETE FROM User");
+    await queryRunner.query("DELETE FROM user_comment");
+    await queryRunner.query("DELETE FROM user_rating");
 
     // Réinitialiser les identifiants auto-incrémentés
-    await queryRunner.query('DELETE FROM sqlite_sequence WHERE name = "film"');
+    await queryRunner.query("DELETE FROM sqlite_sequence");
 
     await queryRunner.commitTransaction();
   } catch (error) {
@@ -26,9 +35,15 @@ async function resetDatabase() {
     await queryRunner.release();
   }
 }
+// Tableau permettant de savoir combien de films sont insérés en BDD.
+const filmsTotal: number[] = [];
 
 // Fonction pour insérer un film
-async function insertFilm(filmData: Film, filmCredits: FilmCredits) {
+async function insertFilm(
+  filmData: Film,
+  filmCredits: FilmCredits,
+  countFilms: number[]
+) {
   let film = await FilmEntity.findOneBy({ tmdbId: filmData.id });
   if (!film) {
     film = new FilmEntity();
@@ -54,8 +69,113 @@ async function insertFilm(filmData: Film, filmCredits: FilmCredits) {
     );
     film.actors = actorNames.join(", ");
 
+    countFilms.push(film.tmdbId);
     // Sauvegarder le film avec les genres associés
     await film.save();
+  }
+}
+
+async function insertAvatars(avatarPathFolder: string): Promise<void> {
+  try {
+    const avatarToSave: Avatar[] = [];
+
+    const files = await fs.readdir(avatarPathFolder, {
+      withFileTypes: true,
+    });
+
+    const avatarPaths = files.filter((e) => e.isFile()).map((e) => e.name);
+
+    for (const path of avatarPaths) {
+      const avatar = new Avatar();
+      avatar.image = path;
+      avatarToSave.push(avatar);
+    }
+
+    await Avatar.save(avatarToSave);
+  } catch (e) {
+    console.error("Erreur lors du processus de seed des avatars :", e);
+  }
+}
+
+async function insertUsers(
+  usersArray: { username: string; email: string }[]
+): Promise<number> {
+  try {
+    const passwordExample = "Azertyuiop123";
+
+    const usersToSave: User[] = [];
+
+    const salt = await bcrypt.genSalt(15);
+    const hash = await bcrypt.hash(passwordExample, salt);
+    for (let i = 0; i < usersArray.length; i++) {
+      const user = new User();
+      user.username = usersArray[i].username;
+      user.email = usersArray[i].email;
+      user.password = hash;
+      user.avatar = (await Avatar.findOneBy({ id: 1 })) as Avatar;
+      usersToSave.push(user);
+    }
+    await User.save(usersToSave);
+    return usersToSave.length;
+  } catch (e) {
+    console.error("Erreur lors du processus de seed des utilisateurs :", e);
+    return e;
+  }
+}
+
+async function insertComments(
+  commentsArray: string[],
+  countFilms: number,
+  countUsers: number
+): Promise<void> {
+  try {
+    if (!AppDataSource.isInitialized) {
+      await AppDataSource.initialize();
+    }
+    const commentsToSave: UserComment[] = [];
+
+    for (let i = 1; i <= countFilms; i++) {
+      const randomComment: string =
+        commentsArray[Math.floor(Math.random() * commentsArray.length)];
+      const randomUserId: number = Math.floor(Math.random() * countUsers) + 1;
+
+      const comment = new UserComment();
+      comment.content = randomComment;
+      comment.film = (await FilmEntity.findOneBy({ id: i })) as FilmEntity;
+      comment.user = (await User.findOneBy({ id: randomUserId })) as User;
+      commentsToSave.push(comment);
+    }
+    await UserComment.save(commentsToSave);
+  } catch (e) {
+    console.error("Erreur lors du processus de seed des commentaires :", e);
+  }
+}
+
+async function insertRatings(
+  ratingsArray: number[],
+  countFilms: number,
+  countUsers: number
+): Promise<void> {
+  try {
+    if (!AppDataSource.isInitialized) {
+      await AppDataSource.initialize();
+    }
+    const ratingsToSave: UserRating[] = [];
+
+    for (let i = 1; i <= countFilms; i++) {
+      const randomRating: number =
+        ratingsArray[Math.floor(Math.random() * ratingsArray.length)];
+      const randomUserId: number = Math.floor(Math.random() * countUsers) + 1;
+
+      const rating: UserRating = new UserRating();
+      rating.film = (await FilmEntity.findOneBy({ id: i })) as FilmEntity;
+      rating.user = (await User.findOneBy({ id: randomUserId })) as User;
+      rating.rating = randomRating;
+      ratingsToSave.push(rating);
+    }
+    await UserRating.save(ratingsToSave);
+  } catch (e) {
+    console.error("Erreur lors du processus de seed des notes de films :", e);
   }
 }
 
@@ -85,15 +205,29 @@ async function seedDatabase() {
           (credit: FilmCredits) => credit.filmId === filmData.id
         );
         if (filmCredits) {
-          await insertFilm(filmData, filmCredits);
+          await insertFilm(filmData, filmCredits, filmsTotal);
         }
       })
     );
   } catch (err) {
-    console.error("Erreur lors du processus de seed :", err);
-  } finally {
-    await AppDataSource.destroy();
+    console.error("Erreur lors du processus de seed de la DB :", err);
+    return err;
   }
 }
 
-seedDatabase();
+(async function totalSeeding() {
+  try {
+    await seedDatabase();
+    await insertAvatars("../client/public/avatar");
+    const countUsers: number = await insertUsers(users);
+
+    if (filmsTotal.length > 0 && countUsers > 0) {
+      await insertComments(comments, filmsTotal.length, countUsers);
+      await insertRatings(ratings, filmsTotal.length, countUsers);
+    }
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await AppDataSource.destroy();
+  }
+})();
