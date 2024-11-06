@@ -79,11 +79,17 @@ export type NewUserInput = {
 
 export type Query = {
   __typename?: 'Query';
+  FrenchFilms?: Maybe<Array<Film>>;
   getFilmById?: Maybe<Film>;
   lastFilms?: Maybe<Array<Film>>;
   searchFilms: Array<Film>;
   signIn: GetUserOutput;
   trendyFilms?: Maybe<Array<Film>>;
+};
+
+
+export type QueryFrenchFilmsArgs = {
+  limit?: InputMaybe<Scalars['Float']['input']>;
 };
 
 
@@ -125,6 +131,11 @@ export type SignInQueryVariables = Exact<{
 
 
 export type SignInQuery = { __typename?: 'Query', signIn: { __typename?: 'GetUserOutput', email: string, username: string } };
+
+export type FrenchFilmsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FrenchFilmsQuery = { __typename?: 'Query', FrenchFilms?: Array<{ __typename?: 'Film', id: string, posterPath?: string | null, title: string }> | null };
 
 export type LastFilmsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -226,6 +237,47 @@ export type SignInQueryHookResult = ReturnType<typeof useSignInQuery>;
 export type SignInLazyQueryHookResult = ReturnType<typeof useSignInLazyQuery>;
 export type SignInSuspenseQueryHookResult = ReturnType<typeof useSignInSuspenseQuery>;
 export type SignInQueryResult = Apollo.QueryResult<SignInQuery, SignInQueryVariables>;
+export const FrenchFilmsDocument = gql`
+    query FrenchFilms {
+  FrenchFilms {
+    id
+    posterPath
+    title
+  }
+}
+    `;
+
+/**
+ * __useFrenchFilmsQuery__
+ *
+ * To run a query within a React component, call `useFrenchFilmsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFrenchFilmsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFrenchFilmsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFrenchFilmsQuery(baseOptions?: Apollo.QueryHookOptions<FrenchFilmsQuery, FrenchFilmsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FrenchFilmsQuery, FrenchFilmsQueryVariables>(FrenchFilmsDocument, options);
+      }
+export function useFrenchFilmsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FrenchFilmsQuery, FrenchFilmsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FrenchFilmsQuery, FrenchFilmsQueryVariables>(FrenchFilmsDocument, options);
+        }
+export function useFrenchFilmsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FrenchFilmsQuery, FrenchFilmsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<FrenchFilmsQuery, FrenchFilmsQueryVariables>(FrenchFilmsDocument, options);
+        }
+export type FrenchFilmsQueryHookResult = ReturnType<typeof useFrenchFilmsQuery>;
+export type FrenchFilmsLazyQueryHookResult = ReturnType<typeof useFrenchFilmsLazyQuery>;
+export type FrenchFilmsSuspenseQueryHookResult = ReturnType<typeof useFrenchFilmsSuspenseQuery>;
+export type FrenchFilmsQueryResult = Apollo.QueryResult<FrenchFilmsQuery, FrenchFilmsQueryVariables>;
 export const LastFilmsDocument = gql`
     query LastFilms {
   lastFilms {

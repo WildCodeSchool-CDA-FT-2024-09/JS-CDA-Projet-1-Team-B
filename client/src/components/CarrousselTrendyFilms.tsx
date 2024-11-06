@@ -1,4 +1,5 @@
 import { useTrendyFilmsQuery } from "../generated/graphql-types";
+import { Link } from "react-router-dom";
 
 export default function CarousselTrendyFilms() {
   const { data, loading, error } = useTrendyFilmsQuery();
@@ -10,6 +11,7 @@ export default function CarousselTrendyFilms() {
   return (
     <section className="carousel carousel-center p-10 bg-373D41 overflow-x-auto flex-wrap md:flex-nowrap">
       {data?.trendyFilms?.map((film) => (
+        <Link to={`/films/${film.id}`} key={film.id} className="flex-col">
         <div key={film.id} className="-mr-6">
           <div
             className="carousel-item relative hover:z-10 transition-transform duration-300"
@@ -51,6 +53,7 @@ export default function CarousselTrendyFilms() {
             {film.title || "Titre"}
           </h2>
         </div>
+        </Link>
       ))}
     </section>
   );

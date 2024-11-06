@@ -1,5 +1,6 @@
 import CarousselTrendyFilms from "../components/CarrousselTrendyFilms";
 import LastFilms from "../components/LastFilms";
+import FrenchFilms from "../components/FrenchFilms";
 import { useLocation } from "react-router-dom";
 import { useSearchFilmsQuery } from "../generated/graphql-types";
 import { Criteria } from "../generated/graphql-types";
@@ -38,23 +39,28 @@ export default function HomePage() {
 
   return (
     <main className="block">
-      <h1 className="mt-10 flex justify-center text-3xl text-bloodRed font-bold md:text-3xl md:ml-10 md:mt-6">
+      <h1 className="mt-10 flex justify-center text-3xl text-bloodRed font-bold md:text-4xl md:ml-10 md:mt-10">
         TENDANCES
       </h1>
       <section className="flex justify-center">
         <CarousselTrendyFilms />
       </section>
-      <h2
-        className="text-white mt-6 flex justify-center md:ml-20 p-2 text-2xl font-semibold">
-        Les derniers arrivés
+      <h2 className="text-white mt-6 flex md:justify-start justify-center md:ml-20 p-2 text-3xl font-semibold">
+        Les Derniers Arrivés
       </h2>
       <section className="flex justify-center">
         <LastFilms />
       </section>
+      <h2 className="text-white mt-12 flex md:justify-start justify-center md:ml-20 p-2 text-3xl font-semibold">
+        Les Films Français
+      </h2>
+      <section className="flex justify-center">
+        <FrenchFilms />
+      </section>
       {loading && <p>Chargement...</p>}
-      
+
       {error && <p>Erreur : {error.message}</p>}
-      
+
       {data && data.searchFilms.length > 0 && (
         <ul>
           {data.searchFilms.map((film: Film) => (
@@ -62,7 +68,7 @@ export default function HomePage() {
           ))}
         </ul>
       )}
-      
+
       {data?.searchFilms.length === 0 && searchTerm && <p>Aucun film trouvé</p>}
     </main>
   );
