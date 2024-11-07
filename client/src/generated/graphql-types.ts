@@ -95,6 +95,7 @@ export type Query = {
   __typename?: 'Query';
   FrenchFilms?: Maybe<Array<Film>>;
   categories: Array<Category>;
+  getCategoryById?: Maybe<Category>;
   getFilmById?: Maybe<Film>;
   getUserByEmail?: Maybe<User>;
   lastFilms?: Maybe<Array<Film>>;
@@ -106,6 +107,11 @@ export type Query = {
 
 export type QueryFrenchFilmsArgs = {
   limit?: InputMaybe<Scalars['Float']['input']>;
+};
+
+
+export type QueryGetCategoryByIdArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -167,6 +173,13 @@ export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetCategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: number, name: string }> };
+
+export type GetCategoryByIdQueryVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type GetCategoryByIdQuery = { __typename?: 'Query', getCategoryById?: { __typename?: 'Category', id: number, name: string } | null };
 
 export type FrenchFilmsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -321,6 +334,47 @@ export type GetCategoriesQueryHookResult = ReturnType<typeof useGetCategoriesQue
 export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategoriesLazyQuery>;
 export type GetCategoriesSuspenseQueryHookResult = ReturnType<typeof useGetCategoriesSuspenseQuery>;
 export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
+export const GetCategoryByIdDocument = gql`
+    query GetCategoryById($id: Int!) {
+  getCategoryById(id: $id) {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetCategoryByIdQuery__
+ *
+ * To run a query within a React component, call `useGetCategoryByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCategoryByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCategoryByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetCategoryByIdQuery(baseOptions: Apollo.QueryHookOptions<GetCategoryByIdQuery, GetCategoryByIdQueryVariables> & ({ variables: GetCategoryByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>(GetCategoryByIdDocument, options);
+      }
+export function useGetCategoryByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>(GetCategoryByIdDocument, options);
+        }
+export function useGetCategoryByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>(GetCategoryByIdDocument, options);
+        }
+export type GetCategoryByIdQueryHookResult = ReturnType<typeof useGetCategoryByIdQuery>;
+export type GetCategoryByIdLazyQueryHookResult = ReturnType<typeof useGetCategoryByIdLazyQuery>;
+export type GetCategoryByIdSuspenseQueryHookResult = ReturnType<typeof useGetCategoryByIdSuspenseQuery>;
+export type GetCategoryByIdQueryResult = Apollo.QueryResult<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>;
 export const FrenchFilmsDocument = gql`
     query FrenchFilms {
   FrenchFilms {

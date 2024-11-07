@@ -7,6 +7,7 @@ import {
   useSearchFilmsQuery,
   useLastFilmsQuery,
   useFrenchFilmsQuery,
+  useGetCategoryByIdQuery,
 } from "../generated/graphql-types";
 import { Criteria } from "../generated/graphql-types";
 import { useEffect, useState } from "react";
@@ -47,6 +48,9 @@ export default function HomePage() {
 
   const { data: dataLastFilms } = useLastFilmsQuery();
   const { data: dataFrenchFilms } = useFrenchFilmsQuery();
+  const { data: dataCategory } = useGetCategoryByIdQuery({
+    variables: { id: category ? parseInt(category) : 0 },
+  });
 
   return (
     <main className="block">
@@ -72,11 +76,22 @@ export default function HomePage() {
       {error && <p>Erreur : {error.message}</p>}
 
       {data && data.searchFilms.length > 0 && (
-        <ul>
-          {data?.searchFilms.map((film) => (
-            <li key={film.id}>{film.title}</li>
-          ))}
-        </ul>
+        <DisplayFilms
+          titleh2={
+            searchTerm
+              ? searchBy === Criteria.Title
+                ? `Résultats pour le titre "${searchTerm}"`
+                : searchBy === Criteria.Director
+                  ? `Résultats pour le réalisateur "${searchTerm}"`
+                  : searchBy === Criteria.Actor
+                    ? `Résultats pour l'acteur "${searchTerm}"`
+                    : ""
+              : dataCategory
+                ? `Catégorie : ${dataCategory.getCategoryById?.name}`
+                : ""
+          }
+          data={data.searchFilms}
+        />
       )}
 
       {data?.searchFilms.length === 0 && searchTerm && <p>Aucun film trouvé</p>}
