@@ -145,7 +145,6 @@ export type User = {
   avatar: Avatar;
   email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  password: Scalars['String']['output'];
   username: Scalars['String']['output'];
 };
 
@@ -190,7 +189,7 @@ export type GetUserByEmailQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByEmailQuery = { __typename?: 'Query', getUserByEmail?: { __typename?: 'User', id: string, username: string, email: string, password: string, avatar: { __typename?: 'Avatar', id: string, image: string } } | null };
+export type GetUserByEmailQuery = { __typename?: 'Query', getUserByEmail?: { __typename?: 'User', id: string, username: string, email: string, avatar: { __typename?: 'Avatar', id: string, image: string } } | null };
 
 export type GetFilmByIdQueryVariables = Exact<{
   getFilmByIdId: Scalars['Int']['input'];
@@ -451,7 +450,6 @@ export const GetUserByEmailDocument = gql`
     id
     username
     email
-    password
     avatar {
       id
       image
