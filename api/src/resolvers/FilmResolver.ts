@@ -39,6 +39,21 @@ export default class FilmResolver {
     });
   }
 
+  @Query(() => [Film], { nullable: true })
+  async FrenchFilms(
+    @Arg("limit", { nullable: true, defaultValue: 4 }) limit: number
+  ): Promise<Film[]> {
+    return Film.find({
+      where: {
+        originalLanguage: "fr",
+      },
+      order: {
+        releaseDate: "DESC",
+      },
+      take: limit,
+    });
+  }
+
   @Query(() => Film, { nullable: true })
   async getFilmById(@Arg("id", () => Int) id: number): Promise<Film | null> {
     const film = await Film.findOne({ where: { id } });
@@ -48,12 +63,24 @@ export default class FilmResolver {
   @Query(() => [Film])
   async searchFilms(
     @Arg("searchTerm", () => String) searchTerm: string,
-    @Arg("searchBy", () => Criteria) searchBy: Criteria
+    @Arg("searchBy", () => Criteria) searchBy: Criteria,
+    @Arg("category", () => Int, { nullable: true }) category: number
   ): Promise<Film[]> {
+    if (category) {
+      return await Film.find({
+        relations: ["categories"],
+        where: {
+          categories: { id: category },
+        },
+      });
+    }
     // Trim spaces at the start and end of the string
     const cleanedSearchTerm = `%${searchTerm.trim()}%`;
 
-    return await Film.find({ where: { [searchBy]: Like(cleanedSearchTerm) } });
+    return await Film.find({
+      where: { [searchBy]: Like(cleanedSearchTerm) },
+      relations: ["categories"],
+    });
   }
   @Query(() => [UserComment], { nullable: true })
   async filmComments(

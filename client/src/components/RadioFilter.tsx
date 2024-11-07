@@ -1,4 +1,5 @@
 import { Criteria } from "../generated/graphql-types";
+import CategorySelect from "./CategorySelect";
 
 interface RadioFilterProps {
   criteria: Criteria;
@@ -12,7 +13,7 @@ export default function RadioFilter({
   onClose,
 }: RadioFilterProps) {
   return (
-    <div className="relative flex mx-auto bg-transparent text-white border border-bloodRed rounded-lg pr-6 py-4 pl-10 font-bold transition-all">
+    <div className="relative mx-auto mb-4 bg-transparent text-white border border-bloodRed rounded-lg pr-6 py-4 pl-10 font-bold transition-all">
       <button onClick={onClose} className="absolute top-4 right-4 text-white">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -30,36 +31,41 @@ export default function RadioFilter({
           <line x1="6" y1="6" x2="18" y2="18" />
         </svg>
       </button>
-      <label className="block">
-        <input
-          type="radio"
-          value="title"
-          checked={criteria === Criteria.Title}
-          onChange={() => setCriteria(Criteria.Title)}
-          className="mr-2"
-        />
-        Titre
-      </label>
-      <label className="block ml-4">
-        <input
-          type="radio"
-          value="actor"
-          checked={criteria === Criteria.Actor}
-          onChange={() => setCriteria(Criteria.Actor)}
-          className="mr-2"
-        />
-        Acteur
-      </label>
-      <label className="block ml-4">
-        <input
-          type="radio"
-          value="director"
-          checked={criteria === Criteria.Director}
-          onChange={() => setCriteria(Criteria.Director)}
-          className="mr-2"
-        />
-        Réalisateur
-      </label>
+      <div className="flex space-x-4 mb-4">
+        <label className="flex items-center">
+          <input
+            type="radio"
+            value="title"
+            checked={criteria === Criteria.Title}
+            onChange={() => setCriteria(Criteria.Title)}
+            className="mr-2"
+          />
+          Titre
+        </label>
+        <label className="flex items-center">
+          <input
+            type="radio"
+            value="actor"
+            checked={criteria === Criteria.Actor}
+            onChange={() => setCriteria(Criteria.Actor)}
+            className="mr-2"
+          />
+          Acteur
+        </label>
+        <label className="flex items-center">
+          <input
+            type="radio"
+            value="director"
+            checked={criteria === Criteria.Director}
+            onChange={() => setCriteria(Criteria.Director)}
+            className="mr-2"
+          />
+          Réalisateur
+        </label>
+      </div>
+      <div className="text-left">
+        <CategorySelect />
+      </div>
     </div>
   );
 }
