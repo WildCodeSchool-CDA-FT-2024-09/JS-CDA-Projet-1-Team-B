@@ -27,6 +27,13 @@ export type AvatarInput = {
   image: Scalars['String']['input'];
 };
 
+export type Category = {
+  __typename?: 'Category';
+  films: Array<Film>;
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+};
+
 /** Les critères de recherche... */
 export enum Criteria {
   Actor = 'actor',
@@ -37,6 +44,7 @@ export enum Criteria {
 export type Film = {
   __typename?: 'Film';
   actors?: Maybe<Scalars['String']['output']>;
+  categories?: Maybe<Array<Category>>;
   director?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   originalLanguage?: Maybe<Scalars['String']['output']>;
@@ -86,6 +94,7 @@ export type NewUserInput = {
 export type Query = {
   __typename?: 'Query';
   FrenchFilms?: Maybe<Array<Film>>;
+  categories: Array<Category>;
   getFilmById?: Maybe<Film>;
   getUserByEmail?: Maybe<User>;
   lastFilms?: Maybe<Array<Film>>;
@@ -116,6 +125,7 @@ export type QueryLastFilmsArgs = {
 
 
 export type QuerySearchFilmsArgs = {
+  category?: InputMaybe<Scalars['Int']['input']>;
   searchBy: Criteria;
   searchTerm: Scalars['String']['input'];
 };
@@ -146,19 +156,17 @@ export type SignUpMutationVariables = Exact<{
 
 export type SignUpMutation = { __typename?: 'Mutation', signUp: string };
 
-export type GetUserByEmailQueryVariables = Exact<{
-  email: Scalars['String']['input'];
-}>;
-
-
-export type GetUserByEmailQuery = { __typename?: 'Query', getUserByEmail?: { __typename?: 'User', id: string, username: string, email: string, password: string, avatar: { __typename?: 'Avatar', id: string, image: string } } | null };
-
 export type SignInQueryVariables = Exact<{
   body: GetUserInput;
 }>;
 
 
 export type SignInQuery = { __typename?: 'Query', signIn: { __typename?: 'GetUserOutput', email: string, username: string } };
+
+export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: number, name: string }> };
 
 export type FrenchFilmsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -177,13 +185,12 @@ export type TrendyFilmsQueryVariables = Exact<{
 
 export type TrendyFilmsQuery = { __typename?: 'Query', trendyFilms?: Array<{ __typename?: 'Film', id: string, posterPath?: string | null, title: string }> | null };
 
-export type SearchFilmsQueryVariables = Exact<{
-  searchTerm: Scalars['String']['input'];
-  searchBy: Criteria;
+export type GetUserByEmailQueryVariables = Exact<{
+  email: Scalars['String']['input'];
 }>;
 
 
-export type SearchFilmsQuery = { __typename?: 'Query', searchFilms: Array<{ __typename?: 'Film', id: string, title: string, releaseDate: string, popularity: number, posterPath?: string | null, voteAverage: number, voteCount: number, overview?: string | null, originalLanguage?: string | null, director?: string | null, actors?: string | null }> };
+export type GetUserByEmailQuery = { __typename?: 'Query', getUserByEmail?: { __typename?: 'User', id: string, username: string, email: string, avatar: { __typename?: 'Avatar', id: string, image: string } } | null };
 
 export type GetFilmByIdQueryVariables = Exact<{
   getFilmByIdId: Scalars['Int']['input'];
@@ -191,6 +198,15 @@ export type GetFilmByIdQueryVariables = Exact<{
 
 
 export type GetFilmByIdQuery = { __typename?: 'Query', getFilmById?: { __typename?: 'Film', actors?: string | null, director?: string | null, id: string, originalLanguage?: string | null, overview?: string | null, popularity: number, posterPath?: string | null, releaseDate: string, title: string } | null };
+
+export type SearchFilmsQueryVariables = Exact<{
+  searchTerm: Scalars['String']['input'];
+  searchBy: Criteria;
+  category: Scalars['Int']['input'];
+}>;
+
+
+export type SearchFilmsQuery = { __typename?: 'Query', searchFilms: Array<{ __typename?: 'Film', id: string, title: string, releaseDate: string, popularity: number, posterPath?: string | null, voteAverage: number, voteCount: number, overview?: string | null, originalLanguage?: string | null, director?: string | null, actors?: string | null, categories?: Array<{ __typename?: 'Category', id: number, name: string }> | null }> };
 
 
 export const SignUpDocument = gql`
@@ -224,53 +240,6 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignU
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
-export const GetUserByEmailDocument = gql`
-    query getUserByEmail($email: String!) {
-  getUserByEmail(email: $email) {
-    id
-    username
-    email
-    password
-    avatar {
-      id
-      image
-    }
-  }
-}
-    `;
-
-/**
- * __useGetUserByEmailQuery__
- *
- * To run a query within a React component, call `useGetUserByEmailQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUserByEmailQuery({
- *   variables: {
- *      email: // value for 'email'
- *   },
- * });
- */
-export function useGetUserByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables> & ({ variables: GetUserByEmailQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
-      }
-export function useGetUserByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
-        }
-export function useGetUserByEmailSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
-        }
-export type GetUserByEmailQueryHookResult = ReturnType<typeof useGetUserByEmailQuery>;
-export type GetUserByEmailLazyQueryHookResult = ReturnType<typeof useGetUserByEmailLazyQuery>;
-export type GetUserByEmailSuspenseQueryHookResult = ReturnType<typeof useGetUserByEmailSuspenseQuery>;
-export type GetUserByEmailQueryResult = Apollo.QueryResult<GetUserByEmailQuery, GetUserByEmailQueryVariables>;
 export const SignInDocument = gql`
     query SignIn($body: GetUserInput!) {
   signIn(body: $body) {
@@ -312,6 +281,46 @@ export type SignInQueryHookResult = ReturnType<typeof useSignInQuery>;
 export type SignInLazyQueryHookResult = ReturnType<typeof useSignInLazyQuery>;
 export type SignInSuspenseQueryHookResult = ReturnType<typeof useSignInSuspenseQuery>;
 export type SignInQueryResult = Apollo.QueryResult<SignInQuery, SignInQueryVariables>;
+export const GetCategoriesDocument = gql`
+    query GetCategories {
+  categories {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetCategoriesQuery__
+ *
+ * To run a query within a React component, call `useGetCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+      }
+export function useGetCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+        }
+export function useGetCategoriesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+        }
+export type GetCategoriesQueryHookResult = ReturnType<typeof useGetCategoriesQuery>;
+export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategoriesLazyQuery>;
+export type GetCategoriesSuspenseQueryHookResult = ReturnType<typeof useGetCategoriesSuspenseQuery>;
+export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
 export const FrenchFilmsDocument = gql`
     query FrenchFilms {
   FrenchFilms {
@@ -436,57 +445,52 @@ export type TrendyFilmsQueryHookResult = ReturnType<typeof useTrendyFilmsQuery>;
 export type TrendyFilmsLazyQueryHookResult = ReturnType<typeof useTrendyFilmsLazyQuery>;
 export type TrendyFilmsSuspenseQueryHookResult = ReturnType<typeof useTrendyFilmsSuspenseQuery>;
 export type TrendyFilmsQueryResult = Apollo.QueryResult<TrendyFilmsQuery, TrendyFilmsQueryVariables>;
-export const SearchFilmsDocument = gql`
-    query SearchFilms($searchTerm: String!, $searchBy: Criteria!) {
-  searchFilms(searchTerm: $searchTerm, searchBy: $searchBy) {
+export const GetUserByEmailDocument = gql`
+    query getUserByEmail($email: String!) {
+  getUserByEmail(email: $email) {
     id
-    title
-    releaseDate
-    popularity
-    posterPath
-    voteAverage
-    voteCount
-    overview
-    originalLanguage
-    director
-    actors
+    username
+    email
+    avatar {
+      id
+      image
+    }
   }
 }
     `;
 
 /**
- * __useSearchFilmsQuery__
+ * __useGetUserByEmailQuery__
  *
- * To run a query within a React component, call `useSearchFilmsQuery` and pass it any options that fit your needs.
- * When your component renders, `useSearchFilmsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUserByEmailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useSearchFilmsQuery({
+ * const { data, loading, error } = useGetUserByEmailQuery({
  *   variables: {
- *      searchTerm: // value for 'searchTerm'
- *      searchBy: // value for 'searchBy'
+ *      email: // value for 'email'
  *   },
  * });
  */
-export function useSearchFilmsQuery(baseOptions: Apollo.QueryHookOptions<SearchFilmsQuery, SearchFilmsQueryVariables> & ({ variables: SearchFilmsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useGetUserByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables> & ({ variables: GetUserByEmailQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SearchFilmsQuery, SearchFilmsQueryVariables>(SearchFilmsDocument, options);
+        return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
       }
-export function useSearchFilmsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchFilmsQuery, SearchFilmsQueryVariables>) {
+export function useGetUserByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SearchFilmsQuery, SearchFilmsQueryVariables>(SearchFilmsDocument, options);
+          return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
         }
-export function useSearchFilmsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<SearchFilmsQuery, SearchFilmsQueryVariables>) {
+export function useGetUserByEmailSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<SearchFilmsQuery, SearchFilmsQueryVariables>(SearchFilmsDocument, options);
+          return Apollo.useSuspenseQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
         }
-export type SearchFilmsQueryHookResult = ReturnType<typeof useSearchFilmsQuery>;
-export type SearchFilmsLazyQueryHookResult = ReturnType<typeof useSearchFilmsLazyQuery>;
-export type SearchFilmsSuspenseQueryHookResult = ReturnType<typeof useSearchFilmsSuspenseQuery>;
-export type SearchFilmsQueryResult = Apollo.QueryResult<SearchFilmsQuery, SearchFilmsQueryVariables>;
+export type GetUserByEmailQueryHookResult = ReturnType<typeof useGetUserByEmailQuery>;
+export type GetUserByEmailLazyQueryHookResult = ReturnType<typeof useGetUserByEmailLazyQuery>;
+export type GetUserByEmailSuspenseQueryHookResult = ReturnType<typeof useGetUserByEmailSuspenseQuery>;
+export type GetUserByEmailQueryResult = Apollo.QueryResult<GetUserByEmailQuery, GetUserByEmailQueryVariables>;
 export const GetFilmByIdDocument = gql`
     query GetFilmById($getFilmByIdId: Int!) {
   getFilmById(id: $getFilmByIdId) {
@@ -535,3 +539,59 @@ export type GetFilmByIdQueryHookResult = ReturnType<typeof useGetFilmByIdQuery>;
 export type GetFilmByIdLazyQueryHookResult = ReturnType<typeof useGetFilmByIdLazyQuery>;
 export type GetFilmByIdSuspenseQueryHookResult = ReturnType<typeof useGetFilmByIdSuspenseQuery>;
 export type GetFilmByIdQueryResult = Apollo.QueryResult<GetFilmByIdQuery, GetFilmByIdQueryVariables>;
+export const SearchFilmsDocument = gql`
+    query SearchFilms($searchTerm: String!, $searchBy: Criteria!, $category: Int!) {
+  searchFilms(searchTerm: $searchTerm, searchBy: $searchBy, category: $category) {
+    id
+    title
+    releaseDate
+    popularity
+    posterPath
+    voteAverage
+    voteCount
+    overview
+    originalLanguage
+    director
+    actors
+    categories {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useSearchFilmsQuery__
+ *
+ * To run a query within a React component, call `useSearchFilmsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchFilmsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchFilmsQuery({
+ *   variables: {
+ *      searchTerm: // value for 'searchTerm'
+ *      searchBy: // value for 'searchBy'
+ *      category: // value for 'category'
+ *   },
+ * });
+ */
+export function useSearchFilmsQuery(baseOptions: Apollo.QueryHookOptions<SearchFilmsQuery, SearchFilmsQueryVariables> & ({ variables: SearchFilmsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchFilmsQuery, SearchFilmsQueryVariables>(SearchFilmsDocument, options);
+      }
+export function useSearchFilmsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchFilmsQuery, SearchFilmsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchFilmsQuery, SearchFilmsQueryVariables>(SearchFilmsDocument, options);
+        }
+export function useSearchFilmsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<SearchFilmsQuery, SearchFilmsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<SearchFilmsQuery, SearchFilmsQueryVariables>(SearchFilmsDocument, options);
+        }
+export type SearchFilmsQueryHookResult = ReturnType<typeof useSearchFilmsQuery>;
+export type SearchFilmsLazyQueryHookResult = ReturnType<typeof useSearchFilmsLazyQuery>;
+export type SearchFilmsSuspenseQueryHookResult = ReturnType<typeof useSearchFilmsSuspenseQuery>;
+export type SearchFilmsQueryResult = Apollo.QueryResult<SearchFilmsQuery, SearchFilmsQueryVariables>;

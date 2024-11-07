@@ -62,11 +62,23 @@ export default class FilmResolver {
   @Query(() => [Film])
   async searchFilms(
     @Arg("searchTerm", () => String) searchTerm: string,
-    @Arg("searchBy", () => Criteria) searchBy: Criteria
+    @Arg("searchBy", () => Criteria) searchBy: Criteria,
+    @Arg("category", () => Int, { nullable: true }) category: number
   ): Promise<Film[]> {
+    if (category) {
+      return await Film.find({
+        relations: ["categories"],
+        where: {
+          categories: { id: category },
+        },
+      });
+    }
     // Trim spaces at the start and end of the string
     const cleanedSearchTerm = `%${searchTerm.trim()}%`;
 
-    return await Film.find({ where: { [searchBy]: Like(cleanedSearchTerm) } });
+    return await Film.find({
+      where: { [searchBy]: Like(cleanedSearchTerm) },
+      relations: ["categories"],
+    });
   }
 }

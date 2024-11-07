@@ -9,7 +9,6 @@ import {
   useFrenchFilmsQuery,
 } from "../generated/graphql-types";
 import { Criteria } from "../generated/graphql-types";
-import { Film } from "../generated/graphql-types";
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
@@ -17,6 +16,7 @@ export default function HomePage() {
   const queryParams = new URLSearchParams(location.search); // Récupérer les query params
   const searchTerm = queryParams.get("search") || "";
   const searchType = queryParams.get("type") || "title";
+  const category = queryParams.get("category") || "";
 
   // Convertir le string en type Criteria, avec "title" comme valeur par défaut
   const searchBy: Criteria = (Object.values(Criteria) as string[]).includes(
@@ -32,15 +32,18 @@ export default function HomePage() {
     variables: {
       searchTerm: searchTerm,
       searchBy: searchBy,
+      category: category ? parseInt(category) : 0,
     },
-    skip: !triggerSearch, // La requête est lancée uniquement si triggerSearch est true
+    skip: !triggerSearch,
   });
 
   useEffect(() => {
-    if (searchTerm.length > 0) {
+    if (searchTerm.length > 0 || category) {
       setTriggerSearch(true);
+    } else {
+      setTriggerSearch(false);
     }
-  }, [searchTerm, searchBy]);
+  }, [searchTerm, searchBy, category]);
 
   const { data: dataLastFilms } = useLastFilmsQuery();
   const { data: dataFrenchFilms } = useFrenchFilmsQuery();
@@ -54,6 +57,7 @@ export default function HomePage() {
         <CarousselTrendyFilms />
       </section>
       <section>
+        {" "}
         <DisplayFilms
           titleh2="Les Derniers Arrivés"
           data={dataLastFilms?.lastFilms || []}
@@ -69,7 +73,7 @@ export default function HomePage() {
 
       {data && data.searchFilms.length > 0 && (
         <ul>
-          {data.searchFilms.map((film: Film) => (
+          {data?.searchFilms.map((film) => (
             <li key={film.id}>{film.title}</li>
           ))}
         </ul>

@@ -1,6 +1,14 @@
 import "reflect-metadata";
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import {
+  BaseEntity,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  JoinTable,
+} from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
+import { Category } from "./Category";
 
 @ObjectType()
 @Entity()
@@ -52,4 +60,9 @@ export class Film extends BaseEntity {
   @Field({ nullable: true })
   @Column({ nullable: true })
   director!: string;
+
+  @Field(() => [Category], { nullable: true })
+  @ManyToMany(() => Category, (category) => category.films, { cascade: true })
+  @JoinTable()
+  categories?: Category[];
 }
