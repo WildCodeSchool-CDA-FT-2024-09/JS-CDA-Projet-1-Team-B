@@ -126,6 +126,7 @@ export type QueryLastFilmsArgs = {
 
 export type QuerySearchFilmsArgs = {
   category?: InputMaybe<Scalars['Int']['input']>;
+  decade?: InputMaybe<Scalars['Int']['input']>;
   searchBy: Criteria;
   searchTerm: Scalars['String']['input'];
 };
@@ -203,6 +204,7 @@ export type SearchFilmsQueryVariables = Exact<{
   searchTerm: Scalars['String']['input'];
   searchBy: Criteria;
   category: Scalars['Int']['input'];
+  decade: Scalars['Int']['input'];
 }>;
 
 
@@ -540,8 +542,13 @@ export type GetFilmByIdLazyQueryHookResult = ReturnType<typeof useGetFilmByIdLaz
 export type GetFilmByIdSuspenseQueryHookResult = ReturnType<typeof useGetFilmByIdSuspenseQuery>;
 export type GetFilmByIdQueryResult = Apollo.QueryResult<GetFilmByIdQuery, GetFilmByIdQueryVariables>;
 export const SearchFilmsDocument = gql`
-    query SearchFilms($searchTerm: String!, $searchBy: Criteria!, $category: Int!) {
-  searchFilms(searchTerm: $searchTerm, searchBy: $searchBy, category: $category) {
+    query SearchFilms($searchTerm: String!, $searchBy: Criteria!, $category: Int!, $decade: Int!) {
+  searchFilms(
+    searchTerm: $searchTerm
+    searchBy: $searchBy
+    category: $category
+    decade: $decade
+  ) {
     id
     title
     releaseDate
@@ -576,6 +583,7 @@ export const SearchFilmsDocument = gql`
  *      searchTerm: // value for 'searchTerm'
  *      searchBy: // value for 'searchBy'
  *      category: // value for 'category'
+ *      decade: // value for 'decade'
  *   },
  * });
  */
