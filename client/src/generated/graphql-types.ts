@@ -36,6 +36,7 @@ export type Avatar = {
   __typename?: "Avatar";
   id: Scalars["ID"]["output"];
   image: Scalars["String"]["output"];
+  user?: Maybe<Array<User>>;
 };
 
 export type AvatarInput = {
@@ -60,12 +61,14 @@ export type Film = {
   __typename?: "Film";
   actors?: Maybe<Scalars["String"]["output"]>;
   categories?: Maybe<Array<Category>>;
+  comment?: Maybe<Array<UserComment>>;
   director?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["ID"]["output"];
   originalLanguage?: Maybe<Scalars["String"]["output"]>;
   overview?: Maybe<Scalars["String"]["output"]>;
   popularity: Scalars["Float"]["output"];
   posterPath?: Maybe<Scalars["String"]["output"]>;
+  rating?: Maybe<Array<UserRating>>;
   releaseDate: Scalars["String"]["output"];
   title: Scalars["String"]["output"];
   tmdbId?: Maybe<Scalars["Float"]["output"]>;
@@ -154,9 +157,10 @@ export type QueryTrendyFilmsArgs = {
 export type User = {
   __typename?: "User";
   avatar: Avatar;
+  comment?: Maybe<Array<UserComment>>;
   email: Scalars["String"]["output"];
   id: Scalars["ID"]["output"];
-  password: Scalars["String"]["output"];
+  rating?: Maybe<Array<UserRating>>;
   username: Scalars["String"]["output"];
 };
 
@@ -166,6 +170,13 @@ export type UserComment = {
   created_at: Scalars["DateTimeISO"]["output"];
   film: Film;
   updated_at: Scalars["DateTimeISO"]["output"];
+  user: User;
+};
+
+export type UserRating = {
+  __typename?: "UserRating";
+  film: Film;
+  rating: Scalars["Float"]["output"];
   user: User;
 };
 

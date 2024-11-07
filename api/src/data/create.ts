@@ -16,6 +16,8 @@ async function resetDatabase() {
   await queryRunner.startTransaction();
   try {
     // Supprimer les anciennes données des différentes tables
+    await queryRunner.query("DELETE FROM user_comment");
+    await queryRunner.query("DELETE FROM user_rating");
     await queryRunner.query("DELETE FROM user");
     await queryRunner.query("DELETE FROM avatar");
     await queryRunner.query("DELETE FROM film");
