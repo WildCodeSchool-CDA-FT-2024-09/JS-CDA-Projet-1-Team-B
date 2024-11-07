@@ -39,15 +39,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
-    // Load user from localStorage when the app initializes
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser)); // Restore user from localStorage
-    }
-  }, []);
-
-  useEffect(() => {
-    // Watch email changes and fetch user data when email changes
     if (email) {
       fetchUserByEmail(email);
     }
@@ -65,10 +56,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 
       if (data.getUserByEmail) {
         setUser(data.getUserByEmail);
-        localStorage.setItem("user", JSON.stringify(data.getUserByEmail));
       } else {
         setUser(null);
-        localStorage.removeItem("user");
         throw new Error("No user match this email");
       }
     } catch (err) {
