@@ -5,9 +5,9 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
 } from "typeorm";
 import { User } from "../entities/User";
 import { Film } from "../entities/Film";
@@ -38,11 +38,11 @@ export class UserComment extends BaseEntity {
   @Column()
   content!: string;
 
-  @Field()
-  @ManyToMany(() => Film, (film) => film.id)
+  @Field(() => Film)
+  @ManyToOne(() => Film, (Film) => Film.comment, { cascade: true })
   film!: Film;
 
-  @Field()
-  @ManyToMany(() => User, (user) => user.id)
+  @Field(() => User)
+  @ManyToOne(() => User, (User) => User.comment, { cascade: true })
   user!: User;
 }
