@@ -5,8 +5,8 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
   OneToMany,
+  ManyToOne,
 } from "typeorm";
 import { Avatar } from "./Avatar";
 import { UserComment } from "../entities/UserComment";

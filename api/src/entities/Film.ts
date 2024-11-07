@@ -4,9 +4,9 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
+  OneToMany,
   ManyToMany,
   JoinTable,
-  OneToMany,
 } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import { Category } from "./Category";
