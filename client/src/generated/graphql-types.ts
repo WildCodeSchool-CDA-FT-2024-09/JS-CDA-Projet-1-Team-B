@@ -155,7 +155,6 @@ export type User = {
   comment?: Maybe<Array<UserComment>>;
   email: Scalars["String"]["output"];
   id: Scalars["ID"]["output"];
-  password: Scalars["String"]["output"];
   rating?: Maybe<Array<UserRating>>;
   username: Scalars["String"]["output"];
 };
