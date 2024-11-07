@@ -4,11 +4,14 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
+  OneToMany,
   ManyToMany,
   JoinTable,
 } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import { Category } from "./Category";
+import { UserComment } from "../entities/UserComment";
+import { UserRating } from "../entities/UserRating";
 
 @ObjectType()
 @Entity()
@@ -65,4 +68,16 @@ export class Film extends BaseEntity {
   @ManyToMany(() => Category, (category) => category.films, { cascade: true })
   @JoinTable()
   categories?: Category[];
+
+  @Field(() => [UserComment], { nullable: true })
+  @OneToMany(() => UserComment, (UserComment) => UserComment.film, {
+    onDelete: "CASCADE",
+  })
+  comment?: UserComment[];
+
+  @Field(() => [UserRating], { nullable: true })
+  @OneToMany(() => UserRating, (UserRating) => UserRating.film, {
+    onDelete: "CASCADE",
+  })
+  rating?: UserRating[];
 }
