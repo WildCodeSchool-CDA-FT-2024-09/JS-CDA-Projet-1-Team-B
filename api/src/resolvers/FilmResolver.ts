@@ -95,7 +95,7 @@ export default class FilmResolver {
       where: {
         film: { id: filmId },
       },
-      relations: ["user"],
+      relations: ["user", "user.avatar"],
     });
   }
 }

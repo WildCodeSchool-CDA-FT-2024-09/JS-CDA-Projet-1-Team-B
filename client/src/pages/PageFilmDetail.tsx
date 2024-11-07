@@ -1,20 +1,16 @@
-// FilmDetail.tsx
-import { useParams } from "react-router-dom"; // Import useParams to get route params
+import { useParams } from "react-router-dom";
 import StarRating from "../components/NoteGlobale";
 import { useGetFilmByIdQuery } from "../generated/graphql-types";
-//import { useUser } from "../contexts/UserContext";
-//import FilmComments from "../components/Film comments";
+import FilmComments from "../components/FilmComments";
 
 const FilmDetail = () => {
-  // Get the film ID from the URL
-  const { id } = useParams<{ id: string }>(); // The film ID is now dynamic from the URL
+  const { id } = useParams<{ id: string }>();
   const basePosterUrl = "https://image.tmdb.org/t/p/original/"; // Base URL for TMDB posters
-
-  //const { user } = useUser();
+  const filmId = id ? parseInt(id) : NaN;
 
   // Fetch film data using the dynamic ID from the URL
   const { loading, error, data } = useGetFilmByIdQuery({
-    variables: { getFilmByIdId: parseInt(id!) }, // Convert string to number if necessary
+    variables: { getFilmByIdId: filmId },
   });
 
   // Handling loading and error states
@@ -78,10 +74,12 @@ const FilmDetail = () => {
           <StarRating popularity={film.popularity} />
         </section>
       </article>
-      {/* <section className="mt-10 w-[70%] space-y-6">
-        <h2 className="text-xl text-white font-semibold mb-4">User Comments</h2>
-        <FilmComments filmId={film.id} />
-      </section> */}
+      <section className="mt-10 w-[70%] space-y-6">
+        <h2 className="text-xl text-white font-semibold mb-4">
+          Commentaires des utilisateurs
+        </h2>
+        <FilmComments filmId={Number(film.id)} />
+      </section>
     </main>
   );
 };
