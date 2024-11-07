@@ -38,13 +38,10 @@ export default class FilmResolver {
       take: limit,
     });
   }
+
   @Query(() => Film, { nullable: true })
   async getFilmById(@Arg("id", () => Int) id: number): Promise<Film | null> {
-    const film = await Film.findOne({
-      where: { id },
-      relations: ["comments"],
-    });
-
+    const film = await Film.findOne({ where: { id } });
     return film || null;
   }
 
