@@ -61,6 +61,25 @@ class GetUserInput {
   password!: string;
 }
 
+@InputType()
+class updateUsernameInput {
+  @Field({ nullable: false })
+  @IsString()
+  @MinLength(3, { message: "Minimum 3 caractères" })
+  @MaxLength(10, { message: "Maximum 10 caractères" })
+  @Matches(/^[a-zA-Z0-9]*$/)
+  @NotContains(" ", { message: "Merci de ne pas inclure d'espace." })
+  username!: string;
+
+  @Field({ nullable: false })
+  @IsString()
+  @MinLength(3, { message: "Minimum 3 caractères" })
+  @MaxLength(10, { message: "Maximum 10 caractères" })
+  @Matches(/^[a-zA-Z0-9]*$/)
+  @NotContains(" ", { message: "Merci de ne pas inclure d'espace." })
+  newUsername!: string;
+}
+
 @ObjectType()
 class GetUserOutput {
   @Field({ nullable: false })
@@ -116,6 +135,54 @@ export default class UserResolver {
     } catch (error) {
       console.error("Error fetching user:", error);
       throw new Error("Error retrieving user information.");
+    }
+  }
+
+  @Mutation(() => User)
+  async updateUsername(@Arg("body") body: updateUsernameInput): Promise<User> {
+    try {
+      const [user] = await User.find({
+        where: { username: body.username },
+        relations: ["avatar"],
+      });
+      if (!user) {
+        throw new GraphQLError(
+          "Impossible de vérifier votre pseudo, veuillez réessayer plus tard."
+        );
+      }
+      if (user?.username === body.newUsername) {
+        throw new GraphQLError(
+          "C'est déjà votre pseudo, impossible de le modifier davantage."
+        );
+      }
+      if (user?.username !== body.username) {
+        throw new GraphQLError(
+          "Votre pseudo ne correspond pas à celui enregistrer. Impossible de continuer la modification."
+        );
+      }
+
+      const verify = await User.findOneBy({ username: body.newUsername });
+
+      if (verify !== null) {
+        throw new GraphQLError(
+          "Pseudo déjà utiliser. Veuillez en choisir un autre."
+        );
+      }
+      user.username = body.newUsername;
+      const update = await User.save(user);
+
+      if (!update) {
+        throw new GraphQLError(
+          "Impossible de modifier votre pseudo, veuillez réessayer plus tard."
+        );
+      }
+      return user;
+    } catch (error) {
+      throw new GraphQLError(error, {
+        extensions: {
+          code: 400,
+        },
+      });
     }
   }
 
