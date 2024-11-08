@@ -1,12 +1,16 @@
+import { useParams } from "react-router-dom";
 import StarRating from "../components/NoteGlobale";
 import { useGetFilmByIdQuery } from "../generated/graphql-types";
+import FilmComments from "../components/FilmComments";
 
 const FilmDetail = () => {
-  // Hardcode the film ID
-  const hardcodedFilmId = 45; // Replace this with the desired film ID
+  const { id } = useParams<{ id: string }>();
   const basePosterUrl = "https://image.tmdb.org/t/p/original/"; // Base URL for TMDB posters
+  const filmId = parseInt(id || "");
+
+  // Fetch film data using the dynamic ID from the URL
   const { loading, error, data } = useGetFilmByIdQuery({
-    variables: { getFilmByIdId: hardcodedFilmId },
+    variables: { getFilmByIdId: filmId },
   });
 
   // Handling loading and error states
@@ -70,6 +74,12 @@ const FilmDetail = () => {
           <StarRating popularity={film.popularity} />
         </section>
       </article>
+      <section className="mt-10 w-[70%] space-y-6">
+        <h2 className="text-xl text-white font-semibold mb-4">
+          Commentaires des utilisateurs
+        </h2>
+        <FilmComments filmId={Number(film.id)} />
+      </section>
     </main>
   );
 };

@@ -10,7 +10,7 @@ export default function StarRating({ popularity }: { popularity: number }) {
   return (
     <div className="rating rating-lg rating-half">
       {[...Array(5)].map((_, index) => (
-        <>
+        <div key={index}>
           {/* First half of the star */}
           <input
             key={`${index}-half-1`}
@@ -35,7 +35,7 @@ export default function StarRating({ popularity }: { popularity: number }) {
             checked={index < fullStars}
             readOnly
           />
-        </>
+        </div>
       ))}
     </div>
   );
