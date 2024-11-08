@@ -6,13 +6,22 @@ import UserResolver from "./src/resolvers/UserResolver";
 import AvatarResolver from "./src/resolvers/AvatarResolver";
 import FilmResolver from "./src/resolvers/FilmResolver";
 import CategoryResolver from "./src/resolvers/CategoryResolver";
+import UserRatingResolver from "./src/resolvers/UserRatingResolver";
+import UserCommentResolver from "./src/resolvers/UserCommentResolver";
 
 const { APP_PORT } = process.env;
 
 (async () => {
   await AppDataSource.initialize();
   const schema = await buildSchema({
-    resolvers: [UserResolver, AvatarResolver, FilmResolver, CategoryResolver],
+    resolvers: [
+      UserResolver,
+      AvatarResolver,
+      FilmResolver,
+      CategoryResolver,
+      UserRatingResolver,
+      UserCommentResolver,
+    ],
   });
 
   const server = new ApolloServer({
