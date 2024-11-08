@@ -5,11 +5,13 @@ export const SEARCH_FILMS = gql`
     $searchTerm: String!
     $searchBy: Criteria!
     $category: Int!
+    $decade: Int!
   ) {
     searchFilms(
       searchTerm: $searchTerm
       searchBy: $searchBy
       category: $category
+      decade: $decade
     ) {
       id
       title
