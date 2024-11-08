@@ -9,13 +9,14 @@ const FilmComments: React.FC<FilmCommentsProps> = ({ filmId }) => {
     variables: { filmId },
   });
 
-  if (loading) return <p>Loading comments...</p>;
-  if (error) return <p>Error loading comments: {error.message}</p>;
+  if (loading) return <p>Chargement des commentaires...</p>;
+  if (error)
+    return <p>Erreur lors du chargement des commentaires : {error.message}</p>;
 
   const comments = data?.filmComments;
 
   if (!comments || comments.length === 0) {
-    return <p>No comments available for this film.</p>;
+    return <p>Aucun commentaire disponible pour ce film.</p>;
   }
   const baseAvatarPath = "/avatar/";
   return (
