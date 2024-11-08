@@ -1,6 +1,6 @@
 import EditButtonSvg from "../../assets/EditButtonSVG.tsx";
 import { useForm } from "react-hook-form";
-import { updateUsernameschema as schema, updateUsernameSchema as Schema } from "../../types/Profile.types.ts";
+import { updateUsernameSchema as schema, updateUsernameType as Schema } from "../../types/Profile.types.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User, useUpdateUsernameMutation } from "../../generated/graphql-types.ts";
 
