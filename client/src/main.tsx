@@ -7,10 +7,10 @@ import "./index.css";
 import App from "./App.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import FilmDetail from "./pages/PageFilmDetail.tsx";
-
 import SignUp from "./components/SignUp.tsx";
 import SignIn from "./components/SignIn.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
+import Profile from "./pages/Profile.tsx";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +31,7 @@ const router = createBrowserRouter([
       },
       { path: "inscription", element: <SignUp /> },
       { path: "connexion", element: <SignIn /> },
+      { path: "profil", element: <Profile /> },
     ],
   },
 ]);
