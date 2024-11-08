@@ -20,6 +20,7 @@ interface UserContextType {
   fetchUserByEmail: (email: string) => void;
   setEmail: (email: string) => void;
   setUser: (user: User | null) => void;
+  logout: () => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -37,6 +38,13 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [email, setEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+    if (storedEmail) {
+      setEmail(storedEmail);
+    }
+  }, []);
 
   useEffect(() => {
     if (email) {
@@ -64,6 +72,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       console.error(err);
     }
   };
+  const logout = () => {
+    setUser(null);
+    setEmail(null);
+    localStorage.removeItem("email");
+  };
 
   return (
     <UserContext.Provider
@@ -73,6 +86,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         fetchUserByEmail,
         setEmail,
         setUser,
+        logout,
       }}
     >
       {children}
