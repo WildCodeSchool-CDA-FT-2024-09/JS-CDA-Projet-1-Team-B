@@ -21,6 +21,7 @@ export default class UserCommentResolver {
           "Impossible de récupérer les commentaires, veuillez réessayer."
         );
       }
+
       return comment;
     } catch (error) {
       throw new GraphQLError(error, {

@@ -27,25 +27,23 @@ export const useUser = () => {
   return context;
 };
 
-export const UserProvider: React.FC<{ children: ReactNode }> = ({
-                                                                  children,
-                                                                }) => {
+export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [email, setEmail] = useState<string | null>(null);
-  
+
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
     if (storedEmail) {
       setEmail(storedEmail);
     }
   }, []);
-  
+
   useEffect(() => {
     if (email) {
       fetchUserByEmail(email);
     }
   }, [email]);
-  
+
   const fetchUserByEmail = async (email: string) => {
     try {
       const { data } = await client.query<
@@ -55,7 +53,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         query: GetUserByEmailDocument,
         variables: { email },
       });
-      
+
       if (data.getUserByEmail) {
         setUser(data.getUserByEmail);
       } else {
@@ -71,7 +69,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     setEmail(null);
     localStorage.removeItem("email");
   };
-  
+
   return (
     <UserContext.Provider
       value={{

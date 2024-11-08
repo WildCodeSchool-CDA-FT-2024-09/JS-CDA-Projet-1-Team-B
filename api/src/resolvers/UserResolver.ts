@@ -141,23 +141,18 @@ export default class UserResolver {
   @Mutation(() => User)
   async updateUsername(@Arg("body") body: updateUsernameInput): Promise<User> {
     try {
-      const user = await User.findOneBy({ username: body.username });
-      const verify = await User.findOneBy({ username: body.newUsername });
-
-      if (user?.username === body.newUsername) {
-        throw new GraphQLError(
-          "C'est déjà votre pseudo, impossible de le modifier davantage."
-        );
-      }
-
+      const [user] = await User.find({
+        where: { username: body.username },
+        relations: ["avatar"],
+      });
       if (!user) {
         throw new GraphQLError(
           "Impossible de vérifier votre pseudo, veuillez réessayer plus tard."
         );
       }
-      if (verify !== null) {
+      if (user?.username === body.newUsername) {
         throw new GraphQLError(
-          "Pseudo déjà utiliser. Veuillez en choisir un autre."
+          "C'est déjà votre pseudo, impossible de le modifier davantage."
         );
       }
       if (user?.username !== body.username) {
@@ -165,26 +160,23 @@ export default class UserResolver {
           "Votre pseudo ne correspond pas à celui enregistrer. Impossible de continuer la modification."
         );
       }
-      const update = await User.update(user.id, {
-        username: body.newUsername,
-      });
-      const [verifyUpdated] = await User.find({
-        where: { username: body.newUsername },
-        relations: ["avatar"],
-      });
 
-      if (update.affected === 0) {
+      const verify = await User.findOneBy({ username: body.newUsername });
+
+      if (verify !== null) {
+        throw new GraphQLError(
+          "Pseudo déjà utiliser. Veuillez en choisir un autre."
+        );
+      }
+      user.username = body.newUsername;
+      const update = await User.save(user);
+
+      if (!update) {
         throw new GraphQLError(
           "Impossible de modifier votre pseudo, veuillez réessayer plus tard."
         );
       }
-      if (verifyUpdated == null) {
-        throw new GraphQLError(
-          "Impossible de vérifier la modification, veuillez réessayer plus tard."
-        );
-      }
-
-      return verifyUpdated;
+      return user;
     } catch (error) {
       throw new GraphQLError(error, {
         extensions: {

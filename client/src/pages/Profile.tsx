@@ -1,20 +1,17 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/UserContext.tsx";
-import { useEffect, useState } from "react";
 import DisplayCommentRating from "../components/Profile/DisplayCommentRating.tsx";
 import ProfileTabs from "../components/Profile/ProfileTabs.tsx";
 import ProfileUsernameForm from "../components/Profile/ProfileUsernameForm.tsx";
 import ProfileEmailForm from "../components/Profile/ProfileEmailForm.tsx";
 import ProfilePwdForm from "../components/Profile/ProfilePwdForm.tsx";
 
-
 export default function Profile() {
   const { user, setUser } = useUser();
   const navigate = useNavigate();
-  
   const [activeTab, setActiveTab] = useState("comments");
-  
-  
+
   // Redirection si l'utilisateur est non connecté
   useEffect(() => {
     if (!user || !user.email) {
@@ -22,9 +19,8 @@ export default function Profile() {
     }
   }, [user, navigate]);
   
-  
   if (!user) return null;
-  
+
   return (
     <>
       <h2 className="text-bloodRed uppercase text-center text-2xl font-semibold tracking-wide pt-2">

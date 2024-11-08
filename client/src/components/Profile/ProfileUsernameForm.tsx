@@ -16,11 +16,10 @@ export default function ProfileUsernameForm({ username, setUser }: {
   } = useForm<Schema>({
     resolver: zodResolver(schema),
   });
-  
+
   const onSubmit = async ({ ...formData }: Schema) => {
     await updateUsername({ variables: { body: { ...formData, username } } });
     if (data?.updateUsername) {
-      
       setUser(data.updateUsername);
     }
   };

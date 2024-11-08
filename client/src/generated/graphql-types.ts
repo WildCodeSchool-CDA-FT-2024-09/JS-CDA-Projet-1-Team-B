@@ -200,6 +200,7 @@ export type UserComment = {
 export type UserRating = {
   __typename?: "UserRating";
   film: Film;
+  id: Scalars["Float"]["output"];
   rating: Scalars["Float"]["output"];
   user: User;
 };
@@ -312,6 +313,7 @@ export type GetUserCommentQuery = {
   __typename?: "Query",
   getUserComment?: Array<{
     __typename?: "UserComment",
+    id: string,
     content: string,
     created_at: any,
     film: { __typename?: "Film", id: string, title: string, releaseDate: string, posterPath?: string | null }
@@ -327,6 +329,7 @@ export type GetUserRatingQuery = {
   __typename?: "Query",
   getUserRating?: Array<{
     __typename?: "UserRating",
+    id: number,
     rating: number,
     film: { __typename?: "Film", id: string, title: string, releaseDate: string, posterPath?: string | null }
   }> | null
@@ -798,6 +801,7 @@ export type TrendyFilmsQueryResult = Apollo.QueryResult<TrendyFilmsQuery, Trendy
 export const GetUserCommentDocument = gql`
     query GetUserComment($getUserCommentId: Float!) {
         getUserComment(id: $getUserCommentId) {
+            id
             content
             created_at
             film {
@@ -851,6 +855,7 @@ export type GetUserCommentQueryResult = Apollo.QueryResult<GetUserCommentQuery, 
 export const GetUserRatingDocument = gql`
     query GetUserRating($getUserRatingId: Float!) {
         getUserRating(id: $getUserRatingId) {
+            id
             rating
             film {
                 id
