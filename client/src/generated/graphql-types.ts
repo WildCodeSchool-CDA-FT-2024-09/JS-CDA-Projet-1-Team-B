@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
 export type Maybe<T> = T | null;
@@ -28,7 +29,6 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   DateTimeISO: { input: any; output: any };
 };
 
@@ -111,7 +111,7 @@ export type Query = {
   __typename?: "Query";
   FrenchFilms?: Maybe<Array<Film>>;
   categories: Array<Category>;
-  filmComments?: Maybe<Array<UserComment>>;
+  getCategoryById?: Maybe<Category>;
   getFilmById?: Maybe<Film>;
   getUserByEmail?: Maybe<User>;
   lastFilms?: Maybe<Array<Film>>;
@@ -124,8 +124,8 @@ export type QueryFrenchFilmsArgs = {
   limit?: InputMaybe<Scalars["Float"]["input"]>;
 };
 
-export type QueryFilmCommentsArgs = {
-  filmId: Scalars["Int"]["input"];
+export type QueryGetCategoryByIdArgs = {
+  id: Scalars["Int"]["input"];
 };
 
 export type QueryGetFilmByIdArgs = {
@@ -142,6 +142,7 @@ export type QueryLastFilmsArgs = {
 
 export type QuerySearchFilmsArgs = {
   category?: InputMaybe<Scalars["Int"]["input"]>;
+  decade?: InputMaybe<Scalars["Int"]["input"]>;
   searchBy: Criteria;
   searchTerm: Scalars["String"]["input"];
 };
@@ -203,26 +204,17 @@ export type GetCategoriesQuery = {
   categories: Array<{ __typename?: "Category"; id: number; name: string }>;
 };
 
-export type FilmCommentsQueryVariables = Exact<{
-  filmId: Scalars["Int"]["input"];
+export type GetCategoryByIdQueryVariables = Exact<{
+  id: Scalars["Int"]["input"];
 }>;
 
-export type FilmCommentsQuery = {
+export type GetCategoryByIdQuery = {
   __typename?: "Query";
-  filmComments?: Array<{
-    __typename?: "UserComment";
-    id: string;
-    content: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    created_at: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    updated_at: any;
-    user: {
-      __typename?: "User";
-      username: string;
-      avatar: { __typename?: "Avatar"; image: string; id: string };
-    };
-  }> | null;
+  getCategoryById?: {
+    __typename?: "Category";
+    id: number;
+    name: string;
+  } | null;
 };
 
 export type FrenchFilmsQueryVariables = Exact<{ [key: string]: never }>;
@@ -302,6 +294,7 @@ export type SearchFilmsQueryVariables = Exact<{
   searchTerm: Scalars["String"]["input"];
   searchBy: Criteria;
   category: Scalars["Int"]["input"];
+  decade: Scalars["Int"]["input"];
 }>;
 
 export type SearchFilmsQuery = {
@@ -517,97 +510,88 @@ export type GetCategoriesQueryResult = Apollo.QueryResult<
   GetCategoriesQuery,
   GetCategoriesQueryVariables
 >;
-export const FilmCommentsDocument = gql`
-  query FilmComments($filmId: Int!) {
-    filmComments(filmId: $filmId) {
+export const GetCategoryByIdDocument = gql`
+  query GetCategoryById($id: Int!) {
+    getCategoryById(id: $id) {
       id
-      content
-      created_at
-      updated_at
-      user {
-        username
-        avatar {
-          image
-          id
-        }
-      }
+      name
     }
   }
 `;
 
 /**
- * __useFilmCommentsQuery__
+ * __useGetCategoryByIdQuery__
  *
- * To run a query within a React component, call `useFilmCommentsQuery` and pass it any options that fit your needs.
- * When your component renders, `useFilmCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetCategoryByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCategoryByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useFilmCommentsQuery({
+ * const { data, loading, error } = useGetCategoryByIdQuery({
  *   variables: {
- *      filmId: // value for 'filmId'
+ *      id: // value for 'id'
  *   },
  * });
  */
-export function useFilmCommentsQuery(
+export function useGetCategoryByIdQuery(
   baseOptions: Apollo.QueryHookOptions<
-    FilmCommentsQuery,
-    FilmCommentsQueryVariables
+    GetCategoryByIdQuery,
+    GetCategoryByIdQueryVariables
   > &
     (
-      | { variables: FilmCommentsQueryVariables; skip?: boolean }
+      | { variables: GetCategoryByIdQueryVariables; skip?: boolean }
       | { skip: boolean }
     )
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<FilmCommentsQuery, FilmCommentsQueryVariables>(
-    FilmCommentsDocument,
+  return Apollo.useQuery<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>(
+    GetCategoryByIdDocument,
     options
   );
 }
-export function useFilmCommentsLazyQuery(
+export function useGetCategoryByIdLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
-    FilmCommentsQuery,
-    FilmCommentsQueryVariables
+    GetCategoryByIdQuery,
+    GetCategoryByIdQueryVariables
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<FilmCommentsQuery, FilmCommentsQueryVariables>(
-    FilmCommentsDocument,
-    options
-  );
+  return Apollo.useLazyQuery<
+    GetCategoryByIdQuery,
+    GetCategoryByIdQueryVariables
+  >(GetCategoryByIdDocument, options);
 }
-export function useFilmCommentsSuspenseQuery(
+export function useGetCategoryByIdSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
     | Apollo.SuspenseQueryHookOptions<
-        FilmCommentsQuery,
-        FilmCommentsQueryVariables
+        GetCategoryByIdQuery,
+        GetCategoryByIdQueryVariables
       >
 ) {
   const options =
     baseOptions === Apollo.skipToken
       ? baseOptions
       : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<FilmCommentsQuery, FilmCommentsQueryVariables>(
-    FilmCommentsDocument,
-    options
-  );
+  return Apollo.useSuspenseQuery<
+    GetCategoryByIdQuery,
+    GetCategoryByIdQueryVariables
+  >(GetCategoryByIdDocument, options);
 }
-export type FilmCommentsQueryHookResult = ReturnType<
-  typeof useFilmCommentsQuery
+export type GetCategoryByIdQueryHookResult = ReturnType<
+  typeof useGetCategoryByIdQuery
 >;
-export type FilmCommentsLazyQueryHookResult = ReturnType<
-  typeof useFilmCommentsLazyQuery
+export type GetCategoryByIdLazyQueryHookResult = ReturnType<
+  typeof useGetCategoryByIdLazyQuery
 >;
-export type FilmCommentsSuspenseQueryHookResult = ReturnType<
-  typeof useFilmCommentsSuspenseQuery
+export type GetCategoryByIdSuspenseQueryHookResult = ReturnType<
+  typeof useGetCategoryByIdSuspenseQuery
 >;
-export type FilmCommentsQueryResult = Apollo.QueryResult<
-  FilmCommentsQuery,
-  FilmCommentsQueryVariables
+export type GetCategoryByIdQueryResult = Apollo.QueryResult<
+  GetCategoryByIdQuery,
+  GetCategoryByIdQueryVariables
 >;
 export const FrenchFilmsDocument = gql`
   query FrenchFilms {
@@ -1016,11 +1000,13 @@ export const SearchFilmsDocument = gql`
     $searchTerm: String!
     $searchBy: Criteria!
     $category: Int!
+    $decade: Int!
   ) {
     searchFilms(
       searchTerm: $searchTerm
       searchBy: $searchBy
       category: $category
+      decade: $decade
     ) {
       id
       title
@@ -1056,6 +1042,7 @@ export const SearchFilmsDocument = gql`
  *      searchTerm: // value for 'searchTerm'
  *      searchBy: // value for 'searchBy'
  *      category: // value for 'category'
+ *      decade: // value for 'decade'
  *   },
  * });
  */
@@ -1115,3 +1102,4 @@ export type SearchFilmsQueryResult = Apollo.QueryResult<
   SearchFilmsQuery,
   SearchFilmsQueryVariables
 >;
+/* eslint-enable @typescript-eslint/no-explicit-any */

@@ -1,5 +1,6 @@
 import { Criteria } from "../generated/graphql-types";
 import CategorySelect from "./CategorySelect";
+import DecadeSelect from "./DecadeSelect";
 
 interface RadioFilterProps {
   criteria: Criteria;
@@ -31,7 +32,7 @@ export default function RadioFilter({
           <line x1="6" y1="6" x2="18" y2="18" />
         </svg>
       </button>
-      <div className="flex space-x-4 mb-4">
+      <div className="flex space-x-4">
         <label className="flex items-center">
           <input
             type="radio"
@@ -63,8 +64,9 @@ export default function RadioFilter({
           Réalisateur
         </label>
       </div>
-      <div className="text-left">
+      <div className="flex space-x-4">
         <CategorySelect />
+        <DecadeSelect />
       </div>
     </div>
   );
