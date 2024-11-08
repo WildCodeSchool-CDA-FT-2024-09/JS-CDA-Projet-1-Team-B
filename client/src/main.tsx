@@ -10,6 +10,7 @@ import FilmDetail from "./pages/PageFilmDetail.tsx";
 
 import SignUp from "./components/SignUp.tsx";
 import SignIn from "./components/SignIn.tsx";
+import FAQPage from "./pages/FAQPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+      },
+      {
+        path: "/faq",
+        element: <FAQPage />,
       },
       {
         path: "/films/:id",
