@@ -54,20 +54,21 @@ export default function HomePage() {
     variables: { id: category ? parseInt(category) : 0 },
   });
 
-  const title: string =
-    (searchTerm &&
-      searchBy === Criteria.Title &&
-      `Résultats de recherche pour le titre "${searchTerm}"`) ||
-    (searchTerm &&
-      searchBy === Criteria.Actor &&
-      `Résultats de recherche pour l'acteur "${searchTerm}"`) ||
-    (searchTerm &&
-      searchBy === Criteria.Director &&
-      `Résultats de recherche pour le réalisateur "${searchTerm}"`) ||
-    (!searchTerm &&
-      category &&
-      `Categorie : ${dataCategory?.getCategoryById?.name}`) ||
-    "";
+  function title(): string {
+    if (searchTerm && searchBy === Criteria.Title) {
+      return `Résultats de recherche pour le titre "${searchTerm}"`;
+    } else if (searchTerm && searchBy === Criteria.Actor) {
+      return `Résultats de recherche pour l'acteur "${searchTerm}"`;
+    } else if (searchTerm && searchBy === Criteria.Director) {
+      return `Résultats de recherche pour le réalisateur "${searchTerm}"`;
+    } else if (!searchTerm && category) {
+      return `Categorie : ${dataCategory?.getCategoryById?.name}`;
+    } else if (!searchTerm && selectedDecade) {
+      return `Décennie : ${selectedDecade}`;
+    } else {
+      return "";
+    }
+  }
 
   return (
     <main className="block">
@@ -93,7 +94,7 @@ export default function HomePage() {
       {error && <p>Erreur : {error.message}</p>}
 
       {data && data.searchFilms.length > 0 && (
-        <DisplayFilms titleh2={title} data={data.searchFilms} />
+        <DisplayFilms titleh2={title()} data={data.searchFilms} />
       )}
 
       {data?.searchFilms.length === 0 && searchTerm && <p>Aucun film trouvé</p>}
