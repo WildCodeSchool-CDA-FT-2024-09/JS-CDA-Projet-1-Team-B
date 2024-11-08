@@ -6,20 +6,20 @@ const AboutPage = () => {
           À Propos de Thriller Mania
         </h1>
         <p className="text-lg leading-relaxed mb-4">
-          Bienvenue sur{" "}
-          <span className="text-bloodRed font-semibold">Thriller Mania</span> !
-          Ce site web est dédié aux amateurs de films sur le thème du thriller.
-          Il vous permet de rechercher des films, de les liker, de commenter et
-          de partager vos découvertes avec la communauté.
+          Bienvenue sur
+          <span className="text-bloodRed font-semibold mx-2">
+            Thriller Mania
+          </span>
+          ! Ce site web est dédié aux amateurs de films sur le thème du
+          thriller. Il vous permet de rechercher des films, de les liker, de
+          commenter et de partager vos découvertes avec la communauté.
         </p>
-
         <section className="mb-6">
           <h2 className="text-2xl text-bloodRed font-semibold mb-2">Auteurs</h2>
           <p className="leading-relaxed">
             @Alexandre, @Ludovic, @Stephanie, @Jean-Francois
           </p>
         </section>
-
         <section className="mb-6">
           <h2 className="text-2xl text-bloodRed font-semibold mb-2">
             Remerciements

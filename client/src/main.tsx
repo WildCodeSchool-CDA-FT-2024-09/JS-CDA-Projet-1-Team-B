@@ -11,6 +11,7 @@ import SignUp from "./components/SignUp.tsx";
 import SignIn from "./components/SignIn.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
 import Profile from "./pages/Profile.tsx";
+import FAQPage from "./pages/FAQPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+      },
+      {
+        path: "/faq",
+        element: <FAQPage />,
       },
       {
         path: "/films/:id",
@@ -41,5 +46,5 @@ createRoot(document.getElementById("root")!).render(
     <ApolloProvider client={client}>
       <RouterProvider router={router} />
     </ApolloProvider>
-  </StrictMode>
+  </StrictMode>,
 );

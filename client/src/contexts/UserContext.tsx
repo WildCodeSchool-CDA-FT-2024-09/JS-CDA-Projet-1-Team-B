@@ -1,11 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { client } from "../services/connection";
 import {
   GetUserByEmailDocument,
@@ -20,6 +14,7 @@ interface UserContextType {
   fetchUserByEmail: (email: string) => void;
   setEmail: (email: string) => void;
   setUser: (user: User | null) => void;
+  logout: () => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -33,17 +28,24 @@ export const useUser = () => {
 };
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+                                                                  children,
+                                                                }) => {
   const [user, setUser] = useState<User | null>(null);
   const [email, setEmail] = useState<string | null>(null);
-
+  
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+    if (storedEmail) {
+      setEmail(storedEmail);
+    }
+  }, []);
+  
   useEffect(() => {
     if (email) {
       fetchUserByEmail(email);
     }
   }, [email]);
-
+  
   const fetchUserByEmail = async (email: string) => {
     try {
       const { data } = await client.query<
@@ -53,7 +55,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         query: GetUserByEmailDocument,
         variables: { email },
       });
-
+      
       if (data.getUserByEmail) {
         setUser(data.getUserByEmail);
       } else {
@@ -64,7 +66,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       console.error(err);
     }
   };
-
+  const logout = () => {
+    setUser(null);
+    setEmail(null);
+    localStorage.removeItem("email");
+  };
+  
   return (
     <UserContext.Provider
       value={{
@@ -73,6 +80,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         fetchUserByEmail,
         setEmail,
         setUser,
+        logout,
       }}
     >
       {children}
