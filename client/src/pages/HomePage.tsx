@@ -52,6 +52,21 @@ export default function HomePage() {
     variables: { id: category ? parseInt(category) : 0 },
   });
 
+  const title: string =
+    (searchTerm &&
+      searchBy === Criteria.Title &&
+      `Résultats de recherche pour le titre "${searchTerm}"`) ||
+    (searchTerm &&
+      searchBy === Criteria.Actor &&
+      `Résultats de recherche pour l'acteur "${searchTerm}"`) ||
+    (searchTerm &&
+      searchBy === Criteria.Director &&
+      `Résultats de recherche pour le réalisateur "${searchTerm}"`) ||
+    (!searchTerm &&
+      category &&
+      `Categorie : ${dataCategory?.getCategoryById?.name}`) ||
+    "";
+
   return (
     <main className="block">
       <h1 className="mt-10 flex justify-center text-3xl text-bloodRed font-bold md:text-4xl md:ml-10 md:mt-10">
@@ -76,22 +91,7 @@ export default function HomePage() {
       {error && <p>Erreur : {error.message}</p>}
 
       {data && data.searchFilms.length > 0 && (
-        <DisplayFilms
-          titleh2={
-            searchTerm
-              ? searchBy === Criteria.Title
-                ? `Résultats pour le titre "${searchTerm}"`
-                : searchBy === Criteria.Director
-                  ? `Résultats pour le réalisateur "${searchTerm}"`
-                  : searchBy === Criteria.Actor
-                    ? `Résultats pour l'acteur "${searchTerm}"`
-                    : ""
-              : dataCategory
-                ? `Catégorie : ${dataCategory.getCategoryById?.name}`
-                : ""
-          }
-          data={data.searchFilms}
-        />
+        <DisplayFilms titleh2={title} data={data.searchFilms} />
       )}
 
       {data?.searchFilms.length === 0 && searchTerm && <p>Aucun film trouvé</p>}

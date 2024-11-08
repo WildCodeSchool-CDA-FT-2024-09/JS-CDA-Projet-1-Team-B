@@ -16,11 +16,11 @@ async function resetDatabase() {
   await queryRunner.startTransaction();
   try {
     // Supprimer les anciennes données des différentes tables
+    await queryRunner.query("DELETE FROM user_comment");
+    await queryRunner.query("DELETE FROM user_rating");
     await queryRunner.query("DELETE FROM user");
     await queryRunner.query("DELETE FROM avatar");
     await queryRunner.query("DELETE FROM film");
-    await queryRunner.query("DELETE FROM user_comment");
-    await queryRunner.query("DELETE FROM user_rating");
     await queryRunner.query("DELETE FROM Category");
 
     // Réinitialiser les identifiants auto-incrémentés
@@ -43,7 +43,6 @@ const filmsTotal: number[] = [];
 // Fonction pour insérer un film
 async function insertFilm(
   filmData: Film,
-
   filmCredits: FilmCredits,
   countFilms: number[],
   allCategories: CategoryEntity[]
