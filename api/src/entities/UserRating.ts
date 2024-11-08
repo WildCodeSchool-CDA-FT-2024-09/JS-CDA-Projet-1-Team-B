@@ -4,8 +4,8 @@ import {
   BaseEntity,
   Entity,
   PrimaryGeneratedColumn,
-  ManyToMany,
   Column,
+  ManyToOne,
 } from "typeorm";
 import { User } from "../entities/User";
 import { Film } from "../entities/Film";
@@ -16,12 +16,12 @@ export class UserRating extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Field()
-  @ManyToMany(() => Film, (film) => film.id)
+  @Field(() => Film)
+  @ManyToOne(() => Film, (Film) => Film.rating, { cascade: true })
   film!: Film;
 
-  @Field()
-  @ManyToMany(() => User, (user) => user.id)
+  @Field(() => User)
+  @ManyToOne(() => User, (User) => User.rating, { cascade: true })
   user!: User;
 
   @Field(() => Float)
