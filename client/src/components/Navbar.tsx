@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
 
 const Navbar = () => {
-  const { user } = useUser();
+  const { user, logout } = useUser();
 
   const avatarImagePath = user?.avatar?.image
     ? `/avatar/${user.avatar.image}`
@@ -32,6 +32,14 @@ const Navbar = () => {
             className="h-10 w-10 md:h-14 md:w-14 rounded-full cursor-pointer"
           />
         </Link>
+        {user && (
+          <button
+            onClick={logout}
+            className="ml-4 text-white bg-red-600 rounded-lg px-4 py-2 hover:bg-red-700"
+          >
+            Se déconnecter
+          </button>
+        )}
       </div>
     </nav>
   );
