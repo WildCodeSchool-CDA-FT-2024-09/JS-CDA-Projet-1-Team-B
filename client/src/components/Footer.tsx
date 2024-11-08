@@ -9,7 +9,14 @@ const Footer = () => {
             À propos
           </Link>
         </div>
-        <div className="flex justify-center w-1/2 space-x-4 md:space-x-10"></div>
+        <div className="flex justify-center w-1/2 space-x-4 md:space-x-10">
+          <Link
+            to="/faq"
+            className="hover:text-bloodRed transition-colors duration-200"
+          >
+            FAQ
+          </Link>
+        </div>
       </div>
       <div className="mt-2 text-sm text-gray-400 text-center md:text-left">
         © {new Date().getFullYear()} Thriller Mania. Tous droits réservés.
