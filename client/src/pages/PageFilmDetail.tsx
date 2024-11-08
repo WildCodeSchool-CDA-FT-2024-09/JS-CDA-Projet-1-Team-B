@@ -6,7 +6,7 @@ import FilmComments from "../components/FilmComments";
 const FilmDetail = () => {
   const { id } = useParams<{ id: string }>();
   const basePosterUrl = "https://image.tmdb.org/t/p/original/"; // Base URL for TMDB posters
-  const filmId = id ? parseInt(id) : NaN;
+  const filmId = parseInt(id || "");
 
   // Fetch film data using the dynamic ID from the URL
   const { loading, error, data } = useGetFilmByIdQuery({

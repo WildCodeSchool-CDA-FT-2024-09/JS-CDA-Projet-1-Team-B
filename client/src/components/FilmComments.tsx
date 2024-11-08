@@ -3,6 +3,7 @@ import { useFilmCommentsQuery } from "../generated/graphql-types";
 interface FilmCommentsProps {
   filmId: number;
 }
+const baseAvatarPath = "/avatar/";
 
 const FilmComments: React.FC<FilmCommentsProps> = ({ filmId }) => {
   const { loading, error, data } = useFilmCommentsQuery({
@@ -18,15 +19,15 @@ const FilmComments: React.FC<FilmCommentsProps> = ({ filmId }) => {
   if (!comments || comments.length === 0) {
     return <p>Aucun commentaire disponible pour ce film.</p>;
   }
-  const baseAvatarPath = "/avatar/";
+
   return (
     <section className="comments-section space-y-6">
-      {comments.map((comment, index) => {
+      {comments.map((comment) => {
         const avatarPath = `${baseAvatarPath}${comment.user.avatar.image}`;
 
         return (
           <div
-            key={index}
+            key={comment.id}
             className="comment flex items-start space-x-4 rounded p-6  border border-bloodRed"
           >
             <img

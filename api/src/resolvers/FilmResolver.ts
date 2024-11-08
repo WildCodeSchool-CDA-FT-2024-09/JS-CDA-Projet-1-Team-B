@@ -87,15 +87,16 @@ export default class FilmResolver {
     @Arg("filmId", () => Int) filmId: number
   ): Promise<UserComment[]> {
     const film = await Film.findOne({ where: { id: filmId } });
-
     if (!film) {
       throw new Error("Film not found");
     }
-    return UserComment.find({
+    const userComments = await UserComment.find({
       where: {
         film: { id: filmId },
       },
       relations: ["user", "user.avatar"],
     });
+
+    return userComments;
   }
 }

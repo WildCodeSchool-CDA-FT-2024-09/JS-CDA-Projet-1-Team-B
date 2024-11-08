@@ -169,6 +169,7 @@ export type UserComment = {
   content: Scalars["String"]["output"];
   created_at: Scalars["DateTimeISO"]["output"];
   film: Film;
+  id: Scalars["ID"]["output"];
   updated_at: Scalars["DateTimeISO"]["output"];
   user: User;
 };
@@ -210,6 +211,7 @@ export type FilmCommentsQuery = {
   __typename?: "Query";
   filmComments?: Array<{
     __typename?: "UserComment";
+    id: string;
     content: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     created_at: any;
@@ -518,6 +520,7 @@ export type GetCategoriesQueryResult = Apollo.QueryResult<
 export const FilmCommentsDocument = gql`
   query FilmComments($filmId: Int!) {
     filmComments(filmId: $filmId) {
+      id
       content
       created_at
       updated_at
