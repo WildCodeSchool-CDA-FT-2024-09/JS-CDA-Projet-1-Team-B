@@ -63,13 +63,22 @@ export default class FilmResolver {
   async searchFilms(
     @Arg("searchTerm", () => String) searchTerm: string,
     @Arg("searchBy", () => Criteria) searchBy: Criteria,
-    @Arg("category", () => Int, { nullable: true }) category: number
+    @Arg("category", () => Int, { nullable: true }) category: number,
+    @Arg("decade", () => Int, { nullable: true }) decade: number
   ): Promise<Film[]> {
     if (category) {
       return await Film.find({
         relations: ["categories"],
         where: {
           categories: { id: category },
+        },
+      });
+    }
+
+    if (decade && decade > 0) {
+      return await Film.find({
+        where: {
+          releaseDate: Between(`${decade}-01-01`, `${decade + 9}-12-31`),
         },
       });
     }

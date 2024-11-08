@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
 export type Maybe<T> = T | null;
@@ -28,7 +30,6 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   DateTimeISO: { input: any; output: any };
 };
 
@@ -137,6 +138,7 @@ export type QueryLastFilmsArgs = {
 
 export type QuerySearchFilmsArgs = {
   category?: InputMaybe<Scalars["Int"]["input"]>;
+  decade?: InputMaybe<Scalars["Int"]["input"]>;
   searchBy: Criteria;
   searchTerm: Scalars["String"]["input"];
 };
@@ -274,6 +276,7 @@ export type SearchFilmsQueryVariables = Exact<{
   searchTerm: Scalars["String"]["input"];
   searchBy: Criteria;
   category: Scalars["Int"]["input"];
+  decade: Scalars["Int"]["input"];
 }>;
 
 export type SearchFilmsQuery = {
@@ -896,11 +899,13 @@ export const SearchFilmsDocument = gql`
     $searchTerm: String!
     $searchBy: Criteria!
     $category: Int!
+    $decade: Int!
   ) {
     searchFilms(
       searchTerm: $searchTerm
       searchBy: $searchBy
       category: $category
+      decade: $decade
     ) {
       id
       title
@@ -936,6 +941,7 @@ export const SearchFilmsDocument = gql`
  *      searchTerm: // value for 'searchTerm'
  *      searchBy: // value for 'searchBy'
  *      category: // value for 'category'
+ *      decade: // value for 'decade'
  *   },
  * });
  */
@@ -995,3 +1001,5 @@ export type SearchFilmsQueryResult = Apollo.QueryResult<
   SearchFilmsQuery,
   SearchFilmsQueryVariables
 >;
+
+/* eslint-enable @typescript-eslint/no-explicit-any */
