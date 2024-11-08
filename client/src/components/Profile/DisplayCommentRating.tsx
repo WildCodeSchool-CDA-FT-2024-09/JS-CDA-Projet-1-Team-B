@@ -21,7 +21,6 @@ export default function DisplayCommentRating({ user, activeTab }: { user: User, 
     }, skip: !user && activeTab !== "ratings",
   });
 
-
   return (
     <div
       className="overflow-scroll no-scrollbar text-white">{activeTab === "comments" && userComment?.getUserComment &&

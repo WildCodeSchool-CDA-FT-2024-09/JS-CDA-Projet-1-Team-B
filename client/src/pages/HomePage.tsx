@@ -1,7 +1,7 @@
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import CarousselTrendyFilms from "../components/CarrousselTrendyFilms";
 import DisplayFilms from "../components/DisplayFilms";
-
-import { useLocation } from "react-router-dom";
 import {
   Criteria,
   useFrenchFilmsQuery,
@@ -9,26 +9,23 @@ import {
   useLastFilmsQuery,
   useSearchFilmsQuery,
 } from "../generated/graphql-types";
-import { useEffect, useState } from "react";
 
 export default function HomePage() {
+  // Utiliser un état pour déclencher la recherche
+  const [triggerSearch, setTriggerSearch] = useState(false);
   const location = useLocation(); // Hook pour récupérer l'objet location
   const queryParams = new URLSearchParams(location.search); // Récupérer les query params
   const searchTerm = queryParams.get("search") || "";
   const searchType = queryParams.get("type") || "title";
   const category = queryParams.get("category") || "";
   const selectedDecade = queryParams.get("decade") || "";
-  
+
   // Convertir le string en type Criteria, avec "title" comme valeur par défaut
   const searchBy: Criteria = (Object.values(Criteria) as string[]).includes(
-    searchType,
-  )
+    searchType)
     ? (searchType as Criteria)
     : Criteria.Title;
-  
-  // Utiliser un état pour déclencher la recherche
-  const [triggerSearch, setTriggerSearch] = useState(false);
-  
+
   const { data, loading, error } = useSearchFilmsQuery({
     variables: {
       searchTerm: searchTerm,
@@ -38,7 +35,7 @@ export default function HomePage() {
     },
     skip: !triggerSearch,
   });
-  
+
   useEffect(() => {
     if (searchTerm.length > 0 || category || selectedDecade) {
       setTriggerSearch(true);
@@ -46,13 +43,13 @@ export default function HomePage() {
       setTriggerSearch(false);
     }
   }, [searchTerm, searchBy, category, selectedDecade]);
-  
+
   const { data: dataLastFilms } = useLastFilmsQuery();
   const { data: dataFrenchFilms } = useFrenchFilmsQuery();
   const { data: dataCategory } = useGetCategoryByIdQuery({
     variables: { id: category ? parseInt(category) : 0 },
   });
-  
+
   function title(): string {
     if (searchTerm && searchBy === Criteria.Title) {
       return `Résultats de recherche pour le titre "${searchTerm}"`;
@@ -68,7 +65,7 @@ export default function HomePage() {
       return "";
     }
   }
-  
+
   return (
     <main className="block">
       <h1 className="mt-10 flex justify-center text-3xl text-bloodRed font-bold md:text-4xl md:ml-10 md:mt-10">
@@ -89,13 +86,12 @@ export default function HomePage() {
         />
       </section>
       {loading && <p>Chargement...</p>}
-      
+
       {error && <p>Erreur : {error.message}</p>}
-      
+
       {data && data.searchFilms.length > 0 && (
         <DisplayFilms titleh2={title()} data={data.searchFilms} />
       )}
-      
       {data?.searchFilms.length === 0 && searchTerm && <p>Aucun film trouvé</p>}
     </main>
   );
