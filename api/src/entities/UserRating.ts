@@ -2,10 +2,10 @@ import "reflect-metadata";
 import { Field, Float, ObjectType } from "type-graphql";
 import {
   BaseEntity,
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
+  Entity,
   ManyToOne,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 import { User } from "../entities/User";
 import { Film } from "../entities/Film";
@@ -13,6 +13,7 @@ import { Film } from "../entities/Film";
 @ObjectType()
 @Entity()
 export class UserRating extends BaseEntity {
+  @Field()
   @PrimaryGeneratedColumn()
   id!: number;
 

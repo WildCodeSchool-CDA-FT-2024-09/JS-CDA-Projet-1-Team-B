@@ -1,18 +1,18 @@
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import CarousselTrendyFilms from "../components/CarrousselTrendyFilms";
 import DisplayFilms from "../components/DisplayFilms";
-// import LastFilms from "../components/LastFilms";
-// import FrenchFilms from "../components/FrenchFilms";
-import { useLocation } from "react-router-dom";
 import {
-  useSearchFilmsQuery,
-  useLastFilmsQuery,
+  Criteria,
   useFrenchFilmsQuery,
   useGetCategoryByIdQuery,
+  useLastFilmsQuery,
+  useSearchFilmsQuery,
 } from "../generated/graphql-types";
-import { Criteria } from "../generated/graphql-types";
-import { useEffect, useState } from "react";
 
 export default function HomePage() {
+  // Utiliser un état pour déclencher la recherche
+  const [triggerSearch, setTriggerSearch] = useState(false);
   const location = useLocation(); // Hook pour récupérer l'objet location
   const queryParams = new URLSearchParams(location.search); // Récupérer les query params
   const searchTerm = queryParams.get("search") || "";
@@ -22,13 +22,9 @@ export default function HomePage() {
 
   // Convertir le string en type Criteria, avec "title" comme valeur par défaut
   const searchBy: Criteria = (Object.values(Criteria) as string[]).includes(
-    searchType
-  )
+    searchType)
     ? (searchType as Criteria)
     : Criteria.Title;
-
-  // Utiliser un état pour déclencher la recherche
-  const [triggerSearch, setTriggerSearch] = useState(false);
 
   const { data, loading, error } = useSearchFilmsQuery({
     variables: {
@@ -96,7 +92,6 @@ export default function HomePage() {
       {data && data.searchFilms.length > 0 && (
         <DisplayFilms titleh2={title()} data={data.searchFilms} />
       )}
-
       {data?.searchFilms.length === 0 && searchTerm && <p>Aucun film trouvé</p>}
     </main>
   );
