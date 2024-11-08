@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
 export type Maybe<T> = T | null;
@@ -14,7 +13,7 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
 };
 export type MakeEmpty<
   T extends { [key: string]: unknown },
-  K extends keyof T,
+  K extends keyof T
 > = { [_ in K]?: never };
 export type Incremental<T> =
   | T
@@ -29,6 +28,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   DateTimeISO: { input: any; output: any };
 };
 
@@ -111,6 +111,7 @@ export type Query = {
   __typename?: "Query";
   FrenchFilms?: Maybe<Array<Film>>;
   categories: Array<Category>;
+  filmComments?: Maybe<Array<UserComment>>;
   getCategoryById?: Maybe<Category>;
   getFilmById?: Maybe<Film>;
   getUserByEmail?: Maybe<User>;
@@ -122,6 +123,10 @@ export type Query = {
 
 export type QueryFrenchFilmsArgs = {
   limit?: InputMaybe<Scalars["Float"]["input"]>;
+};
+
+export type QueryFilmCommentsArgs = {
+  filmId: Scalars["Int"]["input"];
 };
 
 export type QueryGetCategoryByIdArgs = {
@@ -170,6 +175,7 @@ export type UserComment = {
   content: Scalars["String"]["output"];
   created_at: Scalars["DateTimeISO"]["output"];
   film: Film;
+  id: Scalars["ID"]["output"];
   updated_at: Scalars["DateTimeISO"]["output"];
   user: User;
 };
@@ -214,6 +220,28 @@ export type GetCategoryByIdQuery = {
     id: number;
     name: string;
   } | null;
+};
+
+export type FilmCommentsQueryVariables = Exact<{
+  filmId: Scalars["Int"]["input"];
+}>;
+
+export type FilmCommentsQuery = {
+  __typename?: "Query";
+  filmComments?: Array<{
+    __typename?: "UserComment";
+    id: string;
+    content: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    created_at: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    updated_at: any;
+    user: {
+      __typename?: "User";
+      username: string;
+      avatar: { __typename?: "Avatar"; image: string; id: string };
+    };
+  }> | null;
 };
 
 export type FrenchFilmsQueryVariables = Exact<{ [key: string]: never }>;
@@ -591,6 +619,98 @@ export type GetCategoryByIdSuspenseQueryHookResult = ReturnType<
 export type GetCategoryByIdQueryResult = Apollo.QueryResult<
   GetCategoryByIdQuery,
   GetCategoryByIdQueryVariables
+>;
+export const FilmCommentsDocument = gql`
+  query FilmComments($filmId: Int!) {
+    filmComments(filmId: $filmId) {
+      id
+      content
+      created_at
+      updated_at
+      user {
+        username
+        avatar {
+          image
+          id
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useFilmCommentsQuery__
+ *
+ * To run a query within a React component, call `useFilmCommentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFilmCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFilmCommentsQuery({
+ *   variables: {
+ *      filmId: // value for 'filmId'
+ *   },
+ * });
+ */
+export function useFilmCommentsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FilmCommentsQuery,
+    FilmCommentsQueryVariables
+  > &
+    (
+      | { variables: FilmCommentsQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    )
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FilmCommentsQuery, FilmCommentsQueryVariables>(
+    FilmCommentsDocument,
+    options
+  );
+}
+export function useFilmCommentsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FilmCommentsQuery,
+    FilmCommentsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FilmCommentsQuery, FilmCommentsQueryVariables>(
+    FilmCommentsDocument,
+    options
+  );
+}
+export function useFilmCommentsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        FilmCommentsQuery,
+        FilmCommentsQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<FilmCommentsQuery, FilmCommentsQueryVariables>(
+    FilmCommentsDocument,
+    options
+  );
+}
+export type FilmCommentsQueryHookResult = ReturnType<
+  typeof useFilmCommentsQuery
+>;
+export type FilmCommentsLazyQueryHookResult = ReturnType<
+  typeof useFilmCommentsLazyQuery
+>;
+export type FilmCommentsSuspenseQueryHookResult = ReturnType<
+  typeof useFilmCommentsSuspenseQuery
+>;
+export type FilmCommentsQueryResult = Apollo.QueryResult<
+  FilmCommentsQuery,
+  FilmCommentsQueryVariables
 >;
 export const FrenchFilmsDocument = gql`
   query FrenchFilms {
@@ -1101,4 +1221,3 @@ export type SearchFilmsQueryResult = Apollo.QueryResult<
   SearchFilmsQuery,
   SearchFilmsQueryVariables
 >;
-/* eslint-enable @typescript-eslint/no-explicit-any */
