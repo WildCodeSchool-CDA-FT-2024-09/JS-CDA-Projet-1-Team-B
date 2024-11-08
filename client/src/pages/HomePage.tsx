@@ -18,6 +18,7 @@ export default function HomePage() {
   const searchTerm = queryParams.get("search") || "";
   const searchType = queryParams.get("type") || "title";
   const category = queryParams.get("category") || "";
+  const selectedDecade = queryParams.get("decade") || "";
 
   // Convertir le string en type Criteria, avec "title" comme valeur par défaut
   const searchBy: Criteria = (Object.values(Criteria) as string[]).includes(
@@ -34,17 +35,18 @@ export default function HomePage() {
       searchTerm: searchTerm,
       searchBy: searchBy,
       category: category ? parseInt(category) : 0,
+      decade: selectedDecade ? parseInt(selectedDecade) : 0,
     },
     skip: !triggerSearch,
   });
 
   useEffect(() => {
-    if (searchTerm.length > 0 || category) {
+    if (searchTerm.length > 0 || category || selectedDecade) {
       setTriggerSearch(true);
     } else {
       setTriggerSearch(false);
     }
-  }, [searchTerm, searchBy, category]);
+  }, [searchTerm, searchBy, category, selectedDecade]);
 
   const { data: dataLastFilms } = useLastFilmsQuery();
   const { data: dataFrenchFilms } = useFrenchFilmsQuery();

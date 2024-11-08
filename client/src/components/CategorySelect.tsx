@@ -1,4 +1,3 @@
-// CategorySelect.tsx
 import { useNavigate } from "react-router-dom";
 import { useGetCategoriesQuery } from "../generated/graphql-types";
 import { useState } from "react";
@@ -26,7 +25,7 @@ export default function CategorySelect() {
       <select
         value={selectedCategory ?? ""}
         onChange={handleChange}
-        className="w-1/6 bg-transparent text-white border border-bloodRed rounded-lg px-4 py-2 focus:outline-none"
+        className="bg-transparent text-white border border-bloodRed rounded-lg px-4 py-2 focus:outline-none"
       >
         <option className="bg-greyBlack" value="">
           Toutes les catégories
