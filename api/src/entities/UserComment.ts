@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Field, ObjectType } from "type-graphql";
+import { Field, ID, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Entity,
@@ -15,6 +15,7 @@ import { Film } from "../entities/Film";
 @ObjectType()
 @Entity()
 export class UserComment extends BaseEntity {
+  @Field(() => ID)
   @PrimaryGeneratedColumn()
   id!: number;
 
