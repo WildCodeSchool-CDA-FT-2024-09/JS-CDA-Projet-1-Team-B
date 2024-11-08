@@ -5,7 +5,6 @@ const FAQPage = () => {
         <h1 className="text-3xl md:text-4xl text-center font-bold text-bloodRed mb-6">
           FAQ
         </h1>
-
         <section className="mb-6">
           <h2 className="text-2xl text-bloodRed font-semibold mb-2">
             Qu'est-ce que Thriller Mania ?
@@ -16,7 +15,6 @@ const FAQPage = () => {
             partager vos découvertes avec la communauté.
           </p>
         </section>
-
         <section className="mb-6">
           <h2 className="text-2xl text-bloodRed font-semibold mb-2">
             Comment puis-je créer un compte ?
@@ -27,7 +25,6 @@ const FAQPage = () => {
             instructions.
           </p>
         </section>
-
         <section className="mb-6">
           <h2 className="text-2xl text-bloodRed font-semibold mb-2">
             Comment rechercher des films ?
