@@ -1,14 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import * as Apollo from "@apollo/client";
-import { gql } from "@apollo/client";
-
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -17,68 +15,68 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  DateTimeISO: { input: any; output: any; }
+  DateTimeISO: { input: unknown; output: unknown; }
 };
 
 export type Avatar = {
-  __typename?: "Avatar";
-  id: Scalars["ID"]["output"];
-  image: Scalars["String"]["output"];
+  __typename?: 'Avatar';
+  id: Scalars['ID']['output'];
+  image: Scalars['String']['output'];
   user?: Maybe<Array<User>>;
 };
 
 export type AvatarInput = {
-  image: Scalars["String"]["input"];
+  image: Scalars['String']['input'];
 };
 
 export type Category = {
-  __typename?: "Category";
+  __typename?: 'Category';
   films: Array<Film>;
-  id: Scalars["Int"]["output"];
-  name: Scalars["String"]["output"];
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
 };
 
 /** Les critères de recherche... */
 export enum Criteria {
-  Actor = "actor",
-  Director = "director",
-  Title = "title"
+  Actor = 'actor',
+  Director = 'director',
+  Title = 'title'
 }
 
 export type Film = {
-  __typename?: "Film";
-  actors?: Maybe<Scalars["String"]["output"]>;
+  __typename?: 'Film';
+  actors?: Maybe<Scalars['String']['output']>;
   categories?: Maybe<Array<Category>>;
   comment?: Maybe<Array<UserComment>>;
-  director?: Maybe<Scalars["String"]["output"]>;
-  id: Scalars["ID"]["output"];
-  originalLanguage?: Maybe<Scalars["String"]["output"]>;
-  overview?: Maybe<Scalars["String"]["output"]>;
-  popularity: Scalars["Float"]["output"];
-  posterPath?: Maybe<Scalars["String"]["output"]>;
+  director?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  originalLanguage?: Maybe<Scalars['String']['output']>;
+  overview?: Maybe<Scalars['String']['output']>;
+  popularity: Scalars['Float']['output'];
+  posterPath?: Maybe<Scalars['String']['output']>;
   rating?: Maybe<Array<UserRating>>;
-  releaseDate: Scalars["String"]["output"];
-  title: Scalars["String"]["output"];
-  tmdbId?: Maybe<Scalars["Float"]["output"]>;
-  voteAverage: Scalars["Float"]["output"];
-  voteCount: Scalars["Float"]["output"];
+  releaseDate: Scalars['String']['output'];
+  title: Scalars['String']['output'];
+  tmdbId?: Maybe<Scalars['Float']['output']>;
+  voteAverage: Scalars['Float']['output'];
+  voteCount: Scalars['Float']['output'];
 };
 
 export type GetUserInput = {
-  email: Scalars["String"]["input"];
-  password: Scalars["String"]["input"];
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type GetUserOutput = {
-  __typename?: "GetUserOutput";
-  email: Scalars["String"]["output"];
-  username: Scalars["String"]["output"];
+  __typename?: 'GetUserOutput';
+  email: Scalars['String']['output'];
+  username: Scalars['String']['output'];
 };
 
 export type Mutation = {
-  __typename?: "Mutation";
-  createAvatar: Scalars["Float"]["output"];
-  signUp: Scalars["String"]["output"];
+  __typename?: 'Mutation';
+  createAvatar: Scalars['Float']['output'];
+  signUp: Scalars['String']['output'];
   updateUsername: User;
 };
 
@@ -98,13 +96,13 @@ export type MutationUpdateUsernameArgs = {
 };
 
 export type NewUserInput = {
-  email: Scalars["String"]["input"];
-  password: Scalars["String"]["input"];
-  username: Scalars["String"]["input"];
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  username: Scalars['String']['input'];
 };
 
 export type Query = {
-  __typename?: "Query";
+  __typename?: 'Query';
   FrenchFilms?: Maybe<Array<Film>>;
   categories: Array<Category>;
   filmComments?: Maybe<Array<UserComment>>;
@@ -121,50 +119,50 @@ export type Query = {
 
 
 export type QueryFrenchFilmsArgs = {
-  limit?: InputMaybe<Scalars["Float"]["input"]>;
+  limit?: InputMaybe<Scalars['Float']['input']>;
 };
 
 
 export type QueryFilmCommentsArgs = {
-  filmId: Scalars["Int"]["input"];
+  filmId: Scalars['Int']['input'];
 };
 
 
 export type QueryGetCategoryByIdArgs = {
-  id: Scalars["Int"]["input"];
+  id: Scalars['Int']['input'];
 };
 
 
 export type QueryGetFilmByIdArgs = {
-  id: Scalars["Int"]["input"];
+  id: Scalars['Int']['input'];
 };
 
 
 export type QueryGetUserByEmailArgs = {
-  email: Scalars["String"]["input"];
+  email: Scalars['String']['input'];
 };
 
 
 export type QueryGetUserCommentArgs = {
-  id: Scalars["Float"]["input"];
+  id: Scalars['Float']['input'];
 };
 
 
 export type QueryGetUserRatingArgs = {
-  id: Scalars["Float"]["input"];
+  id: Scalars['Float']['input'];
 };
 
 
 export type QueryLastFilmsArgs = {
-  limit?: InputMaybe<Scalars["Float"]["input"]>;
+  limit?: InputMaybe<Scalars['Float']['input']>;
 };
 
 
 export type QuerySearchFilmsArgs = {
-  category?: InputMaybe<Scalars["Int"]["input"]>;
-  decade?: InputMaybe<Scalars["Int"]["input"]>;
+  category?: InputMaybe<Scalars['Int']['input']>;
+  decade?: InputMaybe<Scalars['Int']['input']>;
   searchBy: Criteria;
-  searchTerm: Scalars["String"]["input"];
+  searchTerm: Scalars['String']['input'];
 };
 
 
@@ -174,40 +172,40 @@ export type QuerySignInArgs = {
 
 
 export type QueryTrendyFilmsArgs = {
-  limit?: InputMaybe<Scalars["Float"]["input"]>;
+  limit?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type User = {
-  __typename?: "User";
+  __typename?: 'User';
   avatar: Avatar;
   comment?: Maybe<Array<UserComment>>;
-  email: Scalars["String"]["output"];
-  id: Scalars["ID"]["output"];
+  email: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
   rating?: Maybe<Array<UserRating>>;
-  username: Scalars["String"]["output"];
+  username: Scalars['String']['output'];
 };
 
 export type UserComment = {
-  __typename?: "UserComment";
-  content: Scalars["String"]["output"];
-  created_at: Scalars["DateTimeISO"]["output"];
+  __typename?: 'UserComment';
+  content: Scalars['String']['output'];
+  created_at: Scalars['DateTimeISO']['output'];
   film: Film;
-  id: Scalars["ID"]["output"];
-  updated_at: Scalars["DateTimeISO"]["output"];
+  id: Scalars['ID']['output'];
+  updated_at: Scalars['DateTimeISO']['output'];
   user: User;
 };
 
 export type UserRating = {
-  __typename?: "UserRating";
+  __typename?: 'UserRating';
   film: Film;
-  id: Scalars["Float"]["output"];
-  rating: Scalars["Float"]["output"];
+  id: Scalars['Float']['output'];
+  rating: Scalars['Float']['output'];
   user: User;
 };
 
 export type UpdateUsernameInput = {
-  newUsername: Scalars["String"]["input"];
-  username: Scalars["String"]["input"];
+  newUsername: Scalars['String']['input'];
+  username: Scalars['String']['input'];
 };
 
 export type SignUpMutationVariables = Exact<{
@@ -215,196 +213,102 @@ export type SignUpMutationVariables = Exact<{
 }>;
 
 
-export type SignUpMutation = { __typename?: "Mutation", signUp: string };
+export type SignUpMutation = { __typename?: 'Mutation', signUp: string };
 
 export type UpdateUsernameMutationVariables = Exact<{
   body: UpdateUsernameInput;
 }>;
 
 
-export type UpdateUsernameMutation = {
-  __typename?: "Mutation",
-  updateUsername: {
-    __typename?: "User",
-    id: string,
-    username: string,
-    email: string,
-    avatar: { __typename?: "Avatar", id: string, image: string }
-  }
-};
+export type UpdateUsernameMutation = { __typename?: 'Mutation', updateUsername: { __typename?: 'User', id: string, username: string, email: string, avatar: { __typename?: 'Avatar', id: string, image: string } } };
 
 export type SignInQueryVariables = Exact<{
   body: GetUserInput;
 }>;
 
 
-export type SignInQuery = {
-  __typename?: "Query",
-  signIn: { __typename?: "GetUserOutput", email: string, username: string }
-};
+export type SignInQuery = { __typename?: 'Query', signIn: { __typename?: 'GetUserOutput', email: string, username: string } };
 
 export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCategoriesQuery = {
-  __typename?: "Query",
-  categories: Array<{ __typename?: "Category", id: number, name: string }>
-};
+export type GetCategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: number, name: string }> };
 
 export type GetCategoryByIdQueryVariables = Exact<{
-  id: Scalars["Int"]["input"];
+  id: Scalars['Int']['input'];
 }>;
 
 
-export type GetCategoryByIdQuery = {
-  __typename?: "Query",
-  getCategoryById?: { __typename?: "Category", id: number, name: string } | null
-};
+export type GetCategoryByIdQuery = { __typename?: 'Query', getCategoryById?: { __typename?: 'Category', id: number, name: string } | null };
 
 export type FilmCommentsQueryVariables = Exact<{
-  filmId: Scalars["Int"]["input"];
+  filmId: Scalars['Int']['input'];
 }>;
 
 
-export type FilmCommentsQuery = {
-  __typename?: "Query",
-  filmComments?: Array<{
-    __typename?: "UserComment",
-    id: string,
-    content: string,
-    created_at: any,
-    updated_at: any,
-    user: { __typename?: "User", username: string, avatar: { __typename?: "Avatar", image: string, id: string } }
-  }> | null
-};
+export type FilmCommentsQuery = { __typename?: 'Query', filmComments?: Array<{ __typename?: 'UserComment', id: string, content: string, created_at: unknown, updated_at: unknown, user: { __typename?: 'User', username: string, avatar: { __typename?: 'Avatar', image: string, id: string } } }> | null };
 
 export type FrenchFilmsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FrenchFilmsQuery = {
-  __typename?: "Query",
-  FrenchFilms?: Array<{ __typename?: "Film", id: string, posterPath?: string | null, title: string }> | null
-};
+export type FrenchFilmsQuery = { __typename?: 'Query', FrenchFilms?: Array<{ __typename?: 'Film', id: string, posterPath?: string | null, title: string }> | null };
 
 export type LastFilmsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LastFilmsQuery = {
-  __typename?: "Query",
-  lastFilms?: Array<{ __typename?: "Film", id: string, posterPath?: string | null, title: string }> | null
-};
+export type LastFilmsQuery = { __typename?: 'Query', lastFilms?: Array<{ __typename?: 'Film', id: string, posterPath?: string | null, title: string }> | null };
 
 export type TrendyFilmsQueryVariables = Exact<{
-  limit?: InputMaybe<Scalars["Float"]["input"]>;
+  limit?: InputMaybe<Scalars['Float']['input']>;
 }>;
 
 
-export type TrendyFilmsQuery = {
-  __typename?: "Query",
-  trendyFilms?: Array<{ __typename?: "Film", id: string, posterPath?: string | null, title: string }> | null
-};
+export type TrendyFilmsQuery = { __typename?: 'Query', trendyFilms?: Array<{ __typename?: 'Film', id: string, posterPath?: string | null, title: string }> | null };
 
 export type GetUserCommentQueryVariables = Exact<{
-  getUserCommentId: Scalars["Float"]["input"];
+  getUserCommentId: Scalars['Float']['input'];
 }>;
 
 
-export type GetUserCommentQuery = {
-  __typename?: "Query",
-  getUserComment?: Array<{
-    __typename?: "UserComment",
-    id: string,
-    content: string,
-    created_at: any,
-    film: { __typename?: "Film", id: string, title: string, releaseDate: string, posterPath?: string | null }
-  }> | null
-};
+export type GetUserCommentQuery = { __typename?: 'Query', getUserComment?: Array<{ __typename?: 'UserComment', id: string, content: string, created_at: unknown, film: { __typename?: 'Film', id: string, title: string, releaseDate: string, posterPath?: string | null } }> | null };
 
 export type GetUserRatingQueryVariables = Exact<{
-  getUserRatingId: Scalars["Float"]["input"];
+  getUserRatingId: Scalars['Float']['input'];
 }>;
 
 
-export type GetUserRatingQuery = {
-  __typename?: "Query",
-  getUserRating?: Array<{
-    __typename?: "UserRating",
-    id: number,
-    rating: number,
-    film: { __typename?: "Film", id: string, title: string, releaseDate: string, posterPath?: string | null }
-  }> | null
-};
+export type GetUserRatingQuery = { __typename?: 'Query', getUserRating?: Array<{ __typename?: 'UserRating', id: number, rating: number, film: { __typename?: 'Film', id: string, title: string, releaseDate: string, posterPath?: string | null } }> | null };
 
 export type GetUserByEmailQueryVariables = Exact<{
-  email: Scalars["String"]["input"];
+  email: Scalars['String']['input'];
 }>;
 
 
-export type GetUserByEmailQuery = {
-  __typename?: "Query",
-  getUserByEmail?: {
-    __typename?: "User",
-    id: string,
-    username: string,
-    email: string,
-    avatar: { __typename?: "Avatar", id: string, image: string }
-  } | null
-};
+export type GetUserByEmailQuery = { __typename?: 'Query', getUserByEmail?: { __typename?: 'User', id: string, username: string, email: string, avatar: { __typename?: 'Avatar', id: string, image: string } } | null };
 
 export type GetFilmByIdQueryVariables = Exact<{
-  getFilmByIdId: Scalars["Int"]["input"];
+  getFilmByIdId: Scalars['Int']['input'];
 }>;
 
 
-export type GetFilmByIdQuery = {
-  __typename?: "Query",
-  getFilmById?: {
-    __typename?: "Film",
-    actors?: string | null,
-    director?: string | null,
-    id: string,
-    originalLanguage?: string | null,
-    overview?: string | null,
-    popularity: number,
-    posterPath?: string | null,
-    releaseDate: string,
-    title: string
-  } | null
-};
+export type GetFilmByIdQuery = { __typename?: 'Query', getFilmById?: { __typename?: 'Film', actors?: string | null, director?: string | null, id: string, originalLanguage?: string | null, overview?: string | null, popularity: number, posterPath?: string | null, releaseDate: string, title: string } | null };
 
 export type SearchFilmsQueryVariables = Exact<{
-  searchTerm: Scalars["String"]["input"];
+  searchTerm: Scalars['String']['input'];
   searchBy: Criteria;
-  category: Scalars["Int"]["input"];
-  decade: Scalars["Int"]["input"];
+  category: Scalars['Int']['input'];
+  decade: Scalars['Int']['input'];
 }>;
 
 
-export type SearchFilmsQuery = {
-  __typename?: "Query",
-  searchFilms: Array<{
-    __typename?: "Film",
-    id: string,
-    title: string,
-    releaseDate: string,
-    popularity: number,
-    posterPath?: string | null,
-    voteAverage: number,
-    voteCount: number,
-    overview?: string | null,
-    originalLanguage?: string | null,
-    director?: string | null,
-    actors?: string | null,
-    categories?: Array<{ __typename?: "Category", id: number, name: string }> | null
-  }>
-};
+export type SearchFilmsQuery = { __typename?: 'Query', searchFilms: Array<{ __typename?: 'Film', id: string, title: string, releaseDate: string, popularity: number, posterPath?: string | null, voteAverage: number, voteCount: number, overview?: string | null, originalLanguage?: string | null, director?: string | null, actors?: string | null, categories?: Array<{ __typename?: 'Category', id: number, name: string }> | null }> };
 
 
 export const SignUpDocument = gql`
     mutation SignUp($body: NewUserInput!) {
-        signUp(body: $body)
-    }
-`;
+  signUp(body: $body)
+}
+    `;
 export type SignUpMutationFn = Apollo.MutationFunction<SignUpMutation, SignUpMutationVariables>;
 
 /**
@@ -425,26 +329,25 @@ export type SignUpMutationFn = Apollo.MutationFunction<SignUpMutation, SignUpMut
  * });
  */
 export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignUpMutation, SignUpMutationVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument, options);
-}
-
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument, options);
+      }
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
 export const UpdateUsernameDocument = gql`
     mutation UpdateUsername($body: updateUsernameInput!) {
-        updateUsername(body: $body) {
-            id
-            username
-            email
-            avatar {
-                id
-                image
-            }
-        }
+  updateUsername(body: $body) {
+    id
+    username
+    email
+    avatar {
+      id
+      image
     }
-`;
+  }
+}
+    `;
 export type UpdateUsernameMutationFn = Apollo.MutationFunction<UpdateUsernameMutation, UpdateUsernameMutationVariables>;
 
 /**
@@ -465,21 +368,20 @@ export type UpdateUsernameMutationFn = Apollo.MutationFunction<UpdateUsernameMut
  * });
  */
 export function useUpdateUsernameMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUsernameMutation, UpdateUsernameMutationVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UpdateUsernameMutation, UpdateUsernameMutationVariables>(UpdateUsernameDocument, options);
-}
-
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUsernameMutation, UpdateUsernameMutationVariables>(UpdateUsernameDocument, options);
+      }
 export type UpdateUsernameMutationHookResult = ReturnType<typeof useUpdateUsernameMutation>;
 export type UpdateUsernameMutationResult = Apollo.MutationResult<UpdateUsernameMutation>;
 export type UpdateUsernameMutationOptions = Apollo.BaseMutationOptions<UpdateUsernameMutation, UpdateUsernameMutationVariables>;
 export const SignInDocument = gql`
     query SignIn($body: GetUserInput!) {
-        signIn(body: $body) {
-            email
-            username
-        }
-    }
-`;
+  signIn(body: $body) {
+    email
+    username
+  }
+}
+    `;
 
 /**
  * __useSignInQuery__
@@ -497,36 +399,30 @@ export const SignInDocument = gql`
  *   },
  * });
  */
-export function useSignInQuery(baseOptions: Apollo.QueryHookOptions<SignInQuery, SignInQueryVariables> & ({
-  variables: SignInQueryVariables;
-  skip?: boolean;
-} | { skip: boolean; })) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<SignInQuery, SignInQueryVariables>(SignInDocument, options);
-}
-
+export function useSignInQuery(baseOptions: Apollo.QueryHookOptions<SignInQuery, SignInQueryVariables> & ({ variables: SignInQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SignInQuery, SignInQueryVariables>(SignInDocument, options);
+      }
 export function useSignInLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SignInQuery, SignInQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<SignInQuery, SignInQueryVariables>(SignInDocument, options);
-}
-
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SignInQuery, SignInQueryVariables>(SignInDocument, options);
+        }
 export function useSignInSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<SignInQuery, SignInQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<SignInQuery, SignInQueryVariables>(SignInDocument, options);
-}
-
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<SignInQuery, SignInQueryVariables>(SignInDocument, options);
+        }
 export type SignInQueryHookResult = ReturnType<typeof useSignInQuery>;
 export type SignInLazyQueryHookResult = ReturnType<typeof useSignInLazyQuery>;
 export type SignInSuspenseQueryHookResult = ReturnType<typeof useSignInSuspenseQuery>;
 export type SignInQueryResult = Apollo.QueryResult<SignInQuery, SignInQueryVariables>;
 export const GetCategoriesDocument = gql`
     query GetCategories {
-        categories {
-            id
-            name
-        }
-    }
-`;
+  categories {
+    id
+    name
+  }
+}
+    `;
 
 /**
  * __useGetCategoriesQuery__
@@ -544,32 +440,29 @@ export const GetCategoriesDocument = gql`
  * });
  */
 export function useGetCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
-}
-
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+      }
 export function useGetCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
-}
-
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+        }
 export function useGetCategoriesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
-}
-
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+        }
 export type GetCategoriesQueryHookResult = ReturnType<typeof useGetCategoriesQuery>;
 export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategoriesLazyQuery>;
 export type GetCategoriesSuspenseQueryHookResult = ReturnType<typeof useGetCategoriesSuspenseQuery>;
 export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
 export const GetCategoryByIdDocument = gql`
     query GetCategoryById($id: Int!) {
-        getCategoryById(id: $id) {
-            id
-            name
-        }
-    }
-`;
+  getCategoryById(id: $id) {
+    id
+    name
+  }
+}
+    `;
 
 /**
  * __useGetCategoryByIdQuery__
@@ -587,45 +480,39 @@ export const GetCategoryByIdDocument = gql`
  *   },
  * });
  */
-export function useGetCategoryByIdQuery(baseOptions: Apollo.QueryHookOptions<GetCategoryByIdQuery, GetCategoryByIdQueryVariables> & ({
-  variables: GetCategoryByIdQueryVariables;
-  skip?: boolean;
-} | { skip: boolean; })) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>(GetCategoryByIdDocument, options);
-}
-
+export function useGetCategoryByIdQuery(baseOptions: Apollo.QueryHookOptions<GetCategoryByIdQuery, GetCategoryByIdQueryVariables> & ({ variables: GetCategoryByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>(GetCategoryByIdDocument, options);
+      }
 export function useGetCategoryByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>(GetCategoryByIdDocument, options);
-}
-
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>(GetCategoryByIdDocument, options);
+        }
 export function useGetCategoryByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>(GetCategoryByIdDocument, options);
-}
-
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>(GetCategoryByIdDocument, options);
+        }
 export type GetCategoryByIdQueryHookResult = ReturnType<typeof useGetCategoryByIdQuery>;
 export type GetCategoryByIdLazyQueryHookResult = ReturnType<typeof useGetCategoryByIdLazyQuery>;
 export type GetCategoryByIdSuspenseQueryHookResult = ReturnType<typeof useGetCategoryByIdSuspenseQuery>;
 export type GetCategoryByIdQueryResult = Apollo.QueryResult<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>;
 export const FilmCommentsDocument = gql`
     query FilmComments($filmId: Int!) {
-        filmComments(filmId: $filmId) {
-            id
-            content
-            created_at
-            updated_at
-            user {
-                username
-                avatar {
-                    image
-                    id
-                }
-            }
-        }
+  filmComments(filmId: $filmId) {
+    id
+    content
+    created_at
+    updated_at
+    user {
+      username
+      avatar {
+        image
+        id
+      }
     }
-`;
+  }
+}
+    `;
 
 /**
  * __useFilmCommentsQuery__
@@ -643,37 +530,31 @@ export const FilmCommentsDocument = gql`
  *   },
  * });
  */
-export function useFilmCommentsQuery(baseOptions: Apollo.QueryHookOptions<FilmCommentsQuery, FilmCommentsQueryVariables> & ({
-  variables: FilmCommentsQueryVariables;
-  skip?: boolean;
-} | { skip: boolean; })) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<FilmCommentsQuery, FilmCommentsQueryVariables>(FilmCommentsDocument, options);
-}
-
+export function useFilmCommentsQuery(baseOptions: Apollo.QueryHookOptions<FilmCommentsQuery, FilmCommentsQueryVariables> & ({ variables: FilmCommentsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FilmCommentsQuery, FilmCommentsQueryVariables>(FilmCommentsDocument, options);
+      }
 export function useFilmCommentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FilmCommentsQuery, FilmCommentsQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<FilmCommentsQuery, FilmCommentsQueryVariables>(FilmCommentsDocument, options);
-}
-
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FilmCommentsQuery, FilmCommentsQueryVariables>(FilmCommentsDocument, options);
+        }
 export function useFilmCommentsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FilmCommentsQuery, FilmCommentsQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<FilmCommentsQuery, FilmCommentsQueryVariables>(FilmCommentsDocument, options);
-}
-
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<FilmCommentsQuery, FilmCommentsQueryVariables>(FilmCommentsDocument, options);
+        }
 export type FilmCommentsQueryHookResult = ReturnType<typeof useFilmCommentsQuery>;
 export type FilmCommentsLazyQueryHookResult = ReturnType<typeof useFilmCommentsLazyQuery>;
 export type FilmCommentsSuspenseQueryHookResult = ReturnType<typeof useFilmCommentsSuspenseQuery>;
 export type FilmCommentsQueryResult = Apollo.QueryResult<FilmCommentsQuery, FilmCommentsQueryVariables>;
 export const FrenchFilmsDocument = gql`
     query FrenchFilms {
-        FrenchFilms {
-            id
-            posterPath
-            title
-        }
-    }
-`;
+  FrenchFilms {
+    id
+    posterPath
+    title
+  }
+}
+    `;
 
 /**
  * __useFrenchFilmsQuery__
@@ -691,33 +572,30 @@ export const FrenchFilmsDocument = gql`
  * });
  */
 export function useFrenchFilmsQuery(baseOptions?: Apollo.QueryHookOptions<FrenchFilmsQuery, FrenchFilmsQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<FrenchFilmsQuery, FrenchFilmsQueryVariables>(FrenchFilmsDocument, options);
-}
-
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FrenchFilmsQuery, FrenchFilmsQueryVariables>(FrenchFilmsDocument, options);
+      }
 export function useFrenchFilmsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FrenchFilmsQuery, FrenchFilmsQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<FrenchFilmsQuery, FrenchFilmsQueryVariables>(FrenchFilmsDocument, options);
-}
-
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FrenchFilmsQuery, FrenchFilmsQueryVariables>(FrenchFilmsDocument, options);
+        }
 export function useFrenchFilmsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FrenchFilmsQuery, FrenchFilmsQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<FrenchFilmsQuery, FrenchFilmsQueryVariables>(FrenchFilmsDocument, options);
-}
-
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<FrenchFilmsQuery, FrenchFilmsQueryVariables>(FrenchFilmsDocument, options);
+        }
 export type FrenchFilmsQueryHookResult = ReturnType<typeof useFrenchFilmsQuery>;
 export type FrenchFilmsLazyQueryHookResult = ReturnType<typeof useFrenchFilmsLazyQuery>;
 export type FrenchFilmsSuspenseQueryHookResult = ReturnType<typeof useFrenchFilmsSuspenseQuery>;
 export type FrenchFilmsQueryResult = Apollo.QueryResult<FrenchFilmsQuery, FrenchFilmsQueryVariables>;
 export const LastFilmsDocument = gql`
     query LastFilms {
-        lastFilms {
-            id
-            posterPath
-            title
-        }
-    }
-`;
+  lastFilms {
+    id
+    posterPath
+    title
+  }
+}
+    `;
 
 /**
  * __useLastFilmsQuery__
@@ -735,33 +613,30 @@ export const LastFilmsDocument = gql`
  * });
  */
 export function useLastFilmsQuery(baseOptions?: Apollo.QueryHookOptions<LastFilmsQuery, LastFilmsQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<LastFilmsQuery, LastFilmsQueryVariables>(LastFilmsDocument, options);
-}
-
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<LastFilmsQuery, LastFilmsQueryVariables>(LastFilmsDocument, options);
+      }
 export function useLastFilmsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LastFilmsQuery, LastFilmsQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<LastFilmsQuery, LastFilmsQueryVariables>(LastFilmsDocument, options);
-}
-
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LastFilmsQuery, LastFilmsQueryVariables>(LastFilmsDocument, options);
+        }
 export function useLastFilmsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<LastFilmsQuery, LastFilmsQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<LastFilmsQuery, LastFilmsQueryVariables>(LastFilmsDocument, options);
-}
-
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<LastFilmsQuery, LastFilmsQueryVariables>(LastFilmsDocument, options);
+        }
 export type LastFilmsQueryHookResult = ReturnType<typeof useLastFilmsQuery>;
 export type LastFilmsLazyQueryHookResult = ReturnType<typeof useLastFilmsLazyQuery>;
 export type LastFilmsSuspenseQueryHookResult = ReturnType<typeof useLastFilmsSuspenseQuery>;
 export type LastFilmsQueryResult = Apollo.QueryResult<LastFilmsQuery, LastFilmsQueryVariables>;
 export const TrendyFilmsDocument = gql`
     query TrendyFilms($limit: Float) {
-        trendyFilms(limit: $limit) {
-            id
-            posterPath
-            title
-        }
-    }
-`;
+  trendyFilms(limit: $limit) {
+    id
+    posterPath
+    title
+  }
+}
+    `;
 
 /**
  * __useTrendyFilmsQuery__
@@ -780,39 +655,36 @@ export const TrendyFilmsDocument = gql`
  * });
  */
 export function useTrendyFilmsQuery(baseOptions?: Apollo.QueryHookOptions<TrendyFilmsQuery, TrendyFilmsQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<TrendyFilmsQuery, TrendyFilmsQueryVariables>(TrendyFilmsDocument, options);
-}
-
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TrendyFilmsQuery, TrendyFilmsQueryVariables>(TrendyFilmsDocument, options);
+      }
 export function useTrendyFilmsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TrendyFilmsQuery, TrendyFilmsQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<TrendyFilmsQuery, TrendyFilmsQueryVariables>(TrendyFilmsDocument, options);
-}
-
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TrendyFilmsQuery, TrendyFilmsQueryVariables>(TrendyFilmsDocument, options);
+        }
 export function useTrendyFilmsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<TrendyFilmsQuery, TrendyFilmsQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<TrendyFilmsQuery, TrendyFilmsQueryVariables>(TrendyFilmsDocument, options);
-}
-
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<TrendyFilmsQuery, TrendyFilmsQueryVariables>(TrendyFilmsDocument, options);
+        }
 export type TrendyFilmsQueryHookResult = ReturnType<typeof useTrendyFilmsQuery>;
 export type TrendyFilmsLazyQueryHookResult = ReturnType<typeof useTrendyFilmsLazyQuery>;
 export type TrendyFilmsSuspenseQueryHookResult = ReturnType<typeof useTrendyFilmsSuspenseQuery>;
 export type TrendyFilmsQueryResult = Apollo.QueryResult<TrendyFilmsQuery, TrendyFilmsQueryVariables>;
 export const GetUserCommentDocument = gql`
     query GetUserComment($getUserCommentId: Float!) {
-        getUserComment(id: $getUserCommentId) {
-            id
-            content
-            created_at
-            film {
-                id
-                title
-                releaseDate
-                posterPath
-            }
-        }
+  getUserComment(id: $getUserCommentId) {
+    id
+    content
+    created_at
+    film {
+      id
+      title
+      releaseDate
+      posterPath
     }
-`;
+  }
+}
+    `;
 
 /**
  * __useGetUserCommentQuery__
@@ -830,42 +702,36 @@ export const GetUserCommentDocument = gql`
  *   },
  * });
  */
-export function useGetUserCommentQuery(baseOptions: Apollo.QueryHookOptions<GetUserCommentQuery, GetUserCommentQueryVariables> & ({
-  variables: GetUserCommentQueryVariables;
-  skip?: boolean;
-} | { skip: boolean; })) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetUserCommentQuery, GetUserCommentQueryVariables>(GetUserCommentDocument, options);
-}
-
+export function useGetUserCommentQuery(baseOptions: Apollo.QueryHookOptions<GetUserCommentQuery, GetUserCommentQueryVariables> & ({ variables: GetUserCommentQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserCommentQuery, GetUserCommentQueryVariables>(GetUserCommentDocument, options);
+      }
 export function useGetUserCommentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserCommentQuery, GetUserCommentQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetUserCommentQuery, GetUserCommentQueryVariables>(GetUserCommentDocument, options);
-}
-
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserCommentQuery, GetUserCommentQueryVariables>(GetUserCommentDocument, options);
+        }
 export function useGetUserCommentSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUserCommentQuery, GetUserCommentQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<GetUserCommentQuery, GetUserCommentQueryVariables>(GetUserCommentDocument, options);
-}
-
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserCommentQuery, GetUserCommentQueryVariables>(GetUserCommentDocument, options);
+        }
 export type GetUserCommentQueryHookResult = ReturnType<typeof useGetUserCommentQuery>;
 export type GetUserCommentLazyQueryHookResult = ReturnType<typeof useGetUserCommentLazyQuery>;
 export type GetUserCommentSuspenseQueryHookResult = ReturnType<typeof useGetUserCommentSuspenseQuery>;
 export type GetUserCommentQueryResult = Apollo.QueryResult<GetUserCommentQuery, GetUserCommentQueryVariables>;
 export const GetUserRatingDocument = gql`
     query GetUserRating($getUserRatingId: Float!) {
-        getUserRating(id: $getUserRatingId) {
-            id
-            rating
-            film {
-                id
-                title
-                releaseDate
-                posterPath
-            }
-        }
+  getUserRating(id: $getUserRatingId) {
+    id
+    rating
+    film {
+      id
+      title
+      releaseDate
+      posterPath
     }
-`;
+  }
+}
+    `;
 
 /**
  * __useGetUserRatingQuery__
@@ -883,41 +749,35 @@ export const GetUserRatingDocument = gql`
  *   },
  * });
  */
-export function useGetUserRatingQuery(baseOptions: Apollo.QueryHookOptions<GetUserRatingQuery, GetUserRatingQueryVariables> & ({
-  variables: GetUserRatingQueryVariables;
-  skip?: boolean;
-} | { skip: boolean; })) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetUserRatingQuery, GetUserRatingQueryVariables>(GetUserRatingDocument, options);
-}
-
+export function useGetUserRatingQuery(baseOptions: Apollo.QueryHookOptions<GetUserRatingQuery, GetUserRatingQueryVariables> & ({ variables: GetUserRatingQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserRatingQuery, GetUserRatingQueryVariables>(GetUserRatingDocument, options);
+      }
 export function useGetUserRatingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserRatingQuery, GetUserRatingQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetUserRatingQuery, GetUserRatingQueryVariables>(GetUserRatingDocument, options);
-}
-
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserRatingQuery, GetUserRatingQueryVariables>(GetUserRatingDocument, options);
+        }
 export function useGetUserRatingSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUserRatingQuery, GetUserRatingQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<GetUserRatingQuery, GetUserRatingQueryVariables>(GetUserRatingDocument, options);
-}
-
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserRatingQuery, GetUserRatingQueryVariables>(GetUserRatingDocument, options);
+        }
 export type GetUserRatingQueryHookResult = ReturnType<typeof useGetUserRatingQuery>;
 export type GetUserRatingLazyQueryHookResult = ReturnType<typeof useGetUserRatingLazyQuery>;
 export type GetUserRatingSuspenseQueryHookResult = ReturnType<typeof useGetUserRatingSuspenseQuery>;
 export type GetUserRatingQueryResult = Apollo.QueryResult<GetUserRatingQuery, GetUserRatingQueryVariables>;
 export const GetUserByEmailDocument = gql`
     query getUserByEmail($email: String!) {
-        getUserByEmail(email: $email) {
-            id
-            username
-            email
-            avatar {
-                id
-                image
-            }
-        }
+  getUserByEmail(email: $email) {
+    id
+    username
+    email
+    avatar {
+      id
+      image
     }
-`;
+  }
+}
+    `;
 
 /**
  * __useGetUserByEmailQuery__
@@ -935,43 +795,37 @@ export const GetUserByEmailDocument = gql`
  *   },
  * });
  */
-export function useGetUserByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables> & ({
-  variables: GetUserByEmailQueryVariables;
-  skip?: boolean;
-} | { skip: boolean; })) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
-}
-
+export function useGetUserByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables> & ({ variables: GetUserByEmailQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+      }
 export function useGetUserByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
-}
-
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+        }
 export function useGetUserByEmailSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
-}
-
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+        }
 export type GetUserByEmailQueryHookResult = ReturnType<typeof useGetUserByEmailQuery>;
 export type GetUserByEmailLazyQueryHookResult = ReturnType<typeof useGetUserByEmailLazyQuery>;
 export type GetUserByEmailSuspenseQueryHookResult = ReturnType<typeof useGetUserByEmailSuspenseQuery>;
 export type GetUserByEmailQueryResult = Apollo.QueryResult<GetUserByEmailQuery, GetUserByEmailQueryVariables>;
 export const GetFilmByIdDocument = gql`
     query GetFilmById($getFilmByIdId: Int!) {
-        getFilmById(id: $getFilmByIdId) {
-            actors
-            director
-            id
-            originalLanguage
-            overview
-            popularity
-            posterPath
-            releaseDate
-            title
-        }
-    }
-`;
+  getFilmById(id: $getFilmByIdId) {
+    actors
+    director
+    id
+    originalLanguage
+    overview
+    popularity
+    posterPath
+    releaseDate
+    title
+  }
+}
+    `;
 
 /**
  * __useGetFilmByIdQuery__
@@ -989,54 +843,48 @@ export const GetFilmByIdDocument = gql`
  *   },
  * });
  */
-export function useGetFilmByIdQuery(baseOptions: Apollo.QueryHookOptions<GetFilmByIdQuery, GetFilmByIdQueryVariables> & ({
-  variables: GetFilmByIdQueryVariables;
-  skip?: boolean;
-} | { skip: boolean; })) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetFilmByIdQuery, GetFilmByIdQueryVariables>(GetFilmByIdDocument, options);
-}
-
+export function useGetFilmByIdQuery(baseOptions: Apollo.QueryHookOptions<GetFilmByIdQuery, GetFilmByIdQueryVariables> & ({ variables: GetFilmByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFilmByIdQuery, GetFilmByIdQueryVariables>(GetFilmByIdDocument, options);
+      }
 export function useGetFilmByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFilmByIdQuery, GetFilmByIdQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetFilmByIdQuery, GetFilmByIdQueryVariables>(GetFilmByIdDocument, options);
-}
-
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFilmByIdQuery, GetFilmByIdQueryVariables>(GetFilmByIdDocument, options);
+        }
 export function useGetFilmByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetFilmByIdQuery, GetFilmByIdQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<GetFilmByIdQuery, GetFilmByIdQueryVariables>(GetFilmByIdDocument, options);
-}
-
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetFilmByIdQuery, GetFilmByIdQueryVariables>(GetFilmByIdDocument, options);
+        }
 export type GetFilmByIdQueryHookResult = ReturnType<typeof useGetFilmByIdQuery>;
 export type GetFilmByIdLazyQueryHookResult = ReturnType<typeof useGetFilmByIdLazyQuery>;
 export type GetFilmByIdSuspenseQueryHookResult = ReturnType<typeof useGetFilmByIdSuspenseQuery>;
 export type GetFilmByIdQueryResult = Apollo.QueryResult<GetFilmByIdQuery, GetFilmByIdQueryVariables>;
 export const SearchFilmsDocument = gql`
     query SearchFilms($searchTerm: String!, $searchBy: Criteria!, $category: Int!, $decade: Int!) {
-        searchFilms(
-            searchTerm: $searchTerm
-            searchBy: $searchBy
-            category: $category
-            decade: $decade
-        ) {
-            id
-            title
-            releaseDate
-            popularity
-            posterPath
-            voteAverage
-            voteCount
-            overview
-            originalLanguage
-            director
-            actors
-            categories {
-                id
-                name
-            }
-        }
+  searchFilms(
+    searchTerm: $searchTerm
+    searchBy: $searchBy
+    category: $category
+    decade: $decade
+  ) {
+    id
+    title
+    releaseDate
+    popularity
+    posterPath
+    voteAverage
+    voteCount
+    overview
+    originalLanguage
+    director
+    actors
+    categories {
+      id
+      name
     }
-`;
+  }
+}
+    `;
 
 /**
  * __useSearchFilmsQuery__
@@ -1057,26 +905,19 @@ export const SearchFilmsDocument = gql`
  *   },
  * });
  */
-export function useSearchFilmsQuery(baseOptions: Apollo.QueryHookOptions<SearchFilmsQuery, SearchFilmsQueryVariables> & ({
-  variables: SearchFilmsQueryVariables;
-  skip?: boolean;
-} | { skip: boolean; })) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<SearchFilmsQuery, SearchFilmsQueryVariables>(SearchFilmsDocument, options);
-}
-
+export function useSearchFilmsQuery(baseOptions: Apollo.QueryHookOptions<SearchFilmsQuery, SearchFilmsQueryVariables> & ({ variables: SearchFilmsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchFilmsQuery, SearchFilmsQueryVariables>(SearchFilmsDocument, options);
+      }
 export function useSearchFilmsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchFilmsQuery, SearchFilmsQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<SearchFilmsQuery, SearchFilmsQueryVariables>(SearchFilmsDocument, options);
-}
-
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchFilmsQuery, SearchFilmsQueryVariables>(SearchFilmsDocument, options);
+        }
 export function useSearchFilmsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<SearchFilmsQuery, SearchFilmsQueryVariables>) {
-  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<SearchFilmsQuery, SearchFilmsQueryVariables>(SearchFilmsDocument, options);
-}
-
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<SearchFilmsQuery, SearchFilmsQueryVariables>(SearchFilmsDocument, options);
+        }
 export type SearchFilmsQueryHookResult = ReturnType<typeof useSearchFilmsQuery>;
 export type SearchFilmsLazyQueryHookResult = ReturnType<typeof useSearchFilmsLazyQuery>;
 export type SearchFilmsSuspenseQueryHookResult = ReturnType<typeof useSearchFilmsSuspenseQuery>;
 export type SearchFilmsQueryResult = Apollo.QueryResult<SearchFilmsQuery, SearchFilmsQueryVariables>;
-/* eslint-enable @typescript-eslint/no-explicit-any */

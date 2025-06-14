@@ -7,9 +7,11 @@ export default function CarousselTrendyFilms() {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
+  if (!data || !data.trendyFilms) return <p>No data available</p>;
+  if (data.trendyFilms.length === 0) return <p>Aucun film tendance trouvé.</p>;
 
   return (
-    <section className="carousel carousel-center p-10 bg-373D41 overflow-x-auto flex-wrap md:flex-nowrap">
+    <section className="carousel carousel-center p-10 bg-grey overflow-x-auto flex-wrap md:flex-nowrap">
       {data?.trendyFilms?.map((film) => (
         <Link to={`/films/${film.id}`} key={film.id} className="flex-col">
           <div key={film.id} className="-mr-6">

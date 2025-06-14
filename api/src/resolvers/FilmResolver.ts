@@ -14,12 +14,12 @@ export default class FilmResolver {
     oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
 
     return Film.find({
-      where: {
-        releaseDate: Between(
-          oneMonthAgo.toISOString(),
-          new Date().toISOString()
-        ),
-      },
+      // where: {
+      //   releaseDate: Between(
+      //     oneMonthAgo.toISOString(),
+      //     new Date().toISOString()
+      //   ),
+      // },
       order: {
         popularity: "DESC",
       },
